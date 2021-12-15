@@ -1,27 +1,13 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import useFetch from '../hooks/useFetch';
-import { getPosts } from '../store/postSlice';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Button } from '@mui/material';
+import { useRouter } from 'next/router';
 
-export default function Home() {
-	const dispatch = useDispatch();
-
-	useEffect(() => {
-		dispatch(getPosts());
-	}, []);
-
-	const { status, posts: fetchedPosts } = useSelector((state) => state.post);
-	const { items: posts } = useFetch(fetchedPosts);
-
-	if (status == 'loading') return <CircularProgress />;
-	if (status == 'loading') return <p>Error Fetching data!</p>;
-
+export default function LandingPage() {
+	const router = useRouter();
 	return (
 		<>
-			{posts.map((val) => (
-				<p key={val.id}>{val.title}</p>
-			))}
+			<Button onClick={() => router.push('/login')} variant='outlined'>
+				Login
+			</Button>
 		</>
 	);
 }
