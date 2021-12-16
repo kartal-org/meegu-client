@@ -7,6 +7,8 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import { DefaultSeo } from 'next-seo';
+import { Container } from 'next/app';
 
 function MyApp({ Component, pageProps }) {
 	const router = useRouter();
@@ -26,11 +28,13 @@ function MyApp({ Component, pageProps }) {
 	return (
 		<>
 			<Head>
+				<title>Meegu</title>
 				<link
 					rel='stylesheet'
 					href='https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css'
 				/>
 			</Head>
+			<DefaultSeo titleTemplate='%s | Meegu' defaultTitle='Meegu' />
 			<ThemeProvider theme={outsideTheme}>
 				<Component {...pageProps} />
 				<Backdrop
