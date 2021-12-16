@@ -1,5 +1,11 @@
 import React from 'react';
+import { NextSeo } from 'next-seo';
 
 export default function Login() {
-	return <div>Login Page</div>;
+	return (
+		<>
+			<NextSeo title='Login' />
+			<div>Login Page</div>
+		</>
+	);
 }
