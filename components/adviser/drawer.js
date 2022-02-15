@@ -2,29 +2,35 @@ import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Box from "@mui/material/Box";
+
+import {
+	Box,
+	List,
+	CssBaseline,
+	Typography,
+	Divider,
+	IconButton,
+	ListItemButton,
+	ListItemIcon,
+	ListItemText,
+	Tooltip,
+} from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
-import List from "@mui/material/List";
-import CssBaseline from "@mui/material/CssBaseline";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Tooltip from "@mui/material/Tooltip";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-import { AiFillHome } from "react-icons/ai";
-import { ImBooks } from "react-icons/im";
-import { FaPencilAlt } from "react-icons/fa";
-import { CgNotes } from "react-icons/cg";
-import { SiGooglemessages } from "react-icons/si";
+import { AiOutlineHome } from "react-icons/ai";
+import { RiTeamLine } from "react-icons/ri";
+import { RiBookletLine } from "react-icons/ri";
+import { BiNote } from "react-icons/bi";
+import { BiMessageRoundedDetail } from "react-icons/bi";
+import { IoLibraryOutline } from "react-icons/io5";
+import { FaUsers } from "react-icons/fa";
+
 import PrimarySearchAppBar from "./toolbar";
 
 const drawerWidth = 200;
@@ -107,36 +113,37 @@ export default function CustomDrawer(props) {
 	const handleDrawerClose = () => {
 		setOpen(false);
 	};
+
 	const navs = [
 		{
 			text: "Home",
-			icon: <AiFillHome className="w-6 h-6 " />,
-			path: "/researcher/home",
+			icon: <AiOutlineHome className="w-6 h-6 " />,
+			path: "/adviser/home",
 		},
 		{
-			text: "Workspaces",
-			icon: <HistoryEduIcon className="w-6 h-6 " />,
-			path: "/researcher/workspace/personal",
+			text: "Classroom",
+			icon: <RiTeamLine className="w-6 h-6 " />,
+			path: "/adviser/classroom/workspace",
 		},
 		{
 			text: "Library",
-			icon: <ImBooks className="w-6 h-6 " />,
-			path: "/researcher/library",
+			icon: <IoLibraryOutline className="w-6 h-6 " />,
+			path: "/adviser/library",
 		},
 		{
 			text: "Notes",
-			icon: <CgNotes className="w-6 h-6 " />,
-			path: "/researcher/notes",
+			icon: <BiNote className="w-6 h-6 " />,
+			path: "/adviser/notes",
 		},
 		{
 			text: "Messages",
-			icon: <SiGooglemessages className="w-6 h-6 " />,
-			path: "/researcher/messages",
+			icon: <BiMessageRoundedDetail className="w-6 h-6 " />,
+			path: "/adviser/messages",
 		},
 		{
 			text: "Log Out",
 			icon: <LogoutIcon />,
-			path: "/researcher/logout",
+			path: "/adviser/logout",
 		},
 	];
 
@@ -144,6 +151,7 @@ export default function CustomDrawer(props) {
 		<>
 			<Box sx={{ display: "flex" }}>
 				<CssBaseline />
+
 				<AppBar position="fixed" color="transparent" open={open} elevation={0}>
 					<PrimarySearchAppBar>
 						<IconButton
@@ -168,6 +176,7 @@ export default function CustomDrawer(props) {
 						</Typography>
 					</PrimarySearchAppBar>
 				</AppBar>
+
 				<Drawer variant="permanent" hideBackdrop={true} open={open}>
 					<DrawerHeader>
 						{open ? (
@@ -185,6 +194,7 @@ export default function CustomDrawer(props) {
 							{open ? <ChevronLeftIcon /> : null}
 						</IconButton>
 					</DrawerHeader>
+
 					<Divider />
 
 					<List
@@ -208,8 +218,10 @@ export default function CustomDrawer(props) {
 							</Link>
 						))}
 					</List>
+
 					<Divider />
 				</Drawer>
+
 				<Box
 					component="main"
 					sx={{
