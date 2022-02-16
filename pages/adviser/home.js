@@ -1,13 +1,16 @@
 import React from "react";
-import CustomDrawer from "../../components/adviser/drawer";
-// import CustomDrawer from "../../components/researcher/drawer";
 import { NextSeo } from "next-seo";
+
+import CustomDrawerBottom from "../../components/adviser/drawerBottom";
+import styles from "../../styles/adviser/Adviser.module.css";
 
 export default function Home() {
 	return (
 		<>
 			<NextSeo title="Home" />
-			<CustomDrawer pageTitle="Home">Home adviser</CustomDrawer>
+			<CustomDrawerBottom pageTitle="Home">
+				<div className={styles.container}>home page</div>
+			</CustomDrawerBottom>
 		</>
 	);
 }
