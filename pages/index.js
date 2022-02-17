@@ -1,79 +1,68 @@
-import { Button } from "@mui/material";
 import { useRouter } from "next/router";
-import Navbar from "../components/navbar";
+import Link from "next/link";
+import styles from "../styles/pages/landing.module.scss";
 
 export default function LandingPage() {
-	const router = useRouter();
-	return (
-		<>
-			<div class="flex flex-col">
-				<Navbar />
-				<div class="mt-3">
-					<div
-						class="bg-no-repeat bg-cover dark:bg-gray-800 flex relative z-20 items-center overflow-hidden -mt-3 h-screen "
-						// style={{
-						// 	backgroundImage: `url(${frame})`,
-						// }}
-					>
-						<div class="container mx-auto px-6 flex relative py-16">
-							<div class="sm:w-2/3 lg:w-2/5 flex flex-col relative z-20">
-								<span class="w-20 h-2 bg-gray-800 dark:bg-white mb-12"></span>
-								<h1 class="font-bebas-neue uppercase text-6xl sm:text-8xl font-black flex flex-col leading-none dark:text-white text-gray-800">
-									Be on
-									<span class="text-5xl sm:text-7xl">Time</span>
-								</h1>
-
-								<p class="text-sm sm:text-base text-gray-700 dark:text-white mt-4">
-									Dimension of reality that makes change possible and
-									understandable. An indefinite and homogeneous environment in
-									which natural events and human existence take place.
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</>
-	);
+  const router = useRouter();
+  return (
+    <div className={styles.landing}>
+      <header className={styles.header}>
+        <div className={styles.header__logo}>
+          <svg
+            width="46"
+            height="47"
+            viewBox="0 0 46 47"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className={styles.header__logoImg}
+          >
+            <rect width="46" height="46" rx="23" fill="#C4C4C4" />
+            <path
+              d="M17.0574 20.6218L9.04492 46H36.955L30.8121 10.337L21.1972 27.701L17.0574 20.6218Z"
+              fill="white"
+              stroke="white"
+            />
+            <circle cx="18.736" cy="35.0168" r="1.42135" fill="#C4C4C4" />
+            <circle cx="27.7807" cy="35.0168" r="1.42135" fill="#C4C4C4" />
+          </svg>
+          <p className={styles.header__logoText}>meegu</p>
+        </div>
+      </header>
+      <main>
+        <section className={styles.hero}>
+          <h1 className={styles.hero__heading}>Level up your Research Experience</h1>
+          <p className={styles.hero__text}>
+            Meegu is a platform that helps you make your research journey easier
+            and more meaningful by connecting you to all actors of research in a
+            system that works!
+          </p>
+          <div className={styles.hero__action}>
+            <button className={styles.hero__btnGoogle}>Continue with Google</button>
+            <button className={styles.hero__btnFacebook}>
+              Continue with Facebook
+            </button>
+          </div>
+        </section>
+      </main>
+      <footer className={styles.footer}>
+        <div className={styles.brand}></div>
+        <nav>
+          <ul className={styles.nav}>
+            <li className={styles.nav__item}>
+              <Link href="#">Features</Link>
+            </li>
+            <li className={styles.nav__item}>
+              <Link href="#">Pricing</Link>
+            </li>
+            <li className={styles.nav__item}>
+              <Link href="#">Contact us</Link>
+            </li>
+            <li className={styles.nav__item}>
+              <Link href="#">About us</Link>
+            </li>
+          </ul>
+        </nav>
+      </footer>
+    </div>
+  );
 }
-
-// import Head from "next/head";
-// import { signIn, signOut, useSession } from "next-auth/react";
-
-// import { Button } from "@mui/material";
-
-// const Home = () => {
-// 	const { data: session, status } = useSession();
-
-// 	if (status === "loading") {
-// 		return (
-// 			<>
-// 				<h1>Loading ...</h1>
-// 			</>
-// 		);
-// 	}
-
-// 	if (session) {
-// 		return (
-// 			<>
-// 				Signed in as {session.user?.email} <br />
-// 				<Button variant="outlined" onClick={() => signOut()}>
-// 					{" "}
-// 					Sign Out
-// 				</Button>
-// 			</>
-// 		);
-// 	}
-
-// 	return (
-// 		<>
-// 			Not signed in <br />
-// 			<Button variant="outlined" onClick={() => signIn()}>
-// 				{" "}
-// 				Sign In
-// 			</Button>
-// 		</>
-// 	);
-// };
-
-// export default Home;
