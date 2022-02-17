@@ -1,20 +1,28 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
-import styles from "../styles/pages/landing.module.scss";
+import styled from "styled-components";
 
 export default function LandingPage() {
   const router = useRouter();
+
+  const Wrapper = styled.div`
+    display: grid;
+    grid-template-column: minmax(95%, 1193px);
+    justify-content: center;
+    background: blueviolet;
+  `;
+  const Header = styled(Wrapper)``;
   return (
-    <div className={styles.landing}>
-      <header className={styles.header}>
-        <div className={styles.header__logo}>
+    <div className="landing">
+      <Wrapper>
+        <div className="header__logo">
           <svg
             width="46"
             height="47"
             viewBox="0 0 46 47"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className={styles.header__logoImg}
+            className="header__logoImg"
           >
             <rect width="46" height="46" rx="23" fill="#C4C4C4" />
             <path
@@ -25,39 +33,40 @@ export default function LandingPage() {
             <circle cx="18.736" cy="35.0168" r="1.42135" fill="#C4C4C4" />
             <circle cx="27.7807" cy="35.0168" r="1.42135" fill="#C4C4C4" />
           </svg>
-          <p className={styles.header__logoText}>meegu</p>
+          <p className="header__logoText">meegu</p>
         </div>
-      </header>
+      </Wrapper>
+
       <main>
-        <section className={styles.hero}>
-          <h1 className={styles.hero__heading}>Level up your Research Experience</h1>
-          <p className={styles.hero__text}>
+        <section className="hero">
+          <h1 className="hero__heading">Level up your Research Experience</h1>
+          <p className="hero__text">
             Meegu is a platform that helps you make your research journey easier
             and more meaningful by connecting you to all actors of research in a
             system that works!
           </p>
-          <div className={styles.hero__action}>
-            <button className={styles.hero__btnGoogle}>Continue with Google</button>
-            <button className={styles.hero__btnFacebook}>
+          <div className="hero__action">
+            <button className="hero__btnGoogle">Continue with Google</button>
+            <button className="hero__btnFacebook">
               Continue with Facebook
             </button>
           </div>
         </section>
       </main>
-      <footer className={styles.footer}>
-        <div className={styles.brand}></div>
+      <footer className="footer">
+        <div className="brand"></div>
         <nav>
-          <ul className={styles.nav}>
-            <li className={styles.nav__item}>
+          <ul className="nav">
+            <li className="nav__item">
               <Link href="#">Features</Link>
             </li>
-            <li className={styles.nav__item}>
+            <li className="nav__item">
               <Link href="#">Pricing</Link>
             </li>
-            <li className={styles.nav__item}>
+            <li className="nav__item">
               <Link href="#">Contact us</Link>
             </li>
-            <li className={styles.nav__item}>
+            <li className="nav__item">
               <Link href="#">About us</Link>
             </li>
           </ul>
