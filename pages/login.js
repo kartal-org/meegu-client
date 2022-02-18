@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 //validation
 import { useForm } from "react-hook-form";
@@ -57,7 +58,7 @@ export default function Login() {
 
 						<form
 							className="flex flex-col pt-3 md:pt-8 space-y-2 w-full"
-							onSubmit={handleSubmit(onSubmit)}
+							// onSubmit={handleSubmit(onSubmit)}
 						>
 							<TextField
 								variant="outlined"
@@ -116,7 +117,10 @@ export default function Login() {
 
 								<div>
 									{/* <Button onClick={() => signIn()}>Sign in</Button> */}
-									<Button type="submit" variant="outlined">
+									<Button
+										onClick={() => router.push("/checkUser")}
+										variant="outlined"
+									>
 										Login
 									</Button>
 								</div>
