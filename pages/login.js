@@ -3,8 +3,7 @@ import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
-import WithOutAuth from '../axios/normalInstance';
-import WithAuth from '../axios/authenticatedInstance';
+import { withOutAuth } from '../axios/axiosInstances';
 import { useUserUpdate, useUser } from '../contexts/userProvider';
 import Link from 'next/link';
 
@@ -14,11 +13,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
 import { Typography, Button, TextField } from '@mui/material';
+import { useAuthenticate } from '../hooks/useAuthenticate';
 
 export default function Login() {
 	const router = useRouter();
 	const user = useUser();
 	const userUpdate = useUserUpdate();
+	const authenticate = useAuthenticate();
 
 	const [formData, setFormData] = useState({
 		email: '',
@@ -47,30 +48,21 @@ export default function Login() {
 	};
 
 	const responseGoogle = (response) => {
-		WithOutAuth.post('/auth/convert-token', {
-			grant_type: 'convert_token',
-			client_id: process.env.BACKEND_APP_KEY,
-			client_secret: process.env.BACKEND_APP_SECRET,
-			backend: 'google-oauth2',
-			token: response.accessToken,
-		})
+		withOutAuth
+			.post('/auth/convert-token', {
+				grant_type: 'convert_token',
+				client_id: process.env.BACKEND_APP_KEY,
+				client_secret: process.env.BACKEND_APP_SECRET,
+				backend: 'google-oauth2',
+				token: response.accessToken,
+			})
 			.then(function (response) {
 				console.log(response);
 				if (process.browser) {
 					localStorage.setItem('access_token', response.data.access_token);
 					localStorage.setItem('refresh_token', response.data.refresh_token);
+					authenticate();
 				}
-
-				WithAuth.get('/users/me')
-					.then((response) => {
-						if (response.status == 200) {
-							userUpdate(response.data);
-							router.push('/test');
-						}
-					})
-					.catch(function (error) {
-						console.log(error);
-					});
 			})
 			.catch(function (error) {
 				console.log(error);

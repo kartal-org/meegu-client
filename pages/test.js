@@ -6,6 +6,7 @@ import AuthLayout from '../layouts/authLayout';
 function test() {
 	const user = useUser();
 	const router = useRouter();
+
 	// console.log(user);
 	// if (user) {
 	// 	if (!user.type) {
