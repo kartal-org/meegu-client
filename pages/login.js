@@ -6,6 +6,7 @@ import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props
 import WithOutAuth from '../axios/normalInstance';
 import WithAuth from '../axios/authenticatedInstance';
 import { useUserUpdate, useUser } from '../contexts/userProvider';
+import Link from 'next/link';
 
 //validation
 import { useForm } from 'react-hook-form';
@@ -98,7 +99,7 @@ export default function Login() {
 
 						<form
 							className='flex flex-col pt-3 md:pt-8 space-y-2 w-full'
-							onSubmit={handleSubmit(onSubmit)}
+							// onSubmit={handleSubmit(onSubmit)}
 						>
 							<TextField
 								variant='outlined'
@@ -153,7 +154,7 @@ export default function Login() {
 
 								<div>
 									{/* <Button onClick={() => signIn()}>Sign in</Button> */}
-									<Button type='submit' variant='outlined'>
+									<Button onClick={() => router.push('/checkUser')} variant='outlined'>
 										Login
 									</Button>
 								</div>
@@ -210,32 +211,3 @@ export default function Login() {
 		</>
 	);
 }
-
-// import { providers, signIn, getSession, csrfToken } from "next-auth/react";
-// import { createContext } from "react";
-
-// function Login({ providers }) {
-// 	return (
-// 		<div>
-// 			{Object.values(providers).map((provider) => {
-// 				return (
-// 					<div key={provider.name}>
-// 						<button onClick={() => signIn(provider.id)}>
-// 							Sign in with {provider.name}
-// 						</button>
-// 					</div>
-// 				);
-// 			})}
-// 		</div>
-// 	);
-// }
-
-// export default Login;
-
-// export async function getServerSideProps(context) {
-// 	return {
-// 		props: {
-// 			providers: await providers(context),
-// 		},
-// 	};
-// }
