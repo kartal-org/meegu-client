@@ -1,28 +1,35 @@
-import React, { useState } from "react";
-import { NextSeo } from "next-seo";
-import { useRouter } from "next/router";
+import React, { useState } from 'react';
+import { NextSeo } from 'next-seo';
+import { useRouter } from 'next/router';
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import WithOutAuth from '../axios/normalInstance';
+import WithAuth from '../axios/authenticatedInstance';
+import { useUserUpdate, useUser } from '../contexts/userProvider';
 
 //validation
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 
-import { Typography, Button, TextField } from "@mui/material";
+import { Typography, Button, TextField } from '@mui/material';
 
 export default function Login() {
 	const router = useRouter();
+	const user = useUser();
+	const userUpdate = useUserUpdate();
 
 	const [formData, setFormData] = useState({
-		email: "",
-		password: "",
+		email: '',
+		password: '',
 	});
 
 	//validation
 	const validationMsg = Yup.object().shape({
 		email: Yup.string()
-			.required("Your e-mail is required.")
-			.email("Please put the correct e-mail format"),
-		password: Yup.string().required("Password is required."),
+			.required('Your e-mail is required.')
+			.email('Please put the correct e-mail format'),
+		password: Yup.string().required('Password is required.'),
 	});
 
 	const {
@@ -38,76 +45,106 @@ export default function Login() {
 		// dispatch(login(data.email, data.password));
 	};
 
+	const responseGoogle = (response) => {
+		WithOutAuth.post('/auth/convert-token', {
+			grant_type: 'convert_token',
+			client_id: process.env.BACKEND_APP_KEY,
+			client_secret: process.env.BACKEND_APP_SECRET,
+			backend: 'google-oauth2',
+			token: response.accessToken,
+		})
+			.then(function (response) {
+				console.log(response);
+				if (process.browser) {
+					localStorage.setItem('access_token', response.data.access_token);
+					localStorage.setItem('refresh_token', response.data.refresh_token);
+				}
+
+				WithAuth.get('/users/me')
+					.then((response) => {
+						if (response.status == 200) {
+							userUpdate(response.data);
+							router.push('/test');
+						}
+					})
+					.catch(function (error) {
+						console.log(error);
+					});
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	};
+	const responseFacebook = (response) => {
+		console.log(response);
+	};
+
 	return (
 		<>
-			<NextSeo title="Login" />
-			<div class="flex flex-wrap w-full">
-				<div class="flex flex-col w-full md:w-1/2">
-					<div class="flex justify-center pt-12 md:justify-start md:pl-12 md:-mb-24">
+			<NextSeo title='Login' />
+			<div class='flex flex-wrap w-full'>
+				<div class='flex flex-col w-full md:w-1/2'>
+					<div class='flex justify-center pt-12 md:justify-start md:pl-12 md:-mb-24'>
 						<button
-							onClick={() => router.push("/")}
-							class="p-4 text-xl font-bold text-white bg-purple-800"
+							onClick={() => router.push('/')}
+							class='p-4 text-xl font-bold text-white bg-purple-800'
 						>
 							meegu.
 						</button>
 					</div>
 
-					<div class="mt-28 flex flex-col justify-center px-8 pt-8 my-auto md:justify-start md:pt-0 md:px-24 lg:px-32">
-						<p class="text-3xl text-center">Welcome back!</p>
+					<div class='mt-28 flex flex-col justify-center px-8 pt-8 my-auto md:justify-start md:pt-0 md:px-24 lg:px-32'>
+						<p class='text-3xl text-center'>Welcome back!</p>
 
 						<form
-							className="flex flex-col pt-3 md:pt-8 space-y-2 w-full"
+							className='flex flex-col pt-3 md:pt-8 space-y-2 w-full'
 							onSubmit={handleSubmit(onSubmit)}
 						>
 							<TextField
-								variant="outlined"
+								variant='outlined'
 								fullWidth
-								name="email"
-								placeholder="Your email"
-								type="email"
-								{...register("email")}
+								name='email'
+								placeholder='Your email'
+								type='email'
+								{...register('email')}
 								error={errors.email ? true : false}
 							/>
 
-							<Typography
-								sx={{ fontSize: "12px", color: "red", fontStyle: "italic" }}
-							>
+							<Typography sx={{ fontSize: '12px', color: 'red', fontStyle: 'italic' }}>
 								{errors.email?.message}
 							</Typography>
 
 							<TextField
-								variant="outlined"
+								variant='outlined'
 								fullWidth
-								name="password"
-								placeholder="Your password"
-								type="password"
-								{...register("password")}
+								name='password'
+								placeholder='Your password'
+								type='password'
+								{...register('password')}
 								error={errors.password ? true : false}
 							/>
 
-							<Typography
-								sx={{ fontSize: "12px", color: "red", fontStyle: "italic" }}
-							>
+							<Typography sx={{ fontSize: '12px', color: 'red', fontStyle: 'italic' }}>
 								{errors.password?.message}
 							</Typography>
 
-							<div className="flex flex-row items-center justify-between">
-								<div class="pt-12 pb-12 text-center justify-start">
+							<div className='flex flex-row items-center justify-between'>
+								<div class='pt-12 pb-12 text-center justify-start'>
 									<p>
 										<button
-											onClick={() => router.push("/signup")}
-											className="text-base ml-2 text-gray-400 hover:text-purple-400"
+											onClick={() => router.push('/signup')}
+											className='text-base ml-2 text-gray-400 hover:text-purple-400'
 										>
 											Register
 										</button>
 									</p>
 								</div>
 
-								<div class="pt-12 pb-12 text-center justify-start">
+								<div class='pt-12 pb-12 text-center justify-start'>
 									<p>
 										<button
-											onClick={() => router.push("/reset-password")}
-											class="-ml-8 text-gray-400 hover:text-purple-400"
+											onClick={() => router.push('/reset-password')}
+											class='-ml-8 text-gray-400 hover:text-purple-400'
 										>
 											Forgot your password?
 										</button>
@@ -116,34 +153,33 @@ export default function Login() {
 
 								<div>
 									{/* <Button onClick={() => signIn()}>Sign in</Button> */}
-									<Button type="submit" variant="outlined">
+									<Button type='submit' variant='outlined'>
 										Login
 									</Button>
 								</div>
 							</div>
 						</form>
 
-						<div className="flex flex-row justify-between mb-12 mt-48">
-							<div className="text-gray-500">Continue with: </div>
+						<div className='flex flex-row justify-between mb-12 mt-48'>
+							<div className='text-gray-500'>Continue with: </div>
 
-							<div class="flex flex-row space-x-6 pr-10">
+							<div class='flex flex-row space-x-6 pr-10'>
 								<div>
-									<p className="text-purple-400">Facebook</p>
-									{/* <FacebookLogin
-										appId='564451954655803'
+									{/* <p className='text-purple-400'>Facebook</p> */}
+									<FacebookLogin
+										appId='1088597931155576'
 										autoLoad={false}
-										fields='name,email,picture'
 										callback={responseFacebook}
 										render={(renderProps) => (
 											<button onClick={renderProps.onClick} className='text-purple-400'>
 												Facebook
 											</button>
 										)}
-									/> */}
+									/>
 								</div>
 								<div>
-									<p className="text-purple-400">Google</p>
-									{/* <GoogleLogin
+									{/* <p className='text-purple-400'>Google</p> */}
+									<GoogleLogin
 										clientId='1090422806656-3gpck8pb13jj38c9bp25pmuqe6scgsb1.apps.googleusercontent.com'
 										render={(renderProps) => (
 											<button
@@ -156,18 +192,18 @@ export default function Login() {
 										)}
 										onSuccess={(e) => responseGoogle(e)}
 										onFailure={(e) => responseGoogle(e)}
-									/> */}
+									/>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 
-				<div class="w-1/2 shadow-2xl">
+				<div class='w-1/2 shadow-2xl'>
 					<img
-						class="hidden object-center w-full h-screen md:block"
-						src="https://images.unsplash.com/photo-1510007003972-ee92e9845bb7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzN8fG1pbmltYWxpc3RpY3xlbnwwfDB8MHx8&auto=format&fit=crop&w=1500&q=600"
-						alt="login"
+						class='hidden object-center w-full h-screen md:block'
+						src='https://images.unsplash.com/photo-1510007003972-ee92e9845bb7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzN8fG1pbmltYWxpc3RpY3xlbnwwfDB8MHx8&auto=format&fit=crop&w=1500&q=600'
+						alt='login'
 					/>
 				</div>
 			</div>

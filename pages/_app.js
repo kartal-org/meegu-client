@@ -1,29 +1,28 @@
-import { wrapper } from "../store/configureStore";
-import "../styles/globals.css";
-import { ThemeProvider } from "@mui/material/styles";
-import { outsideTheme } from "../themes/theme";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
-import { DefaultSeo } from "next-seo";
-import { Container } from "next/app";
-
-import { SessionProvider } from "next-auth/react";
+import '../styles/globals.css';
+import { ThemeProvider } from '@mui/material/styles';
+import { outsideTheme } from '../themes/theme';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import { DefaultSeo } from 'next-seo';
+import { UserProvider } from '../contexts/userProvider';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 	const router = useRouter();
 	const [open, setOpen] = useState(false);
 
+	const Layout = Component.Layout || EmptyLayout;
+
 	useEffect(() => {
-		router.events.on("routeChangeStart", () => {
+		router.events.on('routeChangeStart', () => {
 			setOpen(true);
 		});
-		router.events.on("routeChangeComplete", () => {
+		router.events.on('routeChangeComplete', () => {
 			setOpen(false);
 		});
-		router.events.on("routeChangeError", () => {
+		router.events.on('routeChangeError', () => {
 			setOpen(false);
 		});
 	}, []);
@@ -32,35 +31,28 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 			<Head>
 				<title>Meegu</title>
 				<link
-					rel="stylesheet"
-					href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"
+					rel='stylesheet'
+					href='https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css'
 				/>
 			</Head>
-			<DefaultSeo titleTemplate="%s | Meegu" defaultTitle="Meegu" />
+			<DefaultSeo titleTemplate='%s | Meegu' defaultTitle='Meegu' />
 			<ThemeProvider theme={outsideTheme}>
-				<SessionProvider session={session}>
-					<Component {...pageProps} />
+				<UserProvider>
+					<Layout>
+						<Component {...pageProps} />
+					</Layout>
 					<Backdrop
-						sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+						sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
 						open={open}
 					>
-						<CircularProgress color="inherit" />
+						<CircularProgress color='inherit' />
 					</Backdrop>
-				</SessionProvider>
+				</UserProvider>
 			</ThemeProvider>
 		</>
 	);
 }
 
-export default wrapper.withRedux(MyApp);
+const EmptyLayout = ({ children }) => <>{children}</>;
 
-// export default function MyApp({
-// 	Component,
-// 	pageProps: { session, ...pageProps },
-// }) {
-// 	return (
-// 		<SessionProvider session={session}>
-// 			<Component {...pageProps} />
-// 		</SessionProvider>
-// 	);
-// }
+export default MyApp;
