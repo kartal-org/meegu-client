@@ -1,79 +1,109 @@
-import { Button } from "@mui/material";
-import { useRouter } from "next/router";
-import Navbar from "../components/navbar";
+import Link from 'next/link';
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import { genericReq } from '../axios/axiosInstances';
+import styles from '../styles/landing.module.scss';
+import { useAuthenticate } from '../hooks/useAuthenticate';
+import { useEffect } from 'react';
+import useCheckUser from '../hooks/useCheckUser';
+import Cookies from 'js-cookie';
+
+// Serves 3 purpose landing page, login page, sign up page.
 
 export default function LandingPage() {
-	const router = useRouter();
-	return (
-		<>
-			<div class="flex flex-col">
-				<Navbar />
-				<div class="mt-3">
-					<div
-						class="bg-no-repeat bg-cover dark:bg-gray-800 flex relative z-20 items-center overflow-hidden -mt-3 h-screen "
-						// style={{
-						// 	backgroundImage: `url(${frame})`,
-						// }}
-					>
-						<div class="container mx-auto px-6 flex relative py-16">
-							<div class="sm:w-2/3 lg:w-2/5 flex flex-col relative z-20">
-								<span class="w-20 h-2 bg-gray-800 dark:bg-white mb-12"></span>
-								<h1 class="font-bebas-neue uppercase text-6xl sm:text-8xl font-black flex flex-col leading-none dark:text-white text-gray-800">
-									Be on
-									<span class="text-5xl sm:text-7xl">Time</span>
-								</h1>
+	const authenticate = useAuthenticate();
+	const checkUser = useCheckUser();
 
-								<p class="text-sm sm:text-base text-gray-700 dark:text-white mt-4">
-									Dimension of reality that makes change possible and
-									understandable. An indefinite and homogeneous environment in
-									which natural events and human existence take place.
-								</p>
-							</div>
+	// check if the user is already logged in
+
+	useEffect(() => {
+		const access_token = Cookies.get('access_token');
+		const refresh_token = Cookies.get('refresh_token');
+
+		if (access_token && refresh_token) {
+			authenticate();
+		}
+	}, []);
+
+	checkUser();
+
+	const responseGoogle = async (response) => {
+		let res;
+		try {
+			res = await genericReq('/auth/convert-token', 'post', 'normal', {
+				grant_type: 'convert_token',
+				client_id: process.env.BACKEND_APP_KEY,
+				client_secret: process.env.BACKEND_APP_SECRET,
+				backend: 'google-oauth2',
+				token: response.accessToken,
+			});
+			Cookies.set('access_token', res.data.access_token, { expires: 7 });
+			Cookies.set('refresh_token', res.data.refresh_token, { expires: 7 });
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const responseFacebook = (response) => {
+		console.log(response);
+	};
+	return (
+		<div className={styles.parentContainer}>
+			<header className={`${styles.wrapper} ${styles.header}`}>
+				<Link href='/'>
+					<a>meegu</a>
+				</Link>
+			</header>
+			<main className={`${styles.wrapper} ${styles.main}`}>
+				<section className={styles.hero}>
+					<div>
+						<h1 className={styles.hero__heading}>Level Up Your Research Experience</h1>
+						<p className={styles.hero__text}>
+							Meegu is a online platform that helps you make your research journey easier and
+							more meaningful by connecting you to all actors of research so you can have a
+							much easier and more meaningful in a system that works!
+						</p>
+					</div>
+					<div className={styles.action}>
+						<div>
+							<FacebookLogin
+								appId={process.env.FACEBOOK_CLIENT_ID}
+								autoLoad={false}
+								callback={responseFacebook}
+								render={(renderProps) => (
+									<button
+										onClick={renderProps.onClick}
+										className={`${styles.action__btn} ${styles.facebook}`}
+									>
+										Continue with Facebook
+									</button>
+								)}
+							/>
+						</div>
+						<div>
+							<GoogleLogin
+								clientId={process.env.GOOGLE_CLIENT_ID}
+								render={(renderProps) => (
+									<button
+										onClick={renderProps.onClick}
+										disabled={renderProps.disabled}
+										className={`${styles.action__btn} ${styles.google}`}
+									>
+										Continue with Google
+									</button>
+								)}
+								onSuccess={(e) => responseGoogle(e)}
+								onFailure={(e) => responseGoogle(e)}
+							/>
 						</div>
 					</div>
-				</div>
-			</div>
-		</>
+				</section>
+			</main>
+			<footer className={`${styles.footer}`}>
+				<Link href='/'>
+					<a className={styles.footer__logo}>meegu</a>
+				</Link>
+				<p className={styles.footer__text}>For easier and more meaningful research journey.</p>
+			</footer>
+		</div>
 	);
 }
-
-// import Head from "next/head";
-// import { signIn, signOut, useSession } from "next-auth/react";
-
-// import { Button } from "@mui/material";
-
-// const Home = () => {
-// 	const { data: session, status } = useSession();
-
-// 	if (status === "loading") {
-// 		return (
-// 			<>
-// 				<h1>Loading ...</h1>
-// 			</>
-// 		);
-// 	}
-
-// 	if (session) {
-// 		return (
-// 			<>
-// 				Signed in as {session.user?.email} <br />
-// 				<Button variant="outlined" onClick={() => signOut()}>
-// 					{" "}
-// 					Sign Out
-// 				</Button>
-// 			</>
-// 		);
-// 	}
-
-// 	return (
-// 		<>
-// 			Not signed in <br />
-// 			<Button variant="outlined" onClick={() => signIn()}>
-// 				{" "}
-// 				Sign In
-// 			</Button>
-// 		</>
-// 	);
-// };
-
-// export default Home;

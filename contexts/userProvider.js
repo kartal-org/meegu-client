@@ -14,7 +14,6 @@ export function UserProvider({ children }) {
 	const [user, setUser] = useState();
 
 	function updateUser(userInfo) {
-		console.log('from server', userInfo);
 		setUser(userInfo);
 	}
 

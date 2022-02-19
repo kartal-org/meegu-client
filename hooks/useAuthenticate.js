@@ -1,40 +1,29 @@
 import { useRouter } from 'next/router';
-import { withAuth } from '../axios/axiosInstances';
+import { genericReq, withAuth } from '../axios/axiosInstances';
 import { useUserUpdate } from '../contexts/userProvider';
+
+// this hook will send authentication and set userData.
 
 export function useAuthenticate() {
 	const router = useRouter();
 	const userUpdate = useUserUpdate();
 
-	function authenticate() {
-		withAuth
-			.get('/users/me')
-			.then((response) => {
-				if (response.status == 200) {
-					const user = response.data;
-					userUpdate(user);
-					const userType = user.type;
-
-					switch (userType) {
-						case 'researcher':
-							router.push('/researcher');
-							break;
-						case 'adviser':
-							router.push('/adviser');
-							break;
-						case 'moderator':
-							router.push('/moderator');
-							break;
-
-						default:
-							router.push('/register');
-							break;
-					}
-				}
-			})
-			.catch(function (error) {
+	const authenticate = async () => {
+		let response;
+		try {
+			response = await genericReq('/users/me', 'get', 'withAuthMedia');
+			if (response.status == 200) {
+				const user = response.data;
+				userUpdate(user);
+			}
+			if (response.status == 401) {
+				// router.replace('/');
 				console.log(error);
-			});
-	}
+			}
+		} catch (error) {
+			console.log(error);
+		}
+		return response;
+	};
 	return authenticate;
 }

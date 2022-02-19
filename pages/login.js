@@ -6,6 +6,7 @@ import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props
 import { withOutAuth } from '../axios/axiosInstances';
 import { useUserUpdate, useUser } from '../contexts/userProvider';
 import Link from 'next/link';
+import Cookie from 'js-cookie';
 
 //validation
 import { useForm } from 'react-hook-form';
@@ -57,12 +58,9 @@ export default function Login() {
 				token: response.accessToken,
 			})
 			.then(function (response) {
-				console.log(response);
-				if (process.browser) {
-					localStorage.setItem('access_token', response.data.access_token);
-					localStorage.setItem('refresh_token', response.data.refresh_token);
-					authenticate();
-				}
+				Cookie.set('access_token', response.data.access_token, { expires: 7 });
+				Cookie.set('refresh_token', response.data.refresh_token, { expires: 7 });
+				authenticate();
 			})
 			.catch(function (error) {
 				console.log(error);

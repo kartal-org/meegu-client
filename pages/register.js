@@ -49,7 +49,21 @@ function Register() {
 		data.append('type', type);
 		const response = await genericReq(`/users/${user.id}/`, 'patch', 'withAuthMedia', data);
 		console.log(response);
-		router.push(`/${response.data.type}`);
+		const userType = response.data.type;
+		switch (userType) {
+			case 'researcher':
+				router.push(`/workspaces?user=${user.id}`);
+				break;
+			case 'adviser':
+				router.push(`/classrooms?user=${user.id}`);
+				break;
+			case 'moderator':
+				router.push(`/institutions?user=${user.id}`);
+				break;
+
+			default:
+				break;
+		}
 	};
 
 	return (

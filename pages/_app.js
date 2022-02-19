@@ -34,6 +34,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 					rel='stylesheet'
 					href='https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css'
 				/>
+				<link rel='stylesheet' href='https://unpkg.com/open-props' />
 			</Head>
 			<DefaultSeo titleTemplate='%s | Meegu' defaultTitle='Meegu' />
 			<ThemeProvider theme={outsideTheme}>

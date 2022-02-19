@@ -1,0 +1,41 @@
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: var(--size-fluid-1);
+}
+.page_title {
+	font-weight: var(--font-weight-9);
+	font-size: var(--font-size-fluid-2);
+}
+
+.modal_title {
+	padding: var(--size-fluid-1) var(--size-fluid-2);
+	font-weight: var(--font-weight-6);
+	border-bottom: 1px solid #e2e2e2;
+}
+
+.add_workspace_form {
+	padding: 1rem;
+	width: var(--size-fluid-10);
+}
+
+.add_workspace {
+	background-color: var(--indigo-7);
+	color: white;
+	padding: 0.5em 0.8em;
+	border-radius: var(--radius-conditional-2);
+}
+
+.workspace_container {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+	gap: 0.8rem;
+
+	.workspace {
+		border: 1px solid #e2e2e2;
+		padding-inline: var(--size-fluid-2);
+		padding-block: var(--size-fluid-1);
+		box-shadow: var(--shadow-1);
+	}
+}

@@ -8,7 +8,7 @@ const getAccessToken = () => {
 	if (process.browser) {
 		access_token = localStorage.getItem('access_token');
 	}
-	console.log(access_token);
+	// console.log(access_token);
 	return access_token;
 };
 
