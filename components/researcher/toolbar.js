@@ -18,7 +18,6 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 
-import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 
 import Link from 'next/link';
@@ -75,7 +74,6 @@ export default function PrimarySearchAppBar(props) {
 	const isMenuOpen = Boolean(anchorEl);
 	const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 	const router = useRouter();
-	const dispatch = useDispatch();
 
 	const handleProfileMenuOpen = (event) => {
 		setAnchorEl(event.currentTarget);
