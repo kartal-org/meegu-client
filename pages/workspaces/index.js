@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+
 import { useRouter } from 'next/router';
 
 const Header = {
@@ -132,9 +133,9 @@ function index({ workspaces, type }) {
 	);
 }
 export async function getServerSideProps(context) {
-	const { req, res } = context;
-	const userID = context.query.user;
-	const type = context.query.type;
+	const { req, res, query } = context;
+	const userID = query.user;
+	const type = query.type;
 	const access_token = req.cookies.access_token;
 	let workspaces;
 	let error;

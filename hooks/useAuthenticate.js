@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
-import { genericReq, withAuth } from '../axios/axiosInstances';
-import { useUserUpdate } from '../contexts/userProvider';
 
+import { useUserUpdate } from '../contexts/userProvider';
+import Cookies from 'js-cookie';
 // this hook will send authentication and set userData.
 
 export function useAuthenticate() {
@@ -11,15 +11,16 @@ export function useAuthenticate() {
 	const authenticate = async () => {
 		let response;
 		try {
-			response = await genericReq('/users/me', 'get', 'withAuthMedia');
-			if (response.status == 200) {
-				const user = response.data;
-				userUpdate(user);
-			}
-			if (response.status == 401) {
-				// router.replace('/');
-				console.log(error);
-			}
+			response = await await fetch(process.env.BACKEND_API_UR + '/users/me', {
+				headers: {
+					Authorization: `Bearer ${Cookies.get('access_token')}`,
+					'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
+					accept: '*/*',
+				},
+			});
+			const user = await response.json();
+			console.log(user);
+			userUpdate(user);
 		} catch (error) {
 			console.log(error);
 		}

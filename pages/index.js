@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
-import { genericReq } from '../axios/axiosInstances';
+import { createRequest } from '../axios/axiosInstances';
 import styles from '../styles/landing.module.scss';
 import { useAuthenticate } from '../hooks/useAuthenticate';
 import { useEffect } from 'react';
@@ -30,13 +30,18 @@ export default function LandingPage() {
 	const responseGoogle = async (response) => {
 		let res;
 		try {
-			res = await genericReq('/auth/convert-token', 'post', 'normal', {
-				grant_type: 'convert_token',
-				client_id: process.env.BACKEND_APP_KEY,
-				client_secret: process.env.BACKEND_APP_SECRET,
-				backend: 'google-oauth2',
-				token: response.accessToken,
-			});
+			res = await createRequest(
+				'/auth/convert-token',
+				'post',
+				{ 'Content-Type': 'application/json' },
+				{
+					grant_type: 'convert_token',
+					client_id: process.env.BACKEND_APP_KEY,
+					client_secret: process.env.BACKEND_APP_SECRET,
+					backend: 'google-oauth2',
+					token: response.accessToken,
+				}
+			);
 			Cookies.set('access_token', res.data.access_token, { expires: 7 });
 			Cookies.set('refresh_token', res.data.refresh_token, { expires: 7 });
 		} catch (error) {

@@ -1,61 +1,20 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
-@import url("https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100;200;300;400;500;600;700&family=Varela+Round&display=swap");
-
-.mainContainer {
-	/* background-color: #ddecfa; */
-	display: grid;
-	grid-template-columns: minmax(auto, 1300px);
-	padding: 20px;
-	font-family: "Varela Round", sans-serif;
-}
-
+@tailwind utilities; */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
 *,
+*::after,
+*::before {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
 body {
-	font-family: "Varela Round", sans-serif;
+	font-family: 'Poppins' sans-serif;
 }
 
-.mainParent {
-	/* background-color: rgb(61, 105, 105); */
-	padding: 20px;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	gap: 50px;
-}
-
-.userCard {
-	/* box-shadow: 0 0 2.4em rgba(224, 224, 224, 0.301); */
-	padding: 50px;
-	border-radius: 10px;
-	/* border: 2px solid rgba(201, 199, 199, 0.76); */
-	color: #7c7c7c;
-	cursor: pointer;
-	transition: 0.3s;
-}
-
-.userCard .userCardImg {
-	/* background-color: aliceblue; */
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 11em;
-	height: 11em;
-	padding: 0.5em;
-	border-radius: 50%;
-	margin: 0 auto 0 auto;
-	/* border: 2px solid rgba(211, 211, 211, 0.623); */
-	box-shadow: 0 0 2.4em rgba(224, 224, 224, 0.692);
-}
-
-.userCard:hover {
-	transform: scale(1.15);
-	color: rgb(8, 110, 194);
-	font-weight: 600;
-	text-decoration: underline;
-}
-
-.userCard:hover .userCardImg {
-	transform: scale(1.15);
-	box-shadow: 0 0 2.4em rgba(139, 139, 139, 0.815);
+a {
+	color: inherit;
+	text-decoration: inherit;
 }

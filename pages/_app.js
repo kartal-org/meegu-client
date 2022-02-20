@@ -37,19 +37,19 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 				<link rel='stylesheet' href='https://unpkg.com/open-props' />
 			</Head>
 			<DefaultSeo titleTemplate='%s | Meegu' defaultTitle='Meegu' />
-			<ThemeProvider theme={outsideTheme}>
-				<UserProvider>
-					<Layout>
-						<Component {...pageProps} />
-					</Layout>
-					<Backdrop
-						sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-						open={open}
-					>
-						<CircularProgress color='inherit' />
-					</Backdrop>
-				</UserProvider>
-			</ThemeProvider>
+			{/* <ThemeProvider theme={outsideTheme}> */}
+			<UserProvider>
+				<Layout>
+					<Component {...pageProps} />
+				</Layout>
+				<Backdrop
+					sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+					open={open}
+				>
+					<CircularProgress color='inherit' />
+				</Backdrop>
+			</UserProvider>
+			{/* </ThemeProvider> */}
 		</>
 	);
 }
