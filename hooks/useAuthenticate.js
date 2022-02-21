@@ -11,7 +11,7 @@ export function useAuthenticate() {
 	const authenticate = async () => {
 		let response;
 		try {
-			response = await await fetch(process.env.BACKEND_API_UR + '/users/me', {
+			response = await fetch(process.env.BACKEND_API_UR + '/users/me', {
 				headers: {
 					Authorization: `Bearer ${Cookies.get('access_token')}`,
 					'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',

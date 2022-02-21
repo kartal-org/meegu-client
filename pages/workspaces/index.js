@@ -41,6 +41,7 @@ function index({ workspaces, type }) {
 		formState: { errors },
 	} = useForm({
 		resolver: yupResolver(validationMsg),
+		
 	});
 
 	async function addWorkspace(data) {
