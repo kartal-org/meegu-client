@@ -1,9 +1,10 @@
-import PageLayout from "../../../layouts/pageLayout";
 import { useForm } from "react-hook-form";
+import Cookies from "js-cookie";
 
 import { TextField, Button } from "@mui/material";
+
+import PageLayout from "../../../layouts/pageLayout";
 import { useUser } from "../../../contexts/userProvider";
-import Cookies from "js-cookie";
 
 function FileInside({ file, comments, institutions }) {
 	const user = useUser();
