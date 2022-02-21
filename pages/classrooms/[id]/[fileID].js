@@ -5,7 +5,7 @@ import { TextField, Button } from "@mui/material";
 import { useUser } from "../../../contexts/userProvider";
 import Cookies from "js-cookie";
 
-function FileInside({ file, comments }) {
+function FileInside({ file, comments, institutions }) {
 	const user = useUser();
 
 	const {
@@ -30,23 +30,23 @@ function FileInside({ file, comments }) {
 		e.preventDefault();
 		console.log(data);
 
-		const response = await fetch(process.env.BACKEND_API_UR + `/classrooms`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${Cookies.get("access_token")}`,
-			},
-			body: JSON.stringify({
-				title: data.title,
-				description: data.desc,
-				adviser: user.id,
-				institution: 2,
-			}),
-		});
+		// const response = await fetch(process.env.BACKEND_API_UR + `/classrooms`, {
+		// 	method: "POST",
+		// 	headers: {
+		// 		"Content-Type": "application/json",
+		// 		Authorization: `Bearer ${Cookies.get("access_token")}`,
+		// 	},
+		// 	body: JSON.stringify({
+		// 		title: data.title,
+		// 		description: data.desc,
+		// 		adviser: user.id,
+		// 		institution: 2,
+		// 	}),
+		// });
 
-		const result = await response.json();
-		console.log(result);
-		alert("recommendation success");
+		// const result = await response.json();
+		// console.log(result);
+		// alert("recommendation success");
 	}
 
 	return (
@@ -103,6 +103,17 @@ function FileInside({ file, comments }) {
 					<Button type="submit">Create</Button>
 				</form>
 			</div>
+			<div className="mt-5 mb-5 border-2 border-gray-500 p-6">
+				<p> Instituitions here </p>
+
+				{institutions?.map((item) => (
+					<div className="bg-red-100 p-2">
+						<p>{item.name}</p>
+						<p>{item.address}</p>
+						<p>{item.creator}</p>
+					</div>
+				))}
+			</div>
 		</>
 	);
 }
@@ -113,6 +124,7 @@ export async function getServerSideProps(context) {
 	const fileID = query.fileID;
 	const props = {};
 
+	//response for file detail
 	const response = await fetch(
 		process.env.BACKEND_API_UR + `/workspaces/files/${fileID}/`,
 		{
@@ -128,6 +140,7 @@ export async function getServerSideProps(context) {
 	console.log(result);
 	props.file = result.data;
 
+	//response for comment
 	const responseComment = await fetch(
 		process.env.BACKEND_API_UR + `/classrooms/comments?file=${fileID}`,
 		{
@@ -142,6 +155,22 @@ export async function getServerSideProps(context) {
 	const resultComment = await responseComment.json();
 	console.log(resultComment);
 	props.comments = resultComment;
+
+	//response for get institution
+	const responseGetInstitution = await fetch(
+		process.env.BACKEND_API_UR + `/institutions?isStaff=${true}`,
+		{
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${access_token}`,
+			},
+		}
+	);
+
+	const resultInstitution = await responseGetInstitution.json();
+	console.log(resultInstitution);
+	props.institutions = resultInstitution;
 
 	return { props };
 }
