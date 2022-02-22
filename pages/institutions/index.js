@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
 import Link from "next/link";
@@ -10,6 +10,7 @@ import { useUser } from "../../contexts/userProvider";
 
 function index({ institutions }) {
 	const user = useUser();
+	const [institutionList, setInstitutionList] = useState(institutions);
 
 	const {
 		register,
@@ -21,6 +22,31 @@ function index({ institutions }) {
 	async function createInstitution(data, e) {
 		e.preventDefault();
 		console.log(data);
+
+		const { name, about, contact, email, address } = data;
+
+		const response = await fetch(
+			process.env.BACKEND_API_UR + `/institutions/`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${Cookies.get("access_token")}`,
+				},
+				body: JSON.stringify({
+					creator: user.id,
+					name,
+					about,
+					contact,
+					email,
+					address,
+				}),
+			}
+		);
+		const result = await response.json();
+		console.log(result);
+
+		setInstitutionList([...institutionList, result]);
 	}
 
 	return (
@@ -29,7 +55,7 @@ function index({ institutions }) {
 			<div className="mt-5 mb-5 border-2 border-gray-500 p-6">
 				<p> Instituitions here </p>
 
-				{institutions?.map((item) => (
+				{institutionList?.map((item) => (
 					<Link key={item.id} href={`/institutions/${item.id}`}>
 						<a>
 							<div className="bg-red-100 p-2 mb-3">
@@ -55,6 +81,15 @@ function index({ institutions }) {
 						label="Insitution Name"
 						variant="outlined"
 						{...register("name")}
+					/>
+					<TextField
+						fullWidth
+						id="outlined-basic"
+						label="About"
+						variant="outlined"
+						multiline
+						rows={2}
+						{...register("about")}
 					/>
 					<TextField
 						fullWidth
