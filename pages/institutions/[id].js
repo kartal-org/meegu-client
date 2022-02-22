@@ -13,13 +13,17 @@ function InsideInstitution({ institution }) {
 	} = useForm({
 		defaultValues: {
 			name: institution?.name,
+			about: institution?.about,
+			contact: institution?.contact,
+			address: institution?.address,
+			email: institution?.email,
 		},
 	});
 
 	return (
 		<>
 			<div className="border-2 border-blue-300 p-5">
-				<form autoComplete="off">
+				<form autoComplete="off" className="space-y-3">
 					<TextField
 						fullWidth
 						id="outlined-basic"
@@ -28,6 +32,39 @@ function InsideInstitution({ institution }) {
 						{...register("name")}
 						autoFocus
 					/>
+					<TextField
+						fullWidth
+						id="outlined-basic"
+						label="About"
+						variant="outlined"
+						multiline
+						rows={2}
+						{...register("about")}
+					/>
+					<TextField
+						fullWidth
+						id="outlined-basic"
+						label="Contact"
+						variant="outlined"
+						{...register("contact")}
+					/>
+					<TextField
+						fullWidth
+						id="outlined-basic"
+						label="Address"
+						variant="outlined"
+						{...register("address")}
+					/>
+					<TextField
+						fullWidth
+						id="outlined-basic"
+						label="Email"
+						variant="outlined"
+						{...register("email")}
+					/>
+
+					<Button variant="outlined">Save</Button>
+					<Button variant="outlined">Edit</Button>
 				</form>
 			</div>
 		</>

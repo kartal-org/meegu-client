@@ -1,13 +1,32 @@
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import Cookies from "js-cookie";
 
-import { TextField, Button } from "@mui/material";
+import {
+	TextField,
+	Button,
+	InputLabel,
+	MenuItem,
+	FormControl,
+	Select,
+} from "@mui/material";
 
 import PageLayout from "../../../layouts/pageLayout";
 import { useUser } from "../../../contexts/userProvider";
 
 function FileInside({ file, comments, institutions }) {
 	const user = useUser();
+	const [commentList, setCommentList] = useState(comments);
+	const [institutionList, setInstitutionList] = useState(institutions);
+
+	const handleChange = (event) => {
+		setInstitutionList(event.target.value);
+	};
+	// const [age, setAge] = useState("");
+
+	// const handleChange = (event) => {
+	// 	setAge(event.target.value);
+	// };
 
 	const {
 		register,
@@ -21,12 +40,45 @@ function FileInside({ file, comments, institutions }) {
 	});
 
 	const {
+		register: registerComment,
+		handleSubmit: handleSubmitComment,
+		setValue: setValueComment,
+		formState: { errors: errorCom },
+	} = useForm({});
+
+	const {
 		register: registerRecommend,
 		handleSubmit: handleSubmitRecommend,
 		setValue: setValueRecommend,
 		formState: { errors: errorReco },
 	} = useForm({});
 
+	async function addComment(comment_data, e) {
+		e.preventDefault();
+		console.log(comment_data);
+
+		const { content } = comment_data;
+
+		const responseComment = await fetch(
+			process.env.BACKEND_API_UR + `/classrooms/comments`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${Cookies.get("access_token")}`,
+				},
+				body: JSON.stringify({
+					author: user.id,
+					file: file.id,
+					content,
+				}),
+			}
+		);
+		const resultComment = await responseComment.json();
+		console.log(resultComment);
+
+		setCommentList([resultComment, ...commentList]);
+	}
 	async function addRecommendation(data, e) {
 		e.preventDefault();
 		console.log(data);
@@ -66,9 +118,26 @@ function FileInside({ file, comments, institutions }) {
 				</form>
 			</div>
 			<div className="border-4 border-red-400 p-8 mt-6 space-y-4">
+				Create comment here
+				<form
+					autoComplete="off"
+					onSubmit={handleSubmitComment(addComment)}
+					className="space-y-4 mt-3"
+				>
+					<TextField
+						fullWidth
+						id="outlined-basic"
+						label="Comment"
+						variant="outlined"
+						{...registerComment("content")}
+					/>
+					<Button type="submit">Create</Button>
+				</form>
+			</div>
+			<div className="border-4 border-red-400 p-8 mt-6 space-y-4">
 				Comment List
-				{comments?.map((comment) => (
-					<div className="bg-blue-100 p-2">
+				{commentList?.map((comment) => (
+					<div key={comment.id} className="bg-blue-100 p-2">
 						<p className="text-sm">{comment.content}</p>
 						<div className="flex space-x-2">
 							<p className="text-xs">{comment.author.first_name}</p>
@@ -101,6 +170,27 @@ function FileInside({ file, comments, institutions }) {
 						rows={4}
 						{...registerRecommend("desc")}
 					/>
+					<FormControl fullWidth>
+						<InputLabel id="demo-simple-select-label">institution</InputLabel>
+						<Select
+							labelId="demo-simple-select-label"
+							id="demo-simple-select"
+							value={institutionList}
+							label="Institution"
+							onChange={handleChange}
+						>
+							{/* <MenuItem value={10}>Ten</MenuItem>
+							<MenuItem value={20}>Twenty</MenuItem>
+							<MenuItem value={30}>Thirty</MenuItem> */}
+							{institutionList?.map((item) => (
+								<MenuItem value={item.id} key={item.id}>
+									<div className="bg-red-100 p-2">
+										<p>{item.name}</p>
+									</div>
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
 					<Button type="submit">Create</Button>
 				</form>
 			</div>
@@ -108,10 +198,8 @@ function FileInside({ file, comments, institutions }) {
 				<p> Instituitions here </p>
 
 				{institutions?.map((item) => (
-					<div className="bg-red-100 p-2">
+					<div key={item.id} className="bg-red-100 p-2">
 						<p>{item.name}</p>
-						<p>{item.address}</p>
-						<p>{item.creator}</p>
 					</div>
 				))}
 			</div>
