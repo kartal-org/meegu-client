@@ -1,0 +1,17 @@
+.profile_img {
+	position: relative;
+	width: 10rem;
+	height: 10rem;
+	border-radius: 50%;
+
+	overflow: hidden;
+	object-fit: cover;
+
+	&:hover {
+		border: 5px solid #e2e2e2;
+	}
+}
+
+.profile_cover {
+	object-fit: cover;
+}
