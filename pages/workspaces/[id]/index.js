@@ -27,6 +27,7 @@ import UtilityCard from '../../../components/reusable/utilityCard';
 import fileIllustration from '../../../public/file_illustration.svg';
 import CreateFile from '../../../components/researcher/createFile';
 import ImportResource from '../../../components/researcher/importResource';
+import { useWorkspaceFilters } from '../../../hooks/useWorkspaceFilters';
 
 const HEADER = {
 	'Content-Type': 'application/json',
@@ -193,47 +194,13 @@ function OneWorkspace({ workspace, files }) {
 		setFileList(fileList.filter((val) => val.id !== data.id));
 	}
 
-	const chips = [
-		{ label: 'All', value: 'all', route: `/workspaces/${workspace.id}` },
-		{
-			label: 'Ongoing',
-			value: 'ongoing',
-			route: `/workspaces/${workspace.id}?status=ongoing`,
-		},
-		{
-			label: 'Done',
-			value: 'done',
-			route: `/workspaces/${workspace.id}?status=done`,
-		},
-		{
-			label: 'Submitted',
-			value: 'submitted',
-			route: `/workspaces/${workspace.id}?status=submitted`,
-		},
-		{
-			label: 'Accepted',
-			value: 'accepted',
-			route: `/workspaces/${workspace.id}?status=accepted`,
-		},
-		{
-			label: 'Rejected',
-			value: 'rejected',
-			route: `/workspaces/${workspace.id}?status=rejected`,
-		},
-		{
-			label: 'Published',
-			value: 'published',
-			route: `/workspaces/${workspace.id}?status=published`,
-		},
-	];
-
 	return (
 		<div>
 			<header className={styles.page__header}>
 				<h1 className={styles.page__title}>{workspace.name}</h1>
 				<div className={styles.page__tools}>
 					<ChipList
-						chips={chips}
+						chips={useWorkspaceFilters()}
 						defaultVal={router.query.status ? router.query.status : 'all'}
 					/>
 					<div>
@@ -244,11 +211,17 @@ function OneWorkspace({ workspace, files }) {
 						>
 							<CustomTabs
 								tabs={[
-									{ label: 'Create File', value: 'create', content: <CreateFile /> },
+									{
+										label: 'Create File',
+										value: 'create',
+										content: <CreateFile fileList={fileList} setFileList={setFileList} />,
+									},
 									{
 										label: 'Import Resources',
 										value: 'import',
-										content: <ImportResource />,
+										content: (
+											<ImportResource fileList={fileList} setFileList={setFileList} />
+										),
 									},
 								]}
 								defaultVal='create'
