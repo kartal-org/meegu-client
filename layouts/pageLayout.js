@@ -6,10 +6,14 @@ import AuthLayout from './authLayout';
 import styles from './pageLayout.module.scss';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { useRouter } from 'next/router';
+import { useUser } from '../contexts/userProvider';
 
 // This sets the layout of authenticated pages
 
 function PageLayout({ children }) {
+	const router = useRouter();
+	const user = useUser();
 	return (
 		<>
 			<AuthLayout />
@@ -22,7 +26,7 @@ function PageLayout({ children }) {
 					</div>
 					<div>
 						<NotificationsIcon />
-						<AccountCircle />
+						<AccountCircle onClick={() => router.push(`/users/${user.id}`)} />
 					</div>
 				</header>
 				<main className={styles.main}>{children}</main>

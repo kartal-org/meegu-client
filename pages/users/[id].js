@@ -13,36 +13,37 @@ import styles from './profile.module.scss';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
 import { useRef } from 'react';
+import Profile from '../../components/reusable/profile';
+import { Button, TextField } from '@mui/material';
+import CustomizedDialogs from '../../components/reusable/dialog2';
+import ChipList from '../../components/reusable/chips';
+import { useUser } from '../../contexts/userProvider';
 
 const Input = styled('input')({
 	display: 'none',
 });
 
 function UserProfile({ account }) {
-	const [profilePic, setProfilePic] = useState(account.profileImage);
-	const [coverPhoto, setcoverPhoto] = useState(account.profileCover);
-	const [profilePicPreview, setProfilePicPreview] = useState(account.profileImage);
-	const [coverPhotoPreview, setcoverPhotoPreview] = useState(account.profileCover);
+	const [profile, setProfile] = useState(account);
+	const [profilePicPreview, setProfilePicPreview] = useState(profile.profileImage);
+	const [coverPhotoPreview, setcoverPhotoPreview] = useState(profile.profileCover);
 	const profilePictureBtn = useRef();
+	const user = useUser();
 
 	const {
 		register,
 		handleSubmit,
-		resetField,
-		getValues,
-		watch,
-		setValue,
 		formState: { errors },
 	} = useForm({
 		defaultValues: {
-			profileImage: profilePic,
-			profileCover: coverPhoto,
-			first_name: account.first_name,
-			last_name: account.last_name,
-			email: account.email,
-			about: account.about,
-			type: account.type,
-			username: account.username,
+			profileImage: profile.profileImage,
+			profileCover: profile.profileCover,
+			first_name: profile.first_name,
+			last_name: profile.last_name,
+			email: profile.email,
+			about: profile.about,
+			type: profile.type,
+			username: profile.username,
 		},
 	});
 
@@ -72,20 +73,19 @@ function UserProfile({ account }) {
 	}
 	async function editProfile(data, e) {
 		const { first_name, last_name, username, about, profileImage, profileCover, email } = data;
-		console.log(first_name);
-		console.log(coverPhoto);
+
 		const formData = new FormData();
 		formData.append('first_name', first_name);
 		formData.append('last_name', last_name);
 		formData.append('username', username);
 		formData.append('email', email);
 		formData.append('about', about);
-		if (profilePic !== profilePicPreview) {
+		if (profile.profileImage !== profilePicPreview) {
 			//profile pic is changed
 			console.log('profile', profilePic);
 			formData.append('profileImage', profilePic, profilePic.name);
 		}
-		if (coverPhoto !== coverPhotoPreview) {
+		if (profile.profileCover !== coverPhotoPreview) {
 			//cover has changed
 			console.log('cover', coverPhoto);
 
@@ -100,74 +100,63 @@ function UserProfile({ account }) {
 			body: formData,
 		});
 		const result = await response.json();
+		setProfile(result);
 		console.log(result);
 	}
 	return (
 		<div>
+			<Profile
+				name={profile.first_name + ' ' + profile.last_name}
+				cover={profile.profileCover}
+				pic={profile.profileImage}
+			>
+				<div className={styles.split}>
+					<div>
+						<h3>{profile.first_name + ' ' + profile.last_name}</h3>
+						<p style={{ textTransform: 'capitalize' }}>
+							<em>{profile.type}</em>
+						</p>
+						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, in.</p>
+					</div>
+					<CustomizedDialogs
+						openBtn={<Button>Edit</Button>}
+						title='Edit Profile'
+						primaryAction={<Button onClick={handleSubmit(editProfile)}>Save Changes</Button>}
+					>
+						<form className={styles.editProfile__form} onSubmit={handleSubmit(editProfile)}>
+							<TextField fullWidth label='Profile Picture' {...register('profileImage')} />
+							<TextField fullWidth label='Profile Cover' {...register('profileCover')} />
+							<TextField fullWidth label='First Name' {...register('first_name')} />
+							<TextField fullWidth label='Last Name' {...register('last_name')} />
+							<TextField fullWidth label='Username' {...register('username')} />
+							<TextField fullWidth label='Email' {...register('email')} />
+							<TextField
+								fullWidth
+								multiline
+								minRows={4}
+								label='About'
+								{...register('about')}
+							/>
+						</form>
+					</CustomizedDialogs>
+				</div>
+			</Profile>
 			<section>
-				<h1>Account Info</h1>
-				<form onSubmit={handleSubmit(editProfile)}>
-					<div>
-						<label htmlFor='profileImage'>
-							<input
-								ref={profilePictureBtn}
-								type='file'
-								id='profileImage'
-								{...register('profileImage')}
-								onInput={(e) => onChangeProfilePhoto(e)}
-							/>
-
-							{/* <Avatar alt='Profile Picture' src={profilePic} /> */}
-							<div className={styles.profile_img}>
-								<Image
-									src={profilePicPreview}
-									alt='Profile Picture'
-									// className={styles.profile_img}
-									layout='fill'
-									objectFit='cover'
-								/>
-							</div>
-						</label>
-					</div>
-					<div>
-						<Image
-							src={coverPhotoPreview}
-							alt='Cover Photo'
-							width={500}
-							height={300}
-							className={styles.profile_cover}
-						/>
-						<label htmlFor='profile_cover'>
-							<input
-								type='file'
-								id='profile_cover'
-								onInput={(e) => onChangeCoverPhoto(e)}
-								{...register('profileCover')}
-							/>
-						</label>
-					</div>
-					<div>
-						<label htmlFor='first_name'>First Name: </label>
-						<input type='text' {...register('first_name')} />
-					</div>
-					<div>
-						<label htmlFor='last_name'>Last Name: </label>
-						<input type='text' {...register('last_name')} />
-					</div>
-					<div>
-						<label htmlFor='username'>Username: </label>
-						<input type='text' {...register('username')} />
-					</div>
-					<div>
-						<label htmlFor='email'>Email: </label>
-						<input type='email' {...register('email')} />
-					</div>
-					<div>
-						<label htmlFor='about'>About: </label>
-						<textarea name='about' {...register('about')} cols='30' rows='10'></textarea>
-					</div>
-					<button type='submit'>Edit Profile</button>
-				</form>
+				<ChipList
+					chips={[
+						{
+							label: 'Additional Information',
+							value: 'info',
+							route: `/users/${user?.id}`,
+						},
+						{
+							label: 'Works',
+							value: 'works',
+							route: `/users/${user?.id}?tab=works`,
+						},
+					]}
+					defaultVal='info'
+				/>
 			</section>
 		</div>
 	);
@@ -177,6 +166,7 @@ export async function getServerSideProps(context) {
 	const { query, req } = context;
 	const accessToken = req.cookies.access_token;
 	const userID = query.id;
+	const tab = query.tab;
 	const props = {};
 
 	const requestUser = await fetch(process.env.BACKEND_API_UR + `/users/${userID}`, {
@@ -190,6 +180,10 @@ export async function getServerSideProps(context) {
 	const resultUser = await requestUser.json();
 	console.log(resultUser);
 	props.account = resultUser;
+
+	// if(tab==="works"){
+
+	// }
 
 	return { props };
 }
