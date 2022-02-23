@@ -2,28 +2,33 @@ import React, { useState } from "react";
 import PageLayout from "../../layouts/pageLayout";
 import Link from "next/link";
 
-// import styles from "../../styles/adviser/Adviser.module.css";
+import workspaceIllustration from "../../public/workspace-illustration.png";
+
 import styles from "../../styles/classrooms.module.scss";
+import UtilityCard from "../../components/reusable/utilityCard";
+
+import { Button } from "@mui/material";
 
 function index({ classrooms }) {
 	console.log(classrooms);
 
 	return (
 		<>
-			Classrooms
+			<h1 className={styles.page_title}>Classrooms</h1>
+
 			<div className={styles.cardContainer}>
 				{classrooms.map((classroom) => (
-					<Link key={classroom.id} href={`/classrooms/${classroom.id}`}>
-						<div className={styles.card}>
-							<div className={styles.cardImg}>
-								<img
-									alt="workspace"
-									src="https://cdn-icons-png.flaticon.com/128/4052/4052378.png"
-								/>
-							</div>
-							<p>{classroom.name}</p>
-						</div>
-					</Link>
+					<UtilityCard
+						title={classroom.name}
+						illustration={workspaceIllustration}
+						actions={
+							<>
+								<Link href={`/classrooms/${classroom.id}/`}>
+									<Button variant="contained">Open</Button>
+								</Link>
+							</>
+						}
+					></UtilityCard>
 				))}
 			</div>
 		</>

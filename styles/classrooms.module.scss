@@ -1,38 +1,12 @@
-.cardContainer {
-	margin-top: 10px;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 20px;
-	padding: 20px;
+.page_title {
+	font-weight: var(--font-weight-9);
+	font-size: var(--font-size-fluid-2);
+	margin-bottom: var(--size-fluid-1);
 }
 
-.card {
-	border: var(--border-size-2) solid var(--gray-2);
-	aspect-ratio: var(--ratio-square-1);
-	border-radius: var(--radius-conditional-3);
-	padding-block: var(--size-fluid-4);
-	padding-inline: var(--size-fluid-1);
-	background-color: white;
-
-	&:hover {
-		box-shadow: var(--shadow-4);
-		border: var(--border-size-2) solid var(--gray-4);
-	}
-}
-
-.card .cardImg {
-	width: 6em;
-	height: 6em;
-	padding: 0.5em;
-	border-radius: 50%;
-	margin: 0 auto 5px auto;
-}
-
-.card p {
-	margin-top: 25px;
-	text-align: center;
-	font-size: var(--font-size-1);
-	color: var(--gray-6);
+.createRecommendationForm {
+	padding: 1rem;
+	width: var(--size-fluid-10);
 }
 
 .infoLayout {

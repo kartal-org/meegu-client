@@ -158,54 +158,6 @@ function index({ institutions }) {
 					</Link>
 				))}
 			</div>
-			{/* <div className="mt-7 mb-7 border-2 border-gray-500 p-6">
-				<p> Create Instituitions here </p>
-
-				<form
-					autoComplete="off"
-					onSubmit={handleSubmit(createInstitution)}
-					className="space-y-4 mt-3"
-				>
-					<TextField
-						fullWidth
-						id="outlined-basic"
-						label="Insitution Name"
-						variant="outlined"
-						{...register("name")}
-					/>
-					<TextField
-						fullWidth
-						id="outlined-basic"
-						label="About"
-						variant="outlined"
-						multiline
-						rows={2}
-						{...register("about")}
-					/>
-					<TextField
-						fullWidth
-						id="outlined-basic"
-						label="Contact"
-						variant="outlined"
-						{...register("contact")}
-					/>
-					<TextField
-						fullWidth
-						id="outlined-basic"
-						label="Adress"
-						variant="outlined"
-						{...register("address")}
-					/>
-					<TextField
-						fullWidth
-						id="outlined-basic"
-						label="Email"
-						variant="outlined"
-						{...register("email")}
-					/>
-					<Button type="submit">Create</Button>
-				</form>
-			</div> */}
 		</>
 	);
 }

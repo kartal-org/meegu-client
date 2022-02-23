@@ -2,6 +2,11 @@ import PageLayout from "../../../layouts/pageLayout";
 import Link from "next/link";
 
 import styles from "../../../styles/classrooms.module.scss";
+import UtilityCard from "../../../components/reusable/utilityCard";
+
+import { Button } from "@mui/material";
+
+import fileIllustration from "../../../public/file_illustration.svg";
 
 function ClassroomInside({ classrooms, files, classroomId }) {
 	return (
@@ -9,17 +14,17 @@ function ClassroomInside({ classrooms, files, classroomId }) {
 			classroom inside
 			<div className={styles.cardContainer}>
 				{files.map((file) => (
-					<Link key={file.id} href={`/classrooms/${classrooms.id}/${file.id}`}>
-						<div className={styles.card}>
-							<div className={styles.cardImg}>
-								<img
-									alt="workspace"
-									src="https://cdn-icons-png.flaticon.com/128/4334/4334444.png"
-								/>
-							</div>
-							<p>{file.name}</p>
-						</div>
-					</Link>
+					<UtilityCard
+						title={file.name}
+						illustration={fileIllustration}
+						actions={
+							<>
+								<Link href={`/classrooms/${classrooms.id}/${file.id}`}>
+									<Button variant="contained">Open</Button>
+								</Link>
+							</>
+						}
+					></UtilityCard>
 				))}
 			</div>
 		</>
