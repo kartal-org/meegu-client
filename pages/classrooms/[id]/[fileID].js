@@ -9,10 +9,13 @@ import {
 	MenuItem,
 	FormControl,
 	Select,
+	Divider,
 } from "@mui/material";
 
 import PageLayout from "../../../layouts/pageLayout";
 import { useUser } from "../../../contexts/userProvider";
+
+import styles from "../../../styles/classrooms.module.scss";
 
 function FileInside({ file, comments, institutions }) {
 	const user = useUser();
@@ -105,7 +108,7 @@ function FileInside({ file, comments, institutions }) {
 	return (
 		<>
 			This is inside the file
-			<div className="border-2 border-blue-300 p-5">
+			<div className={styles.infoLayout}>
 				<form autoComplete="off">
 					<TextField
 						fullWidth
@@ -115,36 +118,55 @@ function FileInside({ file, comments, institutions }) {
 						{...register("name")}
 						autoFocus
 					/>
-				</form>
-			</div>
-			<div className="border-4 border-red-400 p-8 mt-6 space-y-4">
-				Create comment here
-				<form
-					autoComplete="off"
-					onSubmit={handleSubmitComment(addComment)}
-					className="space-y-4 mt-3"
-				>
-					<TextField
-						fullWidth
-						id="outlined-basic"
-						label="Comment"
-						variant="outlined"
-						{...registerComment("content")}
-					/>
-					<Button type="submit">Create</Button>
-				</form>
-			</div>
-			<div className="border-4 border-red-400 p-8 mt-6 space-y-4">
-				Comment List
-				{commentList?.map((comment) => (
-					<div key={comment.id} className="bg-blue-100 p-2">
-						<p className="text-sm">{comment.content}</p>
-						<div className="flex space-x-2">
-							<p className="text-xs">{comment.author.first_name}</p>
-							<p className="text-xs">{comment.author.last_name}</p>
-						</div>
+
+					<div className={styles.infoActions}>
+						<Button variant="outlined" sx={{ mr: 1 }}>
+							Save
+						</Button>
+						<Button variant="outlined">Edit</Button>
 					</div>
-				))}
+				</form>
+			</div>
+			<Divider sx={{ m: 1 }} />
+			<div className={styles.fileLayout}>
+				<div className="bg-red-200">file structure here</div>
+
+				<div className={styles.rightContent}>
+					<Button variant="outlined" sx={{ mb: 2 }}>
+						Create Recommendation
+					</Button>
+
+					<p className={styles.commentHead}>Comments (56)</p>
+
+					<form
+						autoComplete="off"
+						onSubmit={handleSubmitComment(addComment)}
+						className={styles.createComment}
+					>
+						<TextField
+							fullWidth
+							id="outlined-basic"
+							label="Write your comment here"
+							variant="standard"
+							{...registerComment("content")}
+						/>
+						<Button type="submit" sx={{ mt: 1 }}>
+							Create
+						</Button>
+					</form>
+
+					<div className={styles.commentList}>
+						{commentList?.map((comment) => (
+							<div key={comment.id} className={styles.commentItem}>
+								<h6>{comment.content}</h6>
+								<div className={styles.commentorInfo}>
+									<p>{comment.author.first_name}</p>
+									<p>{comment.author.last_name}</p>
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
 			</div>
 			<div className="mt-3 mb-3 border-2 border-gray-500 p-6">
 				{/* <Button variant="text">recommend</Button> */}
@@ -179,11 +201,8 @@ function FileInside({ file, comments, institutions }) {
 							label="Institution"
 							onChange={handleChange}
 						>
-							{/* <MenuItem value={10}>Ten</MenuItem>
-							<MenuItem value={20}>Twenty</MenuItem>
-							<MenuItem value={30}>Thirty</MenuItem> */}
 							{institutionList?.map((item) => (
-								<MenuItem value={item.id} key={item.id}>
+								<MenuItem value={item} key={item.id}>
 									<div className="bg-red-100 p-2">
 										<p>{item.name}</p>
 									</div>
