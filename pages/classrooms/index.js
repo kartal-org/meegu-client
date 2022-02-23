@@ -2,21 +2,27 @@ import React, { useState } from "react";
 import PageLayout from "../../layouts/pageLayout";
 import Link from "next/link";
 
+// import styles from "../../styles/adviser/Adviser.module.css";
+import styles from "../../styles/classrooms.module.scss";
+
 function index({ classrooms }) {
 	console.log(classrooms);
 
-	// const [classroomList, setClassrooms] = useState(classrooms ? classrooms : []);
 	return (
 		<>
 			Classrooms
-			<div className="bg-red-100 mt-5 p-3">
+			<div className={styles.cardContainer}>
 				{classrooms.map((classroom) => (
 					<Link key={classroom.id} href={`/classrooms/${classroom.id}`}>
-						<a>
-							<div className="border-2 border-gray-500 p-2">
-								<p className="text-xl font-bold">{classroom.name}</p>
+						<div className={styles.card}>
+							<div className={styles.cardImg}>
+								<img
+									alt="workspace"
+									src="https://cdn-icons-png.flaticon.com/128/4052/4052378.png"
+								/>
 							</div>
-						</a>
+							<p>{classroom.name}</p>
+						</div>
 					</Link>
 				))}
 			</div>

@@ -1,18 +1,24 @@
 import PageLayout from "../../../layouts/pageLayout";
 import Link from "next/link";
 
+import styles from "../../../styles/classrooms.module.scss";
+
 function ClassroomInside({ classrooms, files, classroomId }) {
 	return (
 		<>
 			classroom inside
-			<div className="bg-red-100 mt-5 p-3">
+			<div className={styles.cardContainer}>
 				{files.map((file) => (
 					<Link key={file.id} href={`/classrooms/${classrooms.id}/${file.id}`}>
-						<a>
-							<div className="border-2 border-gray-500 p-2">
-								<p className="text-xl font-bold">{file.name}</p>
+						<div className={styles.card}>
+							<div className={styles.cardImg}>
+								<img
+									alt="workspace"
+									src="https://cdn-icons-png.flaticon.com/128/4334/4334444.png"
+								/>
 							</div>
-						</a>
+							<p>{file.name}</p>
+						</div>
 					</Link>
 				))}
 			</div>

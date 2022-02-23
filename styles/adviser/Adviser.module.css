@@ -1,6 +1,24 @@
 @import url("https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100;200;300;400;500;600;700&family=Varela+Round&display=swap");
-.container {
-	/* background-color: #ddecfa; */
+
+.cardContainer {
+	background-color: bisque;
+	padding: 20px;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	gap: 20px;
+}
+.classroomCard {
+	box-shadow: 0 0 2.4em rgba(224, 224, 224, 0.301);
+	padding: 25px;
+	border-top-right-radius: 60px;
+	border: 2px solid rgba(221, 220, 220, 0.61);
+	color: #7c7c7c;
+	cursor: pointer;
+	transition: 0.3s;
+	background-color: #ffffff;
+}
+
+/* .container {
 	display: grid;
 	grid-template-columns: minmax(auto, 1300px);
 	padding: 20px;
@@ -43,7 +61,6 @@
 }
 
 .chips {
-	/* background-color: #7c7c7c; */
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
 	gap: 10px;
@@ -58,7 +75,6 @@
 	padding: 10px;
 }
 
-/* ------  messages  ------ */
 
 .layout {
 	display: grid;
@@ -180,4 +196,4 @@
 		grid-template-columns: 1fr 1fr 1fr;
 		gap: 5px;
 	}
-}
+} */
