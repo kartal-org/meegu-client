@@ -3,6 +3,7 @@ import { useUser, useUserUpdate } from '../contexts/userProvider';
 import { withAuthMedia, genericReq } from '../axios/axiosInstances';
 import AuthLayout from '../layouts/authLayout';
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
 // This page will edit the user type of the new authenticated user.
 
@@ -47,9 +48,17 @@ function Register() {
 		console.log(type == 'researcher');
 		var data = new FormData();
 		data.append('type', type);
-		const response = await genericReq(`/users/${user.id}/`, 'patch', 'withAuthMedia', data);
-		console.log(response);
-		const userType = response.data.type;
+		const response = await fetch(process.env.BACKEND_APIUR + `/users/${user.id}/`, {
+			method: 'PATCH',
+			headers: {
+				Authorization: `Bearer ${Cookies.get('access_token')}`,
+			},
+			body: data,
+		});
+		const result = await response.json();
+		// const response = await genericReq(`/users/${user.id}/`, 'patch', 'withAuthMedia', data);
+		console.log(result);
+		const userType = result.data.type;
 		switch (userType) {
 			case 'researcher':
 				router.push(`/workspaces?user=${user.id}`);
