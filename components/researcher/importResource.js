@@ -9,9 +9,14 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
+
+const access_token = Cookies.get('access_token');
 
 function ImportResource() {
 	const [resourceList, setResourceList] = useState([]);
+	const router = useRouter();
+
 	const {
 		register,
 		handleSubmit,
@@ -19,7 +24,6 @@ function ImportResource() {
 		formState: { errors },
 	} = useForm({});
 	async function searchResource(data, e) {
-		const access_token = Cookies.get('access_token');
 		e.preventDefault();
 		console.log(data);
 		// request = get /resources?forStudent=true&search=data.searchText
@@ -35,6 +39,26 @@ function ImportResource() {
 		);
 		const result = await request.json();
 		console.log(result);
+		setResourceList(result);
+	}
+
+	async function importResource(resource) {
+		console.log(resource);
+		console.log(router.query.id);
+		const request = await fetch(process.env.BACKEND_API_UR + '/resources/import', {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${access_token}`,
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				resource,
+				workspace: router.query.id,
+			}),
+		});
+		const result = await request.json();
+		console.log(result);
+		router.reload();
 	}
 	return (
 		<div>
@@ -55,10 +79,10 @@ function ImportResource() {
 			<main className={styles.container}>
 				{resourceList?.map((resource) => (
 					<article key={resource.id} className={styles.card}>
-						<h3>{resource.title}</h3>
+						<h3>{resource.name}</h3>
 						<p>{resource.institution.name}</p>
 						<p>{resource.description}</p>
-						<button>Import</button>
+						<button onClick={() => importResource(resource.id)}>Import</button>
 						<button>Open</button>
 					</article>
 				))}
