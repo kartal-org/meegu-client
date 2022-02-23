@@ -30,6 +30,15 @@ function Modal(props) {
 				{children}
 				<DialogActions>
 					{primaryAction && (
+						<div
+							onClick={() => {
+								handleClose();
+							}}
+						>
+							{primaryAction}
+						</div>
+					)}
+					{primaryAction && (
 						<Button
 							onClick={() => {
 								handleClose();

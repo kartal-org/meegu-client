@@ -1,0 +1,31 @@
+.chip_list {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	width: clamp(20rem, 70vw, 50rem);
+	flex-wrap: wrap;
+	gap: var(--size-fluid-1);
+
+	// & > *:not(:last-child) {
+	// 	margin-right: var(--size-fluid-1);
+	// }
+
+	.chip {
+		border: 1px solid blueviolet;
+		border-radius: var(--radius-conditional-4);
+		color: blueviolet;
+		padding: var(--size-1) var(--size-3);
+		display: flex;
+		align-items: center;
+
+		&:hover {
+			background-color: blueviolet;
+			color: white;
+		}
+	}
+
+	.chip.active {
+		background-color: blueviolet;
+		color: white;
+	}
+}

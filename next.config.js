@@ -10,4 +10,7 @@ module.exports = {
 		FACEBOOK_CLIENT_ID: '1088597931155576',
 		FACEBOOK_CLIENT_SECRET: '',
 	},
+	images: {
+		domains: ['res.cloudinary.com'],
+	},
 };

@@ -3,16 +3,25 @@ import PageLayout from '../../layouts/pageLayout';
 import { useUser } from '../../contexts/userProvider';
 import { createRequest } from '../../axios/axiosInstances';
 import styles from '../../styles/workspaces.module.scss';
-import { FormControl, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Button, FormControl, MenuItem, Select, TextField, Typography } from '@mui/material';
 import Modal from '../../components/modal';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
+
+import workspaceIllustration from '../../public/workspace-illustration.png';
+import Image from 'next/image';
 
 //validation
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+
 import { useRouter } from 'next/router';
+import CustomizedDialogs from '../../components/reusable/dialog2';
+
+import Avatar from '@mui/material/Avatar';
+import AvatarGroup from '@mui/material/AvatarGroup';
+import UtilityCard from '../../components/reusable/utilityCard';
 
 const Header = {
 	'Content-Type': 'application/json',
@@ -90,17 +99,12 @@ function index({ workspaces, type }) {
 						<MenuItem value='shared'>Shared Workspaces</MenuItem>
 					</Select>
 				</FormControl>
-				<Modal
+				<CustomizedDialogs
 					title='Add Workspace'
-					button='Add Workspace'
-					maxWidth='lg'
-					// primaryAction={{ label: 'Create', action: handleSubmit(addWorkspace) }}
+					primaryAction={<Button onClick={handleSubmit(addWorkspace)}>Create</Button>}
+					openBtn={<Button>Add Workspace</Button>}
 				>
-					<form
-						className={styles.add_workspace_form}
-						onSubmit={handleSubmit(addWorkspace)}
-						autoComplete='off'
-					>
+					<form className={styles.add_workspace_form}>
 						<TextField
 							fullWidth
 							id='outlined-basic'
@@ -113,33 +117,51 @@ function index({ workspaces, type }) {
 						<Typography sx={{ fontSize: '12px', color: 'red', fontStyle: 'italic' }}>
 							{errors.name?.message}
 						</Typography>
-						<button type='submit'>Create Workspace</button>
 					</form>
-				</Modal>
+				</CustomizedDialogs>
 			</div>
 			<div className={styles.workspace_container}>
 				{workspaceList.map((workspace) => (
-					<article className={styles.workspace}>
-						<h2 className={styles.workspace_title}>{workspace.name}</h2>
-						<Link href={`/workspaces/${workspace.id}/`}>
-							<button>Open</button>
-						</Link>
-						<button onClick={() => deleteWorkspace(workspace.id)}>Delete</button>
-					</article>
+					<UtilityCard
+						title={workspace.name}
+						illustration={workspaceIllustration}
+						actions={
+							<>
+								<Link href={`/workspaces/${workspace.id}/`}>
+									<Button variant='contained'>Open</Button>
+								</Link>
+								<Button
+									color='secondary'
+									variant='contained'
+									onClick={() => deleteWorkspace(workspace.id)}
+								>
+									Delete
+								</Button>
+							</>
+						}
+					>
+						<AvatarGroup max={4} className={styles.workspace_avatar_list}>
+							{workspace.members.map((member) => (
+								<Avatar
+									alt={`${member.first_name} ${member.last_name}`}
+									src={member.profileImage}
+								/>
+							))}
+						</AvatarGroup>
+					</UtilityCard>
 				))}
 			</div>
 		</>
 	);
 }
 export async function getServerSideProps(context) {
-	const { req, res } = context;
-	const userID = context.query.user;
-	const type = context.query.type;
+	const { req, res, query } = context;
+	const userID = query.user;
+	const type = query.type;
 	const access_token = req.cookies.access_token;
-	let workspaces;
-	let error;
-
 	let response;
+
+	const props = {};
 	switch (type) {
 		case 'personal':
 			response = await createRequest(`/workspaces?isOwner=${true}`, 'get', {
@@ -162,19 +184,9 @@ export async function getServerSideProps(context) {
 			break;
 	}
 
-	if (response.error) {
-		console.log(response.error);
-	}
-	if (response.data) {
-		workspaces = response.data;
-	}
+	props.workspaces = response.data;
 
-	return {
-		props: {
-			workspaces: workspaces ? workspaces : null,
-			type: type ? type : null,
-		}, // will be passed to the page component as props
-	};
+	return { props };
 }
 index.Layout = PageLayout;
 export default index;

@@ -26,29 +26,35 @@ function Navigation() {
 			<>
 				{userType == 'researcher' && (
 					<Link href={`/workspaces?user=${user?.id}`}>
-						<AiOutlineHighlight
-							className={`${styles.nav__item} w-8 h-8 ${
-								selected == 'workspaces' ? styles.selected : ''
-							}`}
-						/>
+						<a>
+							<AiOutlineHighlight
+								className={`${styles.nav__item} w-8 h-8 ${
+									selected == 'workspaces' ? styles.selected : ''
+								}`}
+							/>
+						</a>
 					</Link>
 				)}
 				{userType == 'adviser' && (
 					<Link href={`/classrooms?user=${user?.id}`}>
-						<CgBriefcase
-							className={`${styles.nav__item} w-8 h-8 ${
-								selected == 'classrooms' ? styles.selected : ''
-							}`}
-						/>
+						<a>
+							<CgBriefcase
+								className={`${styles.nav__item} w-8 h-8 ${
+									selected == 'classrooms' ? styles.selected : ''
+								}`}
+							/>
+						</a>
 					</Link>
 				)}
 				{userType == 'moderator' && (
 					<Link href={`/institutions?user=${user?.id}`}>
-						<AiOutlineBank
-							className={`${styles.nav__item} w-8 h-8 ${
-								selected == 'institutions' ? styles.selected : ''
-							}`}
-						/>
+						<a>
+							<AiOutlineBank
+								className={`${styles.nav__item} w-8 h-8 ${
+									selected == 'institutions' ? styles.selected : ''
+								}`}
+							/>
+						</a>
 					</Link>
 				)}
 			</>
@@ -83,35 +89,43 @@ function Navigation() {
 		<nav className={styles.nav}>
 			<div className={styles.nav__list}>
 				<Link href='/home'>
-					<AiOutlineHome
-						className={`${styles.nav__item} w-8 h-8 ${
-							selected == 'home' ? styles.selected : ''
-						}`}
-					/>
+					<a>
+						<AiOutlineHome
+							className={`${styles.nav__item} w-8 h-8 ${
+								selected == 'home' ? styles.selected : ''
+							}`}
+						/>
+					</a>
 				</Link>
 				<Link href={`/library?user=${user?.id}`}>
-					<AiOutlineRead
-						className={`${styles.nav__item} w-8 h-8 ${
-							selected == 'library' ? styles.selected : ''
-						}`}
-					/>
+					<a>
+						<AiOutlineRead
+							className={`${styles.nav__item} w-8 h-8 ${
+								selected == 'library' ? styles.selected : ''
+							}`}
+						/>
+					</a>
 				</Link>
 
 				<CheckUser />
 
 				<Link href='/discover'>
-					<AiOutlineCompass
-						className={`${styles.nav__item} w-8 h-8 ${
-							selected == 'discover' ? styles.selected : ''
-						}`}
-					/>
+					<a>
+						<AiOutlineCompass
+							className={`${styles.nav__item} w-8 h-8 ${
+								selected == 'discover' ? styles.selected : ''
+							}`}
+						/>
+					</a>
 				</Link>
 				<Link href={`/messages?user=${user?.id}`}>
-					<AiOutlineComment
-						className={`${styles.nav__item} w-8 h-8 ${
-							selected == 'messages' ? styles.selected : ''
-						}`}
-					/>
+					<a>
+						<AiOutlineComment
+							className={`${styles.nav__item} w-8 h-8 ${
+								selected == 'messages' ? styles.selected : ''
+							}`}
+						/>
+					</a>
 				</Link>
 			</div>
 		</nav>
