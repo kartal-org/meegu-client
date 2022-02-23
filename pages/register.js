@@ -11,6 +11,7 @@ function Register() {
 	const user = useUser();
 	const userUpdate = useUserUpdate();
 	const router = useRouter();
+	console.log(user?.id);
 
 	const userTypes = [
 		{
@@ -48,7 +49,7 @@ function Register() {
 		console.log(type == 'researcher');
 		var data = new FormData();
 		data.append('type', type);
-		const response = await fetch(process.env.BACKEND_APIUR + `/users/${user.id}/`, {
+		const response = await fetch(process.env.BACKEND_API_UR + `/users/${user?.id}/`, {
 			method: 'PATCH',
 			headers: {
 				Authorization: `Bearer ${Cookies.get('access_token')}`,
@@ -56,18 +57,18 @@ function Register() {
 			body: data,
 		});
 		const result = await response.json();
-		// const response = await genericReq(`/users/${user.id}/`, 'patch', 'withAuthMedia', data);
+		// const response = await genericReq(`/users/${user?.id}/`, 'patch', 'withAuthMedia', data);
 		console.log(result);
-		const userType = result.data.type;
+		const userType = result.type;
 		switch (userType) {
 			case 'researcher':
-				router.push(`/workspaces?user=${user.id}`);
+				router.push(`/workspaces?user=${user?.id}`);
 				break;
 			case 'adviser':
-				router.push(`/classrooms?user=${user.id}`);
+				router.push(`/classrooms?user=${user?.id}`);
 				break;
 			case 'moderator':
-				router.push(`/institutions?user=${user.id}`);
+				router.push(`/institutions?user=${user?.id}`);
 				break;
 
 			default:
