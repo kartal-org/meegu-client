@@ -1,7 +1,16 @@
+.page_header {
+	margin-bottom: var(--size-fluid-2);
+}
+
 .page_title {
-	font-weight: var(--font-weight-9);
-	font-size: var(--font-size-fluid-2);
 	margin-bottom: var(--size-fluid-1);
+}
+
+.page_tools {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .createRecommendationForm {

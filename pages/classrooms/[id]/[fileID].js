@@ -79,6 +79,7 @@ function FileInside({ file, comments, institutions }) {
 
 		setCommentList([resultComment, ...commentList]);
 	}
+
 	async function addRecommendation(data, e) {
 		e.preventDefault();
 		console.log(data, selectedInstitution);
@@ -100,7 +101,6 @@ function FileInside({ file, comments, institutions }) {
 
 		const result = await response.json();
 		console.log(result);
-		// alert("recommendation success");
 	}
 
 	return (
