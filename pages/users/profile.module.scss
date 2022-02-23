@@ -1,17 +1,11 @@
-.profile_img {
-	position: relative;
-	width: 10rem;
-	height: 10rem;
-	border-radius: 50%;
-
-	overflow: hidden;
-	object-fit: cover;
-
-	&:hover {
-		border: 5px solid #e2e2e2;
-	}
+.split {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
-.profile_cover {
-	object-fit: cover;
+.editProfile__form {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
 }

@@ -18,7 +18,8 @@ const HEADER = {
 	// accept: '*/*',
 };
 function CreateFile({ setFileList, fileList }) {
-	const { register, handleSubmit, reset, getValues } = useForm();
+	const { register, handleSubmit } = useForm();
+	const { register: uploadRegister, handleSubmit: uploadSubmit } = useForm();
 	const router = useRouter();
 
 	async function createFile(data, e) {
@@ -38,7 +39,24 @@ function CreateFile({ setFileList, fileList }) {
 		setFileList([...fileList, result.data]);
 	}
 
-	async function uploadFile() {}
+	async function uploadFile(data, e) {
+		e.preventDefault();
+		const { pdf } = data;
+		console.log(pdf[0]);
+		const formData = new FormData();
+		formData.append('name', pdf[0].name);
+		formData.append('isActive', true);
+		formData.append('workspace', parseInt(router.query.id));
+		formData.append('pdf', pdf[0], pdf[0].name);
+		const request = await fetch(process.env.BACKEND_API_UR + `/workspaces/files`, {
+			method: 'POST',
+			headers: HEADER,
+			body: formData,
+		});
+		const result = await request.json();
+		console.log(result);
+		setFileList([...fileList, result.data]);
+	}
 	return (
 		<div className={styles.container}>
 			<CustomizedDialogs
@@ -61,9 +79,11 @@ function CreateFile({ setFileList, fileList }) {
 					<UtilityCard title='Upload File' illustration={workspaceIllustration}></UtilityCard>
 				}
 				title='Upload File'
-				primaryAction={<Button>Upload</Button>}
+				primaryAction={<Button onClick={uploadSubmit(uploadFile)}>Upload</Button>}
 			>
-				<input type='file' />
+				<form onSubmit={uploadSubmit(uploadFile)}>
+					<input type='file' {...uploadRegister('pdf')} />
+				</form>
 			</CustomizedDialogs>
 		</div>
 	);
