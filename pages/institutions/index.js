@@ -17,6 +17,10 @@ import PageLayout from "../../layouts/pageLayout";
 import { useUser } from "../../contexts/userProvider";
 
 import Modal from "../../components/modal";
+import UtilityCard from "../../components/reusable/utilityCard";
+
+import institutionImg from "../../public/institutions.png";
+
 import styles from "../../styles/institutions.module.scss";
 
 function index({ institutions }) {
@@ -143,7 +147,20 @@ function index({ institutions }) {
 
 			<div className={styles.cardContainer}>
 				{institutionList?.map((item) => (
-					<Link key={item.id} href={`/institutions/${item.id}`}>
+					<UtilityCard
+						title={item.name}
+						illustration={institutionImg}
+						actions={
+							<>
+								<Link href={`/institutions/${item.id}`}>
+									<Button variant="contained">Open</Button>
+								</Link>
+							</>
+						}
+					></UtilityCard>
+				))}
+			</div>
+			{/* <Link key={item.id} href={`/institutions/${item.id}`}>
 						<a>
 							<div className={styles.card}>
 								<div className={styles.cardImg}>
@@ -155,9 +172,7 @@ function index({ institutions }) {
 								<p>{item.name}</p>
 							</div>
 						</a>
-					</Link>
-				))}
-			</div>
+					</Link> */}
 		</>
 	);
 }

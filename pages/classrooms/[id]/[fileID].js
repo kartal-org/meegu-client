@@ -215,59 +215,6 @@ function FileInside({ file, comments, institutions }) {
 					</div>
 				</div>
 			</div>
-			{/* <div className="mt-3 mb-3 border-2 border-gray-500 p-6">
-				create recommendation here
-				<form
-					autoComplete="off"
-					onSubmit={handleSubmitRecommend(addRecommendation)}
-					className="space-y-4 mt-3"
-				>
-					<TextField
-						fullWidth
-						id="outlined-basic"
-						label="Title"
-						variant="outlined"
-						{...registerRecommend("title")}
-					/>
-					<TextField
-						fullWidth
-						id="outlined-basic"
-						label="Description"
-						variant="outlined"
-						multiline
-						rows={4}
-						{...registerRecommend("desc")}
-					/>
-					<FormControl fullWidth>
-						<InputLabel id="demo-simple-select-label">institution</InputLabel>
-						<Select
-							labelId="demo-simple-select-label"
-							id="demo-simple-select"
-							value={selectedInstitution}
-							label="Institution"
-							onChange={handleChange}
-						>
-							{institutionList?.map((item) => (
-								<MenuItem value={item} key={item.id}>
-									<div className="bg-red-100 p-2">
-										<p>{item.name}</p>
-									</div>
-								</MenuItem>
-							))}
-						</Select>
-					</FormControl>
-					<Button type="submit">Create</Button>
-				</form>
-			</div> */}
-			<div className="mt-5 mb-5 border-2 border-gray-500 p-6">
-				<p> Instituitions here </p>
-
-				{institutions?.map((item) => (
-					<div key={item.id} className="bg-red-100 p-2">
-						<p>{item.name}</p>
-					</div>
-				))}
-			</div>
 		</>
 	);
 }

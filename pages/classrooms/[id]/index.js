@@ -3,12 +3,26 @@ import Link from "next/link";
 
 import styles from "../../../styles/classrooms.module.scss";
 import UtilityCard from "../../../components/reusable/utilityCard";
+import ChipList from "../../../components/reusable/chips";
 
 import { Button } from "@mui/material";
 
 import fileIllustration from "../../../public/file_illustration.svg";
 
 function ClassroomInside({ classrooms, files, classroomId }) {
+	// const chips = [
+	// 	{
+	// 		label: "Submitted",
+	// 		value: "submitted",
+	// 		route: `/classrooms/${classroom.id}?status=submitted`,
+	// 	},
+	// 	{
+	// 		label: "Done",
+	// 		value: "done",
+	// 		route: `/classrooms/${classroom.id}?status=recommendations`,
+	// 	},
+	// ];
+
 	return (
 		<>
 			classroom inside
