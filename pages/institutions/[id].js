@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 
 import PageLayout from "../../layouts/pageLayout";
+import CustomTabs from "../../components/reusable/tabs";
 
 import { TextField, Button } from "@mui/material";
 
@@ -66,6 +67,16 @@ function InsideInstitution({ institution }) {
 					<Button variant="outlined">Save</Button>
 					<Button variant="outlined">Edit</Button>
 				</form>
+
+				<CustomTabs
+					tabs={[
+						{
+							label: "Articles",
+							value: "articles",
+							// content: <CreateFile fileList={fileList} setFileList={setFileList} />,
+						},
+					]}
+				/>
 			</div>
 		</>
 	);
