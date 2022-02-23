@@ -1,3 +1,7 @@
+.page__title {
+	margin-bottom: var(--size-fluid-1);
+}
+
 .fileList {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
@@ -8,3 +12,17 @@
 		border-radius: var(--radius-conditional-2);
 	}
 }
+
+.page__tools {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.page__header {
+	margin-bottom: var(--size-fluid-2);
+}
+
+// .addFile__form {
+// }

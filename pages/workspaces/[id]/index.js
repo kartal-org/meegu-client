@@ -15,6 +15,19 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useUser } from '../../../contexts/userProvider';
 
+import ChipList from '../../../components/reusable/chips';
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
+import { Button } from '@mui/material';
+import Modal from '../../../components/modal';
+import CustomizedDialogs from '../../../components/reusable/dialog2';
+import CustomTabs from '../../../components/reusable/tabs';
+import UtilityCard from '../../../components/reusable/utilityCard';
+
+import fileIllustration from '../../../public/file_illustration.svg';
+import CreateFile from '../../../components/researcher/createFile';
+import ImportResource from '../../../components/researcher/importResource';
+
 const HEADER = {
 	'Content-Type': 'application/json',
 	Authorization: `Bearer ${Cookies.get('access_token')}`,
@@ -53,13 +66,6 @@ function OneWorkspace({ workspace, files }) {
 		},
 		resolver: yupResolver(validationMsg),
 	});
-
-	// file form
-	const {
-		register: fileRegister,
-		handleSubmit: fileSubmit,
-		formState: { errors: fileErrors },
-	} = useForm({});
 
 	async function editWorkspace(data, e) {
 		e.preventDefault();
@@ -187,35 +193,102 @@ function OneWorkspace({ workspace, files }) {
 		setFileList(fileList.filter((val) => val.id !== data.id));
 	}
 
-	async function addFile(data, e) {
-		e.preventDefault();
-		console.log(data.pdf[0]);
-		const formData = new FormData();
-		formData.append('name', data.name);
-		formData.append('richText', data.richText);
-		formData.append('status', data.status);
-		formData.append('name', data.name);
-		formData.append('pdf', data.pdf[0], data.pdf[0].name);
-		formData.append('workspace', workspace.id);
-		formData.append('isActive', true);
-
-		const response = await fetch(process.env.BACKEND_API_UR + `/workspaces/files`, {
-			method: 'POST',
-			headers: {
-				Authorization: `Bearer ${Cookies.get('access_token')}`,
-			},
-			body: formData,
-		});
-		const result = await response.json();
-		const { data: file } = result;
-		console.log(file);
-		setFileList([...fileList, file]);
-		addFileForm.current.reset();
-	}
+	const chips = [
+		{ label: 'All', value: 'all', route: `/workspaces/${workspace.id}` },
+		{
+			label: 'Ongoing',
+			value: 'ongoing',
+			route: `/workspaces/${workspace.id}?status=ongoing`,
+		},
+		{
+			label: 'Done',
+			value: 'done',
+			route: `/workspaces/${workspace.id}?status=done`,
+		},
+		{
+			label: 'Submitted',
+			value: 'submitted',
+			route: `/workspaces/${workspace.id}?status=submitted`,
+		},
+		{
+			label: 'Accepted',
+			value: 'accepted',
+			route: `/workspaces/${workspace.id}?status=accepted`,
+		},
+		{
+			label: 'Rejected',
+			value: 'rejected',
+			route: `/workspaces/${workspace.id}?status=rejected`,
+		},
+		{
+			label: 'Published',
+			value: 'published',
+			route: `/workspaces/${workspace.id}?status=published`,
+		},
+	];
 
 	return (
 		<div>
-			<h1>Workspace Info</h1>
+			<header className={styles.page__header}>
+				<h1 className={styles.page__title}>{workspace.name}</h1>
+				<div className={styles.page__tools}>
+					<ChipList
+						chips={chips}
+						defaultVal={router.query.status ? router.query.status : 'all'}
+					/>
+					<div>
+						<CustomizedDialogs
+							maxWidth='md'
+							openBtn={<Button variant='contained'>Add File</Button>}
+							title='Add File'
+						>
+							<CustomTabs
+								tabs={[
+									{ label: 'Create File', value: 'create', content: <CreateFile /> },
+									{
+										label: 'Import Resources',
+										value: 'import',
+										content: <ImportResource />,
+									},
+								]}
+								defaultVal='create'
+							/>
+						</CustomizedDialogs>
+					</div>
+				</div>
+			</header>
+			<main>
+				<div className='card-container'>
+					{fileList?.map((val) => (
+						<UtilityCard
+							title={val.name}
+							illustration={fileIllustration}
+							actions={
+								<>
+									<Button
+										variant='contained'
+										onClick={() => {
+											router.push(`/workspaces/${workspace.id}/${val.id}`);
+										}}
+										className={`${styles.fileCard_action_btn} ${styles.primary}`}
+									>
+										Open
+									</Button>
+									<Button
+										variant='contained'
+										color='error'
+										onClick={(e) => deleteFile(val, e)}
+										className={`${styles.fileCard_action_btn} ${styles.error}`}
+									>
+										Delete
+									</Button>
+								</>
+							}
+						/>
+					))}
+				</div>
+			</main>
+			{/* <h1>Workspace Info</h1>
 			<form onSubmit={handleSubmit(editWorkspace)}>
 				<div className='form_field'>
 					<label htmlFor='name'> Workspace name: </label>
@@ -243,39 +316,7 @@ function OneWorkspace({ workspace, files }) {
 				<button onClick={(e) => deleteWorkspace(e)}>Delete workspace</button>
 			</form>
 			<h1>Add Workspace File Form</h1>
-			<form ref={addFileForm} onSubmit={fileSubmit(addFile)}>
-				<div>
-					<label htmlFor='name'>File Name:</label>
-					<input type='text' name='name' {...fileRegister('name')} />
-				</div>
-				<div>
-					<label htmlFor='pdf'>Upload File</label>
-
-					<input type='file' name='pdf' {...fileRegister('pdf')} />
-				</div>
-				<div>
-					<label htmlFor='richText'>Template Content(quill):</label>
-					<textarea
-						name='richText'
-						{...fileRegister('richText')}
-						cols='30'
-						rows='10'
-					></textarea>
-				</div>
-				<div>
-					<label htmlFor='status'>Status: </label>
-					<select name='status' {...fileRegister('status')}>
-						<option value='ongoing'>Ongoing</option>
-						<option value='accepted'>Accepted</option>
-						<option value='submitted'>Submitted</option>
-						<option value='rejected'>Rejected</option>
-						<option value='published'>Published</option>
-					</select>
-				</div>
-
-				<button type='submit'>Add File</button>
-			</form>
-
+			
 			<h1>Workspace File List</h1>
 			<section className={styles.fileList}>
 				{fileList?.map((val) => (
@@ -376,7 +417,7 @@ function OneWorkspace({ workspace, files }) {
 						{val.first_name} {val.last_name}
 					</p>
 				))}
-			</div>
+			</div> */}
 		</div>
 	);
 }
