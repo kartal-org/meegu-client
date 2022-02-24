@@ -1,0 +1,38 @@
+.containerItem {
+	margin-bottom: 10px;
+}
+
+.createBtn {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.peopleContainer {
+	display: grid;
+	gap: 10px;
+}
+
+.subsContainerItem {
+	background-color: burlywood;
+}
+@media screen and (min-width: 980px) {
+	.container {
+		display: grid;
+		grid-template-columns: 2.5fr 1fr;
+		gap: 20px;
+	}
+
+	.peopleContainer {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr 1fr;
+		gap: 10px;
+	}
+
+	.Subscriptioncontainer {
+		display: grid;
+		grid-template-columns: 1fr 2.5fr;
+		gap: 20px;
+	}
+}
