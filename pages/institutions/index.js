@@ -72,7 +72,7 @@ function index({ institutions }) {
 
 	return (
 		<>
-			<h1 className={styles.page_title}>Workspaces</h1>
+			<h1 className={styles.page_title}>Institutions</h1>
 			<div className={styles.header}>
 				<FormControl>
 					<Select
