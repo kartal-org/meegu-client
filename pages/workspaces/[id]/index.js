@@ -234,6 +234,7 @@ function OneWorkspace({ workspace, files }) {
 				<div className='card-container'>
 					{fileList?.map((val) => (
 						<UtilityCard
+							key={val.id}
 							title={val.name}
 							illustration={fileIllustration}
 							actions={

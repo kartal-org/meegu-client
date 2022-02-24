@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import PageLayout from '../../../layouts/pageLayout';
-
-//validation
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
-
-import styles from '../../../styles/workspaces/oneFile.module.scss';
-import { emphasize } from '@mui/material';
+import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { useUser } from '../../../contexts/userProvider';
+import { useForm } from 'react-hook-form';
 
+import PageLayout from '../../../layouts/pageLayout';
+import styles from './oneFile.module.scss';
+import { useUser } from '../../../contexts/userProvider';
 import { useRouter } from 'next/router';
+import IconButton from '@mui/material/IconButton';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import QuillEditor from '../../../components/quillEditor';
+import { Button } from '@mui/material';
+import PdfViewer from '../../../components/pdfViewer';
 
 function OneFile({ file, comments }) {
-	const [commentList, setCommentList] = useState(comments);
 	const user = useUser();
 	const router = useRouter();
+	const [commentList, setCommentList] = useState(comments);
+	const [quillContent, setQuillContent] = useState(file.richText);
 	const {
 		register, // register inputs
 		handleSubmit, // handle form submit
@@ -48,14 +48,13 @@ function OneFile({ file, comments }) {
 				'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
 				accept: '*/*',
 			},
-			body: JSON.stringify({ name: data.name, status: data.status, richText: data.richText }),
+			body: JSON.stringify({ name: data.name, richText: quillContent }),
 		});
 		const result = await response.json();
 		const { data: fileResult } = result;
 
 		setValue('name', fileResult.name);
-		setValue('richText', fileResult.richText);
-		setValue('status', fileResult.status);
+
 		console.log(fileResult);
 	}
 	async function createComment(data, e) {
@@ -88,68 +87,38 @@ function OneFile({ file, comments }) {
 		const result = await response.json();
 		router.replace(`/workspaces/${file.workspace}/`);
 	}
+
+	function checkContent() {
+		console.log(quillContent);
+	}
 	return (
 		<div>
-			<section className={styles.file}>
-				<h1>File Info</h1>
-				<form className={styles.file_form} onSubmit={handleSubmit(editFile)}>
-					<div className={styles.file_form_field}>
-						<label htmlFor='name'>File Name: </label>
-						<input type='text' {...register('name')} />
-					</div>
-					<div className={styles.file_form_field}>
-						<label htmlFor='richText'>Content: </label>
-						<input type='text' {...register('richText')} />
-					</div>
-					<div className={styles.file_form_field}>
-						<label htmlFor='status'>Status: </label>
-						<select name='status' {...register('status')}>
-							<option value='ongoing'>Ongoing</option>
-							<option value='accepted'>Accepted</option>
-							<option value='submitted'>Submitted</option>
-							<option value='rejected'>Rejected</option>
-							<option value='published'>Published</option>
-						</select>
-					</div>
-					<div className={styles.file_form_field}>
-						<label htmlFor='isActive'>Is Active: </label>
-						<input type='checkbox' {...register('isActive')} />
-					</div>
-					<button type='submit'>Save Edit</button>
-					<button onClick={deleteFile}>Delete File</button>
-				</form>
-			</section>
-			<section>
-				<h1>Comment Section</h1>
-				<form onSubmit={commentSubmit(createComment)}>
-					<div className={styles.form_field}>
-						<textarea
-							name='comment'
-							rows='4'
-							cols='50'
-							placeholder='Type to comment'
-							{...commentRegister('content')}
-						></textarea>
-					</div>
-					<button type='submit'>Comment</button>
-				</form>
-				<div className={styles.list}>
-					{commentList?.map((comment) => (
-						<article key={comment.id} className={styles.comment}>
-							<p className={styles.comment_author}>
-								<strong>
-									{comment.author.first_name} {comment.author.last_name}
-								</strong>
-							</p>
-							<p className={styles.comment_content}>{comment.content}</p>
-							<p className={styles.comment_date}>
-								<em>{comment.dateUpdated}</em>
-							</p>
-							<hr />
-						</article>
-					))}
-				</div>
-			</section>
+			{file.pdf ? (
+				<PdfViewer file={file.pdf} />
+			) : (
+				<>
+					<header className={styles.page__header}>
+						<form>
+							<input
+								className={styles.file__name}
+								type='text'
+								placeholder='File Name'
+								{...register('name')}
+							/>
+						</form>
+						<div>
+							<Button onClick={handleSubmit(editFile)} variant='contained'>
+								Save Changes
+							</Button>
+							<IconButton>
+								<MoreHorizIcon />
+							</IconButton>
+						</div>
+					</header>
+
+					<QuillEditor data={quillContent} setData={setQuillContent} />
+				</>
+			)}
 		</div>
 	);
 }
@@ -172,6 +141,7 @@ export async function getServerSideProps(context) {
 
 	const fileInfo = await fileInfoRequest.json();
 	props.file = fileInfo.data;
+	console.log(fileInfo.data);
 
 	const commentsRequest = await fetch(
 		process.env.BACKEND_API_UR + `/classrooms/comments?file=${fileId}`,

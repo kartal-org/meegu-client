@@ -124,8 +124,22 @@ function UserProfile({ account }) {
 						primaryAction={<Button onClick={handleSubmit(editProfile)}>Save Changes</Button>}
 					>
 						<form className={styles.editProfile__form} onSubmit={handleSubmit(editProfile)}>
-							<TextField fullWidth label='Profile Picture' {...register('profileImage')} />
-							<TextField fullWidth label='Profile Cover' {...register('profileCover')} />
+							<CustomizedDialogs
+								openBtn={<Button>Edit Profile Picture</Button>}
+								title='Edit Profile Picture'
+								primaryAction={<Button>Ok</Button>}
+							>
+								<input type='file' {...register('profileImage')} />
+							</CustomizedDialogs>
+							<CustomizedDialogs
+								openBtn={<Button>Edit Profile Cover</Button>}
+								title='Edit Profile Cover'
+								primaryAction={<Button>Ok</Button>}
+							>
+								<input type='file' {...register('profileCover')} />
+							</CustomizedDialogs>
+							{/* <TextField fullWidth label='Profile Picture' {...register('profileImage')} />
+							<TextField fullWidth label='Profile Cover' {...register('profileCover')} /> */}
 							<TextField fullWidth label='First Name' {...register('first_name')} />
 							<TextField fullWidth label='Last Name' {...register('last_name')} />
 							<TextField fullWidth label='Username' {...register('username')} />

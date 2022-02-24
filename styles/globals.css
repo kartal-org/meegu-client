@@ -53,3 +53,10 @@ textarea:focus,
 input:focus {
 	outline: none;
 }
+
+.ql-toolbar.ql-snow {
+	border: none !important;
+	border-bottom: 1px solid #e2e2e2 !important;
+	padding: var(--size-fluid-1) !important;
+	/* background-color: aqua; */
+}

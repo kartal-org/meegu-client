@@ -8,6 +8,8 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { DefaultSeo } from 'next-seo';
 import { UserProvider } from '../contexts/userProvider';
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 	const router = useRouter();
@@ -30,11 +32,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 		<>
 			<Head>
 				<title>Meegu</title>
-				<link
-					rel='stylesheet'
-					href='https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css'
-				/>
-				<link rel='stylesheet' href='https://unpkg.com/open-props' />
 			</Head>
 			<DefaultSeo titleTemplate='%s | Meegu' defaultTitle='Meegu' />
 			{/* <ThemeProvider theme={outsideTheme}> */}
