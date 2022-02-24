@@ -7,11 +7,11 @@ function Profile({ cover, pic, name, children }) {
 		<div>
 			<section className={styles.profile}>
 				<div className={styles.profile__cover}>
-					<Image layout='fill' objectFit='cover' src={cover} />
+					{cover && <Image layout='fill' objectFit='cover' src={cover} />}
 				</div>
 				<div className={styles.profile__img}>
 					<div className={styles.profile__img__cirle}>
-						<Image layout='fill' objectFit='cover' src={pic} />
+						{pic && <Image layout='fill' objectFit='cover' src={pic} />}
 					</div>
 				</div>
 				<div className={styles.profile__info}>{children}</div>

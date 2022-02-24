@@ -128,12 +128,14 @@ function UserProfile({ account }) {
 								openBtn={<Button>Edit Profile Picture</Button>}
 								title='Edit Profile Picture'
 								primaryAction={<Button>Ok</Button>}
+								maxWidth='xs'
 							>
 								<input type='file' {...register('profileImage')} />
 							</CustomizedDialogs>
 							<CustomizedDialogs
 								openBtn={<Button>Edit Profile Cover</Button>}
 								title='Edit Profile Cover'
+								maxWidth='xs'
 								primaryAction={<Button>Ok</Button>}
 							>
 								<input type='file' {...register('profileCover')} />

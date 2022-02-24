@@ -4,20 +4,25 @@ import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 
 function PdfViewer({ file }) {
 	const defaultLayoutPluginInstance = defaultLayoutPlugin();
+	console.log(file);
 
 	return (
-		<Worker workerUrl='https://unpkg.com/pdfjs-dist@2.12.313/build/pdf.worker.js'>
-			<div
-				style={{
-					height: '750px',
-					width: '100%',
-					marginLeft: 'auto',
-					marginRight: 'auto',
-				}}
-			>
-				<Viewer fileUrl={file} plugins={[defaultLayoutPluginInstance]} />
-			</div>
-		</Worker>
+		<>
+			{file && (
+				<Worker workerUrl='https://unpkg.com/pdfjs-dist@2.12.313/build/pdf.worker.js'>
+					<div
+						style={{
+							height: '750px',
+							width: '100%',
+							marginLeft: 'auto',
+							marginRight: 'auto',
+						}}
+					>
+						<Viewer fileUrl={file} plugins={[defaultLayoutPluginInstance]} />
+					</div>
+				</Worker>
+			)}
+		</>
 	);
 }
 
