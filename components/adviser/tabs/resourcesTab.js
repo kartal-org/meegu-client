@@ -1,35 +1,66 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 
 import ArticleCard from "../../../components/reusable/articleCard";
 import DeptCard from "../../../components/reusable/deptCard";
 
 import styles from "./tabs.module.scss";
-import fileImg from "../../../public/Files.png";
+import fileImg from "../../../public/file_illustration.svg";
 
 import { Button } from "@mui/material";
+import CustomizedDialogs from "../../reusable/dialog2";
+import CustomTabs from "../../reusable/tabs";
+import UploadResource from "../uploadResource";
 
-function ResourcesTab() {
+function ResourcesTab({ institution, resources }) {
+	const [resourceList, setResourceList] = useState(resources);
 	return (
 		<>
 			<div className={styles.container}>
 				<div className={styles.containerItem}>
 					<div className={styles.createBtn}>
-						<Button>Add Resource</Button>
+						<CustomizedDialogs
+							openBtn={<Button>Add Resource</Button>}
+							title="Add Resource"
+							primaryAction={<Button>Done</Button>}
+						>
+							<CustomTabs
+								tabs={[
+									{
+										label: "Upload Resource",
+										value: "upload",
+										content: (
+											<UploadResource
+												institutionID={institution.id}
+												resourceList={resourceList}
+												setResourceList={setResourceList}
+											/>
+										),
+									},
+									{
+										label: "Use Quill",
+										value: "quill",
+										content: "add textfield here then redirect",
+									},
+								]}
+							/>
+						</CustomizedDialogs>
 					</div>
-					<ArticleCard
-						title="Article 1"
-						subtitle="Maria Thania Sinogaya"
-						content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper magna sit amet metus posuere aliquet. Nullam auctor ligula nec odio iaculis, et auctor sem accumsan. Duis vel efficitur mi. Sed rutrum lectus et nunc maximus vulputate. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam a porta quam, sit amet aliquet nisl. Nulla et erat interdum turpis gravida blandit ac vitae purus. Fusce scelerisque odio vitae diam semper, eu luctus mauris gravida."
-						illustration={fileImg}
-						actions={
-							<>
-								{/* <Link href={`/institutions/}`}> */}
-								<Button variant="contained">Open</Button>
-								{/* </Link> */}
-							</>
-						}
-					></ArticleCard>
+					{resourceList.map((item) => (
+						<ArticleCard
+							title={item.name}
+							subtitle="Resource"
+							content={item.description}
+							illustration={fileImg}
+							actions={
+								<>
+									{/* <Link href={`/institutions/}`}> */}
+									<Button variant="contained">Open</Button>
+									{/* </Link> */}
+								</>
+							}
+						></ArticleCard>
+					))}
 				</div>
 
 				<div className={styles.containerItem}>

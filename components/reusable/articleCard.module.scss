@@ -10,6 +10,7 @@
 	font-family: var(--font-sans);
 	transition: 300ms ease-in-out;
 	position: relative;
+	margin-bottom: 20px;
 
 	.card_img {
 		position: relative;
@@ -24,7 +25,7 @@
 	}
 
 	.card_action {
-		display: none;
+		// display: none;
 
 		& > *:not(:last-child) {
 			margin-right: var(--size-fluid-1);
@@ -56,6 +57,7 @@
 		z-index: 20;
 	}
 }
+
 .cardSplit {
 	display: grid;
 	grid-template-columns: 0.5fr 2.5fr;

@@ -1,35 +1,77 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 
 import ArticleCard from "../../../components/reusable/articleCard";
 import DeptCard from "../../../components/reusable/deptCard";
+import CustomizedDialogs from "../../reusable/dialog2";
 
 import styles from "./tabs.module.scss";
-import fileImg from "../../../public/Files.png";
+import fileImg from "../../../public/file_illustration.svg";
 
 import { Button } from "@mui/material";
+import CustomTabs from "../../reusable/tabs";
+import SelectFile from "../selectFile";
+import UploadFile from "../uploadFile";
 
-export default function ArticlesTab() {
+function ArticlesTab({
+	recommendationList,
+	setRecommendationList,
+	institution,
+	articles,
+}) {
+	const [articleList, setArticleList] = useState(articles);
+
 	return (
 		<>
 			<div className={styles.container}>
 				<div className={styles.containerItem}>
 					<div className={styles.createBtn}>
-						<Button>Add Article</Button>
+						<CustomizedDialogs
+							openBtn={<Button>Add Article</Button>}
+							title="Add Article"
+							primaryAction={<Button>Done</Button>}
+						>
+							<CustomTabs
+								tabs={[
+									{
+										label: "Upload File",
+										value: "upload",
+										content: (
+											<UploadFile
+												institutionID={institution.id}
+												articleList={articleList}
+												setArticleList={setArticleList}
+											/>
+										),
+									},
+									{
+										label: "Select from recommendations",
+										value: "select from recommendations",
+										content: (
+											<SelectFile
+												recommendationList={recommendationList}
+												setRecommendationList={setRecommendationList}
+											/>
+										),
+									},
+								]}
+							/>
+						</CustomizedDialogs>
 					</div>
-					<ArticleCard
-						title="Article 1"
-						subtitle="Maria Thania Sinogaya"
-						content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper magna sit amet metus posuere aliquet. Nullam auctor ligula nec odio iaculis, et auctor sem accumsan. Duis vel efficitur mi. Sed rutrum lectus et nunc maximus vulputate. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam a porta quam, sit amet aliquet nisl. Nulla et erat interdum turpis gravida blandit ac vitae purus. Fusce scelerisque odio vitae diam semper, eu luctus mauris gravida."
-						illustration={fileImg}
-						actions={
-							<>
-								{/* <Link href={`/institutions/}`}> */}
-								<Button variant="contained">Open</Button>
-								{/* </Link> */}
-							</>
-						}
-					></ArticleCard>
+
+					{articleList.map((item) => (
+						<ArticleCard
+							title={item.title}
+							subtitle="PDF"
+							content={item.abstract}
+							illustration={fileImg}
+							actions={
+								<>
+									<Button variant="contained">Open</Button>
+								</>
+							}
+						></ArticleCard>
+					))}
 				</div>
 
 				<div className={styles.containerItem}>
@@ -39,3 +81,5 @@ export default function ArticlesTab() {
 		</>
 	);
 }
+
+export default ArticlesTab;

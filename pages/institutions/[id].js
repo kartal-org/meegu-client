@@ -16,7 +16,13 @@ import ResourcesTab from "../../components/adviser/tabs/resourcesTab";
 import PeoplesTab from "../../components/adviser/tabs/peoplesTab";
 import SubscriptionTab from "../../components/adviser/tabs/subscriptionTab";
 
-function InsideInstitution({ institution }) {
+function InsideInstitution({
+	institution,
+	recommendations,
+	articles,
+	resources,
+	members,
+}) {
 	const [institutionProfile, setInstitutionProfile] = useState(institution);
 	const [profilePicPreview, setProfilePicPreview] = useState(
 		institutionProfile.profileImage
@@ -26,6 +32,8 @@ function InsideInstitution({ institution }) {
 	);
 	const profilePictureBtn = useRef();
 	const user = useUser();
+
+	const [recommendationList, setRecommendationList] = useState(recommendations);
 
 	const {
 		register,
@@ -140,32 +148,38 @@ function InsideInstitution({ institution }) {
 
 			<div className={styles.profileContent}>
 				<CustomTabs
+					defaultValue="articles"
 					tabs={[
 						{
 							label: "Articles",
 							value: "articles",
-							content: <ArticlesTab />,
-							// content: (
-							// 	<ArticlesTab fileList={fileList} setFileList={setFileList} />
-							// ),
+							content: (
+								<ArticlesTab
+									institution={institution}
+									recommendationList={recommendationList}
+									setRecommendationList={setRecommendationList}
+									articles={articles}
+								/>
+							),
 						},
 						{
 							label: "Resources",
 							value: "resources",
-							content: <ResourcesTab />,
-							// content: <ResourcesTab fileList={fileList} setFileList={setFileList} />,
+							content: (
+								<ResourcesTab resources={resources} institution={institution} />
+							),
 						},
 						{
 							label: "People",
 							value: "peoples",
-							content: <PeoplesTab />,
-							// content: <PeoplesTab fileList={fileList} setFileList={setFileList} />,
+							content: (
+								<PeoplesTab members={members} institution={institution} />
+							),
 						},
 						{
 							label: "Subscription",
 							value: "subscription",
 							content: <SubscriptionTab />,
-							// content: <SubscriptionTab fileList={fileList} setFileList={setFileList} />,
 						},
 					]}
 				/>
@@ -181,11 +195,11 @@ export async function getServerSideProps(context) {
 	const props = {};
 
 	const responseInstitutionDetail = await fetch(
-		process.env.BACKEND_API_UR + `/institutions/${institutionID}/`,
+		process.env.BACKEND_API_UR + `/institutions/${institutionID}`,
 		{
 			method: "GET",
 			headers: {
-				"Content-Type": "application/json",
+				// "Content-Type": "application/json",
 				Authorization: `Bearer ${access_token}`,
 			},
 		}
@@ -194,6 +208,69 @@ export async function getServerSideProps(context) {
 	console.log(resultDetail);
 	props.institution = resultDetail;
 
+	//response for get recos
+	const responseGetRecommendation = await fetch(
+		process.env.BACKEND_API_UR + `/classrooms?institution=${institutionID}`,
+		{
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${access_token}`,
+			},
+		}
+	);
+	const resultRecommendation = await responseGetRecommendation.json();
+	console.log(resultRecommendation);
+	props.recommendations = resultRecommendation;
+
+	//response for get articles
+	const responseGetArticles = await fetch(
+		process.env.BACKEND_API_UR + `/publications?institutions=${institutionID}`,
+		{
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${access_token}`,
+			},
+		}
+	);
+	const resultArticle = await responseGetArticles.json();
+	console.log(resultArticle);
+	props.articles = resultArticle;
+
+	//response for get resources
+	const responseGetResources = await fetch(
+		process.env.BACKEND_API_UR + `/resources?institution=${institutionID}`,
+		{
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${access_token}`,
+			},
+		}
+	);
+	const resultResource = await responseGetResources.json();
+	console.log(resultResource);
+	props.resources = resultResource;
+
+	//response for get institution members
+	const responseGetMembers = await fetch(
+		process.env.BACKEND_API_UR +
+			`/institutions/members?institution=${institutionID}`,
+		{
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${access_token}`,
+			},
+		}
+	);
+	const resultMember = await responseGetMembers.json();
+	console.log(resultMember);
+	props.members = resultMember;
+
+	// console.log(institutionID);
+	// props.institution = []
 	return { props };
 }
 
