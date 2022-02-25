@@ -1,8 +1,8 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import Cookies from "js-cookie";
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import Cookies from 'js-cookie';
 
-import { Button, TextField } from "@mui/material";
+import { Button, TextField } from '@mui/material';
 
 function UploadResource({ institutionID, resourceList, setResourceList }) {
 	const {
@@ -12,6 +12,8 @@ function UploadResource({ institutionID, resourceList, setResourceList }) {
 		formState: { errors },
 	} = useForm({});
 
+	console.log(institutionID);
+
 	async function uploadResource(data, e) {
 		e.preventDefault();
 		console.log(data);
@@ -20,21 +22,19 @@ function UploadResource({ institutionID, resourceList, setResourceList }) {
 
 		const formData = new FormData();
 
-		formData.append("pdf", pdf[0], pdf[0].name);
-		formData.append("name", name);
-		formData.append("description", description);
-		formData.append("institution", institutionID);
+		formData.append('pdf', pdf[0], pdf[0].name);
+		formData.append('name', name);
+		formData.append('description', description);
+		formData.append('institution', institutionID);
+		formData.append('isActive', true);
 
-		const responseUploadResource = await fetch(
-			process.env.BACKEND_API_UR + `/resources/`,
-			{
-				method: "POST",
-				headers: {
-					Authorization: `Bearer ${Cookies.get("access_token")}`,
-				},
-				body: formData,
-			}
-		);
+		const responseUploadResource = await fetch(process.env.BACKEND_API_UR + `/resources/`, {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${Cookies.get('access_token')}`,
+			},
+			body: formData,
+		});
 		const resultUploadResouce = await responseUploadResource.json();
 		console.log(resultUploadResouce);
 		setResourceList([...resourceList, resultUploadResouce]);
@@ -43,23 +43,18 @@ function UploadResource({ institutionID, resourceList, setResourceList }) {
 	return (
 		<>
 			<form onSubmit={handleSubmit(uploadResource)}>
+				<TextField fullWidth label='Name' sx={{ mb: 2 }} {...register('name')} />
 				<TextField
 					fullWidth
-					label="Name"
-					sx={{ mb: 2 }}
-					{...register("name")}
-				/>
-				<TextField
-					fullWidth
-					label="Description"
+					label='Description'
 					sx={{ mb: 2 }}
 					multiline
 					rows={5}
-					{...register("description")}
+					{...register('description')}
 				/>
-				<input type="file" {...register("pdf")} />
+				<input type='file' {...register('pdf')} />
 
-				<Button type="submit" variant="contained">
+				<Button type='submit' variant='contained'>
 					Upload
 				</Button>
 			</form>

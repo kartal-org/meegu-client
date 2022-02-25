@@ -11,7 +11,7 @@ import CustomizedDialogs from '../../components/reusable/dialog2';
 function index() {
 	const { register, handleSubmit } = useForm();
 
-	async function addCoversation(data, e) {
+	async function addConversation(data, e) {
 		e.preventDefault();
 		console.log(data);
 	}
@@ -37,16 +37,14 @@ function index() {
 						<CustomizedDialogs
 							title='Add Coversation Room'
 							openBtn={<button className={styles.conversation__addBtn}>&#43;</button>}
-							primaryAction={<Button>Create</Button>}
+							primaryAction={<Button onClick={handleSubmit(addConversation)}>Create</Button>}
 						>
-							hello
+							<form onSubmit={handleSubmit(addConversation)}>
+								<TextField label='Conversation Name' {...register('name')} fullWidth />
+								{/* <input type='text' {...register('name')} placeholder='Chat Name' /> */}
+							</form>
 						</CustomizedDialogs>
 					</div>
-
-					{/* <form onSubmit={handleSubmit(addCoversation)}>
-						<input type='text' {...register('name')} placeholder='Chat Name' />
-						<button type='submit'>Create Convo</button>
-					</form> */}
 
 					<ul className={styles.conversation__list}>
 						<li className={styles.conversation}>

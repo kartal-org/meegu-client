@@ -161,7 +161,7 @@ export async function getServerSideProps(context) {
 
 	console.log('id:', institutionID);
 	const responseInstitutionDetail = await fetch(
-		process.env.BACKEND_API_UR + `/institutions/${parseInt(institutionID)}`,
+		process.env.BACKEND_API_UR + `/institutions/${institutionID}`,
 		{
 			method: 'GET',
 			headers: {
