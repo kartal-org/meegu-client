@@ -25,7 +25,7 @@ function PageLayout({ children }) {
 						</Link>
 					</div>
 					<div>
-						<NotificationsIcon />
+						<NotificationsIcon onClick={() => router.push(`/notifications/${user.id}`)} />
 						<AccountCircle onClick={() => router.push(`/users/${user.id}`)} />
 					</div>
 				</header>

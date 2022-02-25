@@ -60,3 +60,7 @@ input:focus {
 	padding: var(--size-fluid-1) !important;
 	/* background-color: aqua; */
 }
+
+li {
+	list-style: none;
+}
