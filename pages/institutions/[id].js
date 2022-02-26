@@ -9,17 +9,16 @@ import PageLayout from '../../layouts/pageLayout';
 import styles from '../../styles/institutions.module.scss';
 import CustomizedDialogs from '../../components/reusable/dialog2';
 
-import { TextField, Button, Alert } from '@mui/material';
+import { TextField, Button, Alert, AlertTitle, IconButton } from '@mui/material';
 
-import ArticlesTab from '../../components/adviser/tabs/articlesTab';
-import ResourcesTab from '../../components/adviser/tabs/resourcesTab';
-import PeoplesTab from '../../components/adviser/tabs/peoplesTab';
-import SubscriptionTab from '../../components/adviser/tabs/subscriptionTab';
 import ChipList from '../../components/reusable/chips';
 import { useRouter } from 'next/router';
 import VerificationTab from '../../components/moderator/tabs/verificationTab';
-
+import CloseIcon from '@mui/icons-material/Close';
+import { blue } from '@mui/material/colors';
 function InsideInstitution({ institution, recommendations, articles, resources, members }) {
+	const color = blue[300];
+
 	const [institutionProfile, setInstitutionProfile] = useState(institution);
 	const [profilePicPreview, setProfilePicPreview] = useState(institutionProfile.profileImage);
 	const [coverPhotoPreview, setcoverPhotoPreview] = useState(institutionProfile.profileCover);
@@ -92,6 +91,27 @@ function InsideInstitution({ institution, recommendations, articles, resources, 
 
 	return (
 		<>
+			{/* <div className={styles.alert}>kasdjg</div> */}
+			<Alert
+				severity='info'
+				variant='filled'
+				action={
+					<IconButton
+						aria-label='close'
+						color='inherit'
+						size='small'
+						// onClick={() => {
+						// 	setOpen(false);
+						// }}
+					>
+						<CloseIcon fontSize='inherit' />
+					</IconButton>
+				}
+				sx={{ mb: 3 }}
+			>
+				<AlertTitle>Info</AlertTitle>
+				This is an Info alert — <strong>check it out!</strong>
+			</Alert>
 			<Profile
 				name={institutionProfile.name}
 				cover={institutionProfile.profileCover}

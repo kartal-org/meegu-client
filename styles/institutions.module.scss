@@ -38,6 +38,10 @@
 	margin-top: var(--size-fluid-1);
 }
 
+.alert {
+	background-color: var(--red-2);
+}
+
 @media screen and (min-width: 980px) {
 	.cardContainer {
 		display: grid;
