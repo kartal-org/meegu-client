@@ -18,17 +18,20 @@ import { Button, TextField } from '@mui/material';
 import CustomizedDialogs from '../../components/reusable/dialog2';
 import ChipList from '../../components/reusable/chips';
 import { useUser } from '../../contexts/userProvider';
+import { useRouter } from 'next/router';
 
 const Input = styled('input')({
 	display: 'none',
 });
 
-function UserProfile({ account }) {
+function UserProfile({ account, affliate }) {
 	const [profile, setProfile] = useState(account);
 	const [profilePicPreview, setProfilePicPreview] = useState(profile.profileImage);
 	const [coverPhotoPreview, setcoverPhotoPreview] = useState(profile.profileCover);
 	const profilePictureBtn = useRef();
 	const user = useUser();
+	const router = useRouter();
+	// console.log(router);
 
 	const {
 		register,
@@ -173,6 +176,17 @@ function UserProfile({ account }) {
 					]}
 					defaultVal='info'
 				/>
+
+				{router.query.tab !== 'works' && (
+					<>
+						<h3>Joined at: </h3>
+						<ul>
+							{affliate?.map((val) => (
+								<li key={val.id}>{val.name}</li>
+							))}
+						</ul>
+					</>
+				)}
 			</section>
 		</div>
 	);
@@ -196,6 +210,20 @@ export async function getServerSideProps(context) {
 	const resultUser = await requestUser.json();
 	console.log(resultUser);
 	props.account = resultUser;
+
+	if (tab != 'works') {
+		const requestInstitutionAffliate = await fetch(
+			process.env.BACKEND_API_UR + `/institutions?isStaff=${true}`,
+			{
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+				},
+			}
+		);
+		const resultInstitutionAffliate = await requestInstitutionAffliate.json();
+		console.log(resultInstitutionAffliate);
+		props.affliate = resultInstitutionAffliate;
+	}
 
 	// if(tab==="works"){
 

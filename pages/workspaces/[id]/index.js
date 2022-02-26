@@ -18,7 +18,7 @@ import { useUser } from '../../../contexts/userProvider';
 import ChipList from '../../../components/reusable/chips';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
-import { Button } from '@mui/material';
+import { Avatar, Button, TextField } from '@mui/material';
 import Modal from '../../../components/modal';
 import CustomizedDialogs from '../../../components/reusable/dialog2';
 import CustomTabs from '../../../components/reusable/tabs';
@@ -28,6 +28,7 @@ import fileIllustration from '../../../public/file_illustration.svg';
 import CreateFile from '../../../components/researcher/createFile';
 import ImportResource from '../../../components/researcher/importResource';
 import { useWorkspaceFilters } from '../../../hooks/useWorkspaceFilters';
+import { useEffect } from 'react';
 
 const HEADER = {
 	'Content-Type': 'application/json',
@@ -48,6 +49,11 @@ function OneWorkspace({ workspace, files }) {
 	const [selectedAdviser, setSelectedAdviser] = useState();
 	const [selectedUser, setSelectedUser] = useState({});
 	const [members, setMembers] = useState(workspace.members);
+	const [workspaceInfo, setWorkspaceInfo] = useState(workspace);
+
+	useEffect(() => {
+		setFileList(files);
+	}, [files]);
 
 	// workspace info form
 	const {
@@ -65,7 +71,6 @@ function OneWorkspace({ workspace, files }) {
 				: null,
 			members: members,
 		},
-		resolver: yupResolver(validationMsg),
 	});
 
 	async function editWorkspace(data, e) {
@@ -76,13 +81,12 @@ function OneWorkspace({ workspace, files }) {
 			headers: HEADER,
 			body: JSON.stringify({
 				name: data.name,
-				members: data.members,
 			}),
 		});
 		const result = await response.json();
 
 		setValue('name', result.data.name);
-		setValue('members', result.data.members);
+		// setValue('members', result.data.members);
 	}
 
 	async function searchAdviser(text) {
@@ -226,6 +230,80 @@ function OneWorkspace({ workspace, files }) {
 								]}
 								defaultVal='create'
 							/>
+						</CustomizedDialogs>
+						<CustomizedDialogs
+							title='Workspace Info'
+							openBtn={<Button>Workspace Info</Button>}
+							primaryAction={
+								<Button onClick={handleSubmit(editWorkspace)}>Save Changes</Button>
+							}
+						>
+							<form>
+								<TextField fullWidth label='Workspace Name' {...register('name')} />
+
+								<h3>Creator: </h3>
+								<Avatar src={workspaceInfo.creator.profileImage} />
+								<p>
+									{workspaceInfo.creator.first_name} {workspaceInfo.creator.last_name}
+								</p>
+								<h3>Adviser: </h3>
+								<Avatar src={workspaceInfo.adviser.profileImage} />
+								<p>
+									{workspaceInfo.adviser.first_name} {workspaceInfo.adviser.last_name}
+								</p>
+								<h3>Members:</h3>
+								<ul>
+									{workspaceInfo.members.map((member) => (
+										<li key={member.id}>
+											<Avatar src={member.profileImage} />
+											<p>
+												{member.first_name} {member.last_name}
+											</p>
+										</li>
+									))}
+								</ul>
+								{/* <TextField fullWidth label='Creator' disabled {...register('creator')} />
+								<TextField fullWidth label='Adviser' disabled {...register('adviser')} /> */}
+								<CustomizedDialogs
+									title='Add Adviser'
+									openBtn={<Button>Edit Adviser</Button>}
+									primaryAction={<Button>Add</Button>}
+								>
+									<p>Type something and select from the results to add</p>
+									<TextField
+										label='Type to Search Adviser'
+										fullWidth
+										onChange={(e) => {
+											const text = e.currentTarget.value;
+
+											let timer;
+											const waitTime = 300;
+
+											// Clear timer
+											clearTimeout(timer);
+
+											// Wait for X ms and then process the request
+											timer = setTimeout(() => {
+												searchAdviser(text);
+											}, waitTime);
+										}}
+									/>
+									<div className={styles.adviser_list}>
+										{advisers.map((val) => (
+											<p
+												key={val.id}
+												onClick={() => {
+													console.log('hoy');
+													setSelectedAdviser(val);
+													editAdviser(val);
+												}}
+											>
+												{val.first_name} {val.last_name}
+											</p>
+										))}
+									</div>
+								</CustomizedDialogs>
+							</form>
 						</CustomizedDialogs>
 					</div>
 				</div>
@@ -400,6 +478,10 @@ export async function getServerSideProps(context) {
 	const { query, req } = context;
 	const accessToken = req.cookies.access_token;
 	const workspaceID = query.id;
+	const { status } = query;
+	let fileQueryLink = status
+		? `/workspaces/files?workspace=${workspaceID}&status=${status}`
+		: `/workspaces/files?workspace=${workspaceID}`;
 
 	const props = {};
 
@@ -410,32 +492,23 @@ export async function getServerSideProps(context) {
 		Authorization: `Bearer ${accessToken}`,
 	});
 
-	const { error } = response;
-	if (error) {
-		props.workspace = {};
-	}
-	if (response.data) {
-		const { data: workspace } = response.data;
-		if (workspace) {
-			props.workspace = workspace;
-		}
-	}
+	const { data: workspace } = response.data;
+	// console.log(workspace);
+
+	props.workspace = workspace;
 
 	// Files
 
-	const responseFile = await createRequest(`/workspaces/files?workspace=${workspaceID}`, 'get', {
+	const responseFile = await createRequest(fileQueryLink, 'get', {
 		'Content-Type': 'application/json',
 		Authorization: `Bearer ${accessToken}`,
 	});
 
 	const { error: error2 } = responseFile;
 
-	if (error2) {
-		props.files = [];
-	} else {
-		const { data: files } = responseFile.data;
-		props.files = files;
-	}
+	const { data: files } = responseFile.data;
+	props.files = files;
+	console.log(files);
 
 	return { props };
 }

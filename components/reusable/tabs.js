@@ -19,12 +19,14 @@ function CustomTabs({ tabs, defaultVal }) {
 				<Box sx={{ borderBottom: 1, borderColor: '#e2e2e2' }}>
 					<TabList onChange={handleChange} aria-label='lab API tabs example'>
 						{tabs.map((tab) => (
-							<Tab label={tab.label} value={tab.value} />
+							<Tab key={tab.value} label={tab.label} value={tab.value} />
 						))}
 					</TabList>
 				</Box>
 				{tabs.map((tab) => (
-					<TabPanel value={tab.value}>{tab.content}</TabPanel>
+					<TabPanel key={tab.value} value={tab.value}>
+						{tab.content}
+					</TabPanel>
 				))}
 			</TabContext>
 		</Box>

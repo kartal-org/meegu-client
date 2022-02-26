@@ -49,6 +49,7 @@ function ResourcesTab({ institution, resources }) {
 					</div>
 					{resourceList.map((item) => (
 						<ArticleCard
+							key={item.id}
 							title={item.name}
 							subtitle='Resource'
 							content={item.description}

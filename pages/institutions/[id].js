@@ -181,7 +181,7 @@ function InsideInstitution({
 
 			<div className={styles.profileContent}>
 				<CustomTabs
-					defaultValue="articles"
+					defaultVal="articles"
 					tabs={[
 						{
 							label: "Articles",

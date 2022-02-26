@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Cookies from "js-cookie";
+import QuillEditor from "../../../components/quillEditor";
 
 import {
 	TextField,
@@ -18,12 +19,14 @@ import Modal from "../../../components/modal.js";
 import CustomizedDialogs from "../../../components/reusable/dialog2";
 
 import styles from "../../../styles/classrooms.module.scss";
+import quillEditor from "../../../components/quillEditor";
 
 function FileInside({ file, comments, institutions }) {
 	const user = useUser();
 	const [commentList, setCommentList] = useState(comments);
 	const [institutionList, setInstitutionList] = useState(institutions);
 	const [selectedInstitution, setSelectedInstitution] = useState();
+	const [fileContent, setFileContent] = useState(file.richText);
 
 	const handleChange = (event) => {
 		setSelectedInstitution(event.target.value);
@@ -128,7 +131,9 @@ function FileInside({ file, comments, institutions }) {
 			</div>
 			<Divider sx={{ m: 1 }} />
 			<div className={styles.fileLayout}>
-				<div className="bg-red-200">file structure here</div>
+				<div>
+					<QuillEditor data={fileContent} setData={setFileContent} />
+				</div>
 
 				<div className={styles.rightContent}>
 					<CustomizedDialogs
@@ -192,50 +197,48 @@ function FileInside({ file, comments, institutions }) {
 						maxWidth="md"
 					>
 						<form
-							autoComplete="off"
+							autoComplete='off'
 							onSubmit={handleSubmitRecommend(addRecommendation)}
 							className={styles.createRecommendationForm}
 						>
 							<TextField
 								fullWidth
-								id="outlined-basic"
-								label="Title"
-								variant="outlined"
+								id='outlined-basic'
+								label='Title'
+								variant='outlined'
 								sx={{ mb: 1 }}
-								{...registerRecommend("title")}
+								{...registerRecommend('title')}
 							/>
 							<TextField
 								fullWidth
-								id="outlined-basic"
-								label="Description"
-								variant="outlined"
+								id='outlined-basic'
+								label='Description'
+								variant='outlined'
 								multiline
 								rows={4}
 								sx={{ mb: 1 }}
-								{...registerRecommend("desc")}
+								{...registerRecommend('desc')}
 							/>
 							<FormControl fullWidth>
-								<InputLabel id="demo-simple-select-label">
-									Select Institution
-								</InputLabel>
+								<InputLabel id='demo-simple-select-label'>Select Institution</InputLabel>
 								<Select
-									labelId="demo-simple-select-label"
-									id="demo-simple-select"
+									labelId='demo-simple-select-label'
+									id='demo-simple-select'
 									value={selectedInstitution}
-									label="Select Institution"
+									label='Select Institution'
 									onChange={handleChange}
 									sx={{ mb: 1 }}
 								>
 									{institutionList?.map((item) => (
 										<MenuItem value={item} key={item.id}>
-											<div className="bg-red-100 p-2">
+											<div className='bg-red-100 p-2'>
 												<p>{item.name}</p>
 											</div>
 										</MenuItem>
 									))}
 								</Select>
 							</FormControl>
-							<Button type="submit">Create</Button>
+							<Button type='submit'>Create</Button>
 						</form>
 					</Modal> */}
 
