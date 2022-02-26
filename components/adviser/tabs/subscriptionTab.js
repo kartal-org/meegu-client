@@ -15,6 +15,7 @@ import { useRouter } from 'next/router';
 
 function SubscriptionTab() {
 	const [plans, setPlans] = useState([]);
+	const [transactionList, setTransactionList] = useState([]);
 	const router = useRouter();
 
 	async function fetchPlans() {
@@ -26,6 +27,17 @@ function SubscriptionTab() {
 		const result = await request.json();
 		console.log(result);
 		setPlans(result);
+	}
+
+	async function fetchTransactions() {
+		const request = await fetch(process.env.BACKEND_API_UR + `/transactions`, {
+			headers: {
+				Authorization: `Bearer ${Cookies.get('access_token')}`,
+			},
+		});
+		const result = await request.json();
+		console.log(result);
+		// setPlans(result);
 	}
 
 	useEffect(() => {

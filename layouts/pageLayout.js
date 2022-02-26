@@ -11,11 +11,12 @@ import { useUser } from '../contexts/userProvider';
 import logo from '../public/meeguLogoWText.svg';
 import Image from 'next/image';
 import CustomSnackBar from '../components/reusable/snackBar';
-import { useSnackBar } from '../contexts/useSnackBar';
+import { useSnackBar, useSnackBarUpdate } from '../contexts/useSnackBar';
 import Tooltip from '@mui/material/Tooltip';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Avatar } from '@mui/material';
+import Cookies from 'js-cookie';
 
 // This sets the layout of authenticated pages
 
@@ -23,14 +24,39 @@ function PageLayout({ children }) {
 	const router = useRouter();
 	const user = useUser();
 	const snackBar = useSnackBar();
+	const snackBarUpdate = useSnackBarUpdate();
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
+
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
+
+	async function logOut() {
+		console.log(process.env.BACKEND_APP_KEY);
+		console.log(Cookies.get('access_token'));
+		const request = await fetch(process.env.BACKEND_API_UR + `/auth/invalidate-sessions`, {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${Cookies.get('access_token')}`,
+				'Content-Type': 'application/json',
+				accept: 'application/json',
+			},
+			body: JSON.stringify({
+				client_id: process.env.BACKEND_APP_KEY,
+			}),
+		});
+		console.log(request);
+		// const result = await request.json();
+
+		Cookies.remove('access_token');
+		Cookies.remove('refresh_token');
+		snackBarUpdate(true, 'Log Out Success');
+		setTimeout(router.push('/'), 5000);
+	}
 	return (
 		<>
 			<AuthLayout />
@@ -81,7 +107,14 @@ function PageLayout({ children }) {
 							</MenuItem>
 
 							<MenuItem onClick={handleClose}>Settings</MenuItem>
-							<MenuItem onClick={handleClose}>Logout</MenuItem>
+							<MenuItem
+								onClick={() => {
+									handleClose;
+									logOut();
+								}}
+							>
+								Logout
+							</MenuItem>
 						</Menu>
 					</div>
 				</header>

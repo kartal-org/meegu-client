@@ -7,12 +7,14 @@ import { useAuthenticate } from '../hooks/useAuthenticate';
 import { useEffect } from 'react';
 import useCheckUser from '../hooks/useCheckUser';
 import Cookies from 'js-cookie';
+import { useSnackBarUpdate } from '../contexts/useSnackBar';
 
 // Serves 3 purpose landing page, login page, sign up page.
 
 export default function LandingPage() {
 	const authenticate = useAuthenticate();
 	const checkUser = useCheckUser();
+	const snackBarUpdate = useSnackBarUpdate();
 
 	// check if the user is already logged in
 
@@ -22,10 +24,9 @@ export default function LandingPage() {
 
 		if (access_token && refresh_token) {
 			authenticate();
+			checkUser();
 		}
 	}, []);
-
-	checkUser();
 
 	const responseGoogle = async (response) => {
 		let res;
@@ -44,6 +45,8 @@ export default function LandingPage() {
 			);
 			Cookies.set('access_token', res.data.access_token, { expires: 7 });
 			Cookies.set('refresh_token', res.data.refresh_token, { expires: 7 });
+			snackBarUpdate(true, 'Login Success');
+			checkUser();
 		} catch (error) {
 			console.log(error);
 		}

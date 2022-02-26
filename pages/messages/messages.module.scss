@@ -112,13 +112,26 @@
 
 .conversation__addBtn {
 	cursor: pointer;
-	background-color: blueviolet;
-	color: white;
-	padding: 0.05em 0.25em;
+	background-color: transparent;
+	color: var(--white) !important;
+	// padding: 0.05em 0.05em;
+	// padding: 0.5rem;
+	width: 2.5rem;
+	height: 2.5rem;
 	font-size: 2rem;
 	border: none;
 	box-shadow: none;
-	border-radius: var(--radius-conditional-2);
+	border-radius: var(--radius-round);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: 300ms ease-in-out;
+	& > * {
+		color: var(--white);
+	}
+	&:hover {
+		background-color: var(--primary-color);
+	}
 }
 
 .convo__split {
