@@ -122,33 +122,37 @@ function index({ workspaces, type }) {
 			</div>
 			<div className={styles.workspace_container}>
 				{workspaceList.map((workspace) => (
-					<UtilityCard
-						title={workspace.name}
-						illustration={workspaceIllustration}
-						actions={
-							<>
-								<Link href={`/workspaces/${workspace.id}/`}>
-									<Button variant='contained'>Open</Button>
-								</Link>
-								<Button
-									color='secondary'
-									variant='contained'
-									onClick={() => deleteWorkspace(workspace.id)}
-								>
-									Delete
-								</Button>
-							</>
-						}
-					>
-						<AvatarGroup max={4} className={styles.workspace_avatar_list}>
-							{workspace.members.map((member) => (
-								<Avatar
-									alt={`${member.first_name} ${member.last_name}`}
-									src={member.profileImage}
-								/>
-							))}
-						</AvatarGroup>
-					</UtilityCard>
+					<Link href={`/workspaces/${workspace.id}/`}>
+						<a>
+							<UtilityCard
+								title={workspace.name}
+								illustration={workspaceIllustration}
+								// actions={
+								// 	<>
+								// 		<Link href={`/workspaces/${workspace.id}/`}>
+								// 			<Button variant='contained'>Open</Button>
+								// 		</Link>
+								// 		<Button
+								// 			color='secondary'
+								// 			variant='contained'
+								// 			onClick={() => deleteWorkspace(workspace.id)}
+								// 		>
+								// 			Delete
+								// 		</Button>
+								// 	</>
+								// }
+							>
+								<AvatarGroup max={4} className={styles.workspace_avatar_list}>
+									{workspace.members.map((member) => (
+										<Avatar
+											alt={`${member.first_name} ${member.last_name}`}
+											src={member.profileImage}
+										/>
+									))}
+								</AvatarGroup>
+							</UtilityCard>
+						</a>
+					</Link>
 				))}
 			</div>
 		</>

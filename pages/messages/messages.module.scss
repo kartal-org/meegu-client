@@ -35,8 +35,24 @@
 			overflow: auto;
 			.conversation {
 				border-radius: var(--radius-conditional-2);
-				border: 1px solid #e2e2e2;
+				// border: 1px solid #e2e2e2;
 				padding: 0.5rem 1rem;
+				transition: 200ms ease-in;
+				&:active {
+					background-image: var(--primary-gradient);
+					opacity: 0.7;
+					// border: 1px solid var(--primary-color);
+				}
+
+				&:hover {
+					border: 1px solid var(--primary-color);
+
+					cursor: pointer;
+				}
+				&.active {
+					// border: 1px solid var(--primary-color);
+					background-image: var(--primary-gradient);
+				}
 			}
 		}
 	}
@@ -69,6 +85,8 @@
 				border: 1px solid #e2e2e2;
 				padding: 0.5rem 1rem;
 				border-radius: var(--radius-conditional-2);
+				display: flex;
+				gap: 10px;
 			}
 		}
 		.message__form {
@@ -96,4 +114,10 @@
 	border: none;
 	box-shadow: none;
 	border-radius: var(--radius-conditional-2);
+}
+
+.convo__split {
+	display: flex;
+	align-items: center;
+	gap: 10px;
 }
