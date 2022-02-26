@@ -1,6 +1,4 @@
 import '../styles/globals.css';
-import { ThemeProvider } from '@mui/material/styles';
-import { outsideTheme } from '../themes/theme';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -10,6 +8,12 @@ import { DefaultSeo } from 'next-seo';
 import { UserProvider } from '../contexts/userProvider';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+
+import { themeOptions } from '../contexts/materialThemeProvider';
+
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const theme = createTheme(themeOptions);
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 	const router = useRouter();
@@ -34,19 +38,19 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 				<title>Meegu</title>
 			</Head>
 			<DefaultSeo titleTemplate='%s | Meegu' defaultTitle='Meegu' />
-			{/* <ThemeProvider theme={outsideTheme}> */}
-			<UserProvider>
-				<Layout>
-					<Component {...pageProps} />
-				</Layout>
-				<Backdrop
-					sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-					open={open}
-				>
-					<CircularProgress color='inherit' />
-				</Backdrop>
-			</UserProvider>
-			{/* </ThemeProvider> */}
+			<ThemeProvider theme={theme}>
+				<UserProvider>
+					<Layout>
+						<Component {...pageProps} />
+					</Layout>
+					<Backdrop
+						sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+						open={open}
+					>
+						<CircularProgress color='inherit' />
+					</Backdrop>
+				</UserProvider>
+			</ThemeProvider>
 		</>
 	);
 }

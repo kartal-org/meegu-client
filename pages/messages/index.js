@@ -210,6 +210,9 @@ function index({ conversations, messages, conversation }) {
 							fullWidth
 							minRows={4}
 							label='Type Message...'
+							className='textField'
+							color='primary'
+							focused
 							{...sendMessageRegister('content')}
 						/>
 						<Button type='submit'>Send Message</Button>

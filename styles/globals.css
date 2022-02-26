@@ -99,3 +99,12 @@ input {
 	background: none;
 	color: var(--white);
 }
+
+/* .textField {
+	border: 1px solid var(--primary-color);
+	color: var(--white) !important;
+} */
+
+.ql-toolbar.ql-snow > * {
+	color: var(--primary-color);
+}

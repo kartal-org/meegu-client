@@ -1,16 +1,16 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
 
-import PageLayout from "../../../layouts/pageLayout";
-import styles from "../../../styles/classrooms.module.scss";
-import UtilityCard from "../../../components/reusable/utilityCard";
-import ChipList from "../../../components/reusable/chips";
+import PageLayout from '../../../layouts/pageLayout';
+import styles from '../../../styles/classrooms.module.scss';
+import UtilityCard from '../../../components/reusable/utilityCard';
+import ChipList from '../../../components/reusable/chips';
 
-import { Button } from "@mui/material";
+import { Button } from '@mui/material';
 
-import fileIllustration from "../../../public/file_illustration.svg";
-import useClassroomFileFilters from "../../../hooks/useClassroomFileFilters";
+import fileIllustration from '../../../public/file_illustration.svg';
+import useClassroomFileFilters from '../../../hooks/useClassroomFileFilters';
 
 function ClassroomInside({ classroom, files, classroomId, recommended }) {
 	const router = useRouter();
@@ -33,12 +33,12 @@ function ClassroomInside({ classroom, files, classroomId, recommended }) {
 				<div className={styles.page_tools}>
 					<ChipList
 						chips={useClassroomFileFilters()}
-						defaultVal={router.query.status ? router.query.status : "submitted"}
+						defaultVal={router.query.status ? router.query.status : 'submitted'}
 					/>
 				</div>
 			</header>
 			<main>
-				{/* <div className={styles.cardContainer}>
+				<div className={styles.cardContainer}>
 					{files.map((file) => (
 						<UtilityCard
 							title={file.name}
@@ -46,13 +46,13 @@ function ClassroomInside({ classroom, files, classroomId, recommended }) {
 							actions={
 								<>
 									<Link href={`/classrooms/${classroom.id}/${file.id}`}>
-										<Button variant="contained">Open</Button>
+										<Button variant='contained'>Open</Button>
 									</Link>
 								</>
 							}
 						></UtilityCard>
 					))}
-				</div> */}
+				</div>
 				<div className={styles.cardContainer}>
 					{recommended?.map((item) => (
 						<UtilityCard
@@ -61,12 +61,12 @@ function ClassroomInside({ classroom, files, classroomId, recommended }) {
 							actions={
 								<>
 									<Link href={`/classrooms/${classroom.id}/${item.file.id}`}>
-										<Button variant="contained">Open</Button>
+										<Button variant='contained'>Open</Button>
 									</Link>
 								</>
 							}
 						>
-							<div className="bg-blue-100">{item.description}</div>
+							<div className='bg-blue-100'>{item.description}</div>
 						</UtilityCard>
 					))}
 				</div>
@@ -79,30 +79,27 @@ export async function getServerSideProps(context) {
 	const { req, res, query } = context;
 	const access_token = req.cookies.access_token;
 	const classroomId = query.id;
+	const { status } = query;
 	const props = {};
 
-	const response = await fetch(
-		process.env.BACKEND_API_UR + `/workspaces/${classroomId}`,
-		{
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${access_token}`,
-			},
-		}
-	);
+	const response = await fetch(process.env.BACKEND_API_UR + `/workspaces/${classroomId}`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${access_token}`,
+		},
+	});
 
 	const result = await response.json();
 	console.log(result);
 	props.classroom = result.data;
 
 	const responseFileSubmitted = await fetch(
-		process.env.BACKEND_API_UR +
-			`/workspaces/files?workspace=${classroomId}&status=submitted`,
+		process.env.BACKEND_API_UR + `/workspaces/files?workspace=${classroomId}&status=submitted`,
 		{
-			method: "GET",
+			method: 'GET',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 				Authorization: `Bearer ${access_token}`,
 			},
 		}
@@ -111,20 +108,22 @@ export async function getServerSideProps(context) {
 	console.log(result2);
 	props.files = result2.data;
 
-	//get recommendations
-	const responseRecommendations = await fetch(
-		process.env.BACKEND_API_UR + `/classrooms/?workspace=${classroomId}`,
-		{
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${access_token}`,
-			},
-		}
-	);
-	const resultRecommended = await responseRecommendations.json();
-	console.log(resultRecommended);
-	props.recommended = resultRecommended;
+	if (status == 'recommended') {
+		//get recommendations
+		const responseRecommendations = await fetch(
+			process.env.BACKEND_API_UR + `/classrooms/?workspace=${classroomId}`,
+			{
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${access_token}`,
+				},
+			}
+		);
+		const resultRecommended = await responseRecommendations.json();
+		console.log(resultRecommended);
+		props.files = resultRecommended;
+	}
 
 	return { props };
 }
