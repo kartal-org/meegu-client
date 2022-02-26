@@ -13,10 +13,12 @@ import { Button } from "@mui/material";
 function index({ libItems }) {
 	const [libraryList, setLibraryList] = useState(libItems);
 	const router = useRouter();
+
 	function viewFile(item) {
 		console.log(item);
 		router.push(`/articles/${item}`);
 	}
+
 	return (
 		<>
 			<div className={styles.library}>

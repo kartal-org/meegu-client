@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import React from "react";
+import Cookies from "js-cookie";
 
+import { useUser } from "../../contexts/userProvider";
 import styles from "./home.module.scss";
 
 import ArticleCard from "../../components/reusable/articleCard";
@@ -10,13 +12,43 @@ import PageLayout from "../../layouts/pageLayout";
 
 import { Button } from "@mui/material";
 import { useHomeFilters } from "../../hooks/useHomeFilters";
+import { useSnackBarUpdate } from "../../contexts/useSnackBar";
 
 function index({ articles }) {
 	const router = useRouter();
+	const user = useUser();
+	const snackBarUpdate = useSnackBarUpdate();
+
 	function viewFile(item) {
 		console.log(item);
 		router.push(`/articles/${item}`);
 	}
+
+	async function postLibrary(articleID) {
+		// e.preventDefault();
+		// console.log(data)
+
+		const responsePostLibrary = await fetch(
+			process.env.BACKEND_API_UR + `/libraries/`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${Cookies.get("access_token")}`,
+				},
+				body: JSON.stringify({
+					user: user.id,
+					article: articleID,
+				}),
+			}
+		);
+		const resultLibrary = await responsePostLibrary.json();
+		console.log(resultLibrary);
+		snackBarUpdate(true, "Added to Library");
+
+		// setLibraryList([...libraryList, result]);
+	}
+
 	return (
 		<>
 			<div className={styles.chips}>
@@ -27,7 +59,9 @@ function index({ articles }) {
 			</div>
 			<div className={styles.home}>
 				{articles?.map((article) => (
-					<div onClick={() => viewFile(article.id)} key={article.id}>
+					<div
+					// onClick={() => viewFile(article.id)} key={article.id}
+					>
 						<ArticleCard
 							title={article.title}
 							subtitle="PDF"
@@ -38,7 +72,13 @@ function index({ articles }) {
 									<Button variant="contained">Open</Button>
 								</>
 							}
-						></ArticleCard>
+						>
+							<div>
+								<Button onClick={() => postLibrary(article.id)}>
+									Add to Library
+								</Button>
+							</div>
+						</ArticleCard>
 					</div>
 				))}
 			</div>
