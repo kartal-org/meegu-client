@@ -9,6 +9,10 @@ module.exports = {
 		GOOGLE_CLIENT_SECRET: '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',
 		FACEBOOK_CLIENT_ID: '1088597931155576',
 		FACEBOOK_CLIENT_SECRET: '',
+		PAYPAL_CLIENT_ID:
+			'AUdBnNKW8cFcjXQ4XONeBm-rP9HRPgE2fg04K-YH33utmE-FaBKjKB_8JnKRoARP20vKfS8h3Dm62M4v',
+		PAYPAL_SECRET_KEY:
+			'EC03ysf_vAeNziG7tmK19l3XZyFDOqFsfhQmPlFFSpJGMA5_foI7hpumcwiOP5FqN7r64VFhlQpjYpg-',
 	},
 	images: {
 		domains: ['res.cloudinary.com'],

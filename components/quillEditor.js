@@ -3,10 +3,11 @@ import { useQuill } from 'react-quilljs';
 import 'quill/dist/quill.snow.css';
 import styles from './quillEditor.module.scss';
 
-export default ({ data, setData }) => {
+export default ({ data, setData, isReadOnly }) => {
 	const placeholder = 'Compose an epic...';
 	const { quill, quillRef, Quill } = useQuill({
 		placeholder,
+		readOnly: isReadOnly ? isReadOnly : false,
 		// modules: {
 		// 	ImageResize: {
 		// 		modules: ['Resize', 'DisplaySize', 'Toolbar'],

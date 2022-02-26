@@ -1,7 +1,7 @@
 /* @tailwind base;
 @tailwind components;
 @tailwind utilities; */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;300;400;600;700&family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
 *,
 *::after,
 *::before {
@@ -26,9 +26,16 @@
 }
 
 body {
-	font-family: 'Poppins' sans-serif;
+	font-family: 'Nunito Sans', sans-serif;
 	background-color: var(--background-color-dark);
 	color: var(--white);
+}
+h1,
+h2,
+h3,
+p {
+	font-family: 'Nunito Sans', sans-serif;
+	/* background-color: white; */
 }
 
 a {
@@ -45,7 +52,22 @@ button {
 
 .card-container {
 	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+	gap: 0.8rem;
+	justify-content: center;
+}
+
+.card-container-3 {
+	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+	gap: 0.8rem;
+	justify-content: center;
+}
+
+.card-container-flex {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	gap: 0.8rem;
 }
 
@@ -121,34 +143,13 @@ input {
 .MuiFormLabel-root {
 	color: var(--white) !important;
 }
-
-.ql-toolbar.ql-snow > * {
-	color: var(--white) !important;
-	fill: var(--white) !important;
-	/* background-color: white; */
-}
-
-.ql-link > svg {
-	color: var(--white) !important;
-	background-color: white;
-
-	fill: var(--white) !important;
-}
-
-.ql-toolbar .ql-stroke {
-	fill: none;
-	stroke: #fff;
-}
-
-.ql-toolbar .ql-fill {
-	fill: #fff;
-	stroke: none;
-}
-
-.ql-toolbar .ql-picker {
-	color: #fff;
-}
-.ql-formats {
-	background-color: white;
-	color: #fff;
+/* button > svg,
+span > svg,
+span > select {
+	color: white !important;
+	fill: white !important;
+	background-color: white !important;
+} */
+.MuiMenu-paper {
+	background-color: #0b0f1f;
 }

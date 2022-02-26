@@ -61,11 +61,11 @@ function ArticlesTab({ recommendationList, setRecommendationList, institution, a
 							subtitle='PDF'
 							content={item.abstract}
 							illustration={fileImg}
-							actions={
-								<>
-									<Button variant='contained'>Open</Button>
-								</>
-							}
+							// actions={
+							// 	<>
+							// 		<Button variant='contained'>Open</Button>
+							// 	</>
+							// }
 						></ArticleCard>
 					))}
 				</div>

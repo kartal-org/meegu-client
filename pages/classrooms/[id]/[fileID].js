@@ -124,7 +124,7 @@ function FileInside({ file, comments, institutions }) {
 			<Divider sx={{ m: 1 }} />
 			<div className={styles.fileLayout}>
 				<div>
-					<QuillEditor data={fileContent} setData={setFileContent} />
+					<QuillEditor isReadOnly={true} data={fileContent} setData={setFileContent} />
 				</div>
 
 				<div className={styles.rightContent}>

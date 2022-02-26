@@ -8,6 +8,7 @@ import { AiOutlineComment } from 'react-icons/ai';
 import { CgBriefcase } from 'react-icons/cg';
 import { AiOutlineHighlight } from 'react-icons/ai';
 import Link from 'next/link';
+import Tooltip from '@mui/material/Tooltip';
 
 import styles from './navigation.module.scss';
 import { useRouter } from 'next/router';
@@ -26,35 +27,41 @@ function Navigation() {
 			<>
 				{userType == 'researcher' && (
 					<Link href={`/workspaces?user=${user?.id}`}>
-						<a>
-							<AiOutlineHighlight
-								className={`${styles.nav__item} w-8 h-8 ${
-									selected == 'workspaces' ? styles.selected : ''
-								}`}
-							/>
-						</a>
+						<Tooltip title='Workspaces' placement='top'>
+							<a>
+								<AiOutlineHighlight
+									className={`${styles.nav__item} w-8 h-8 ${
+										selected == 'workspaces' ? styles.selected : ''
+									}`}
+								/>
+							</a>
+						</Tooltip>
 					</Link>
 				)}
 				{userType == 'adviser' && (
 					<Link href={`/classrooms?user=${user?.id}`}>
-						<a>
-							<CgBriefcase
-								className={`${styles.nav__item} w-8 h-8 ${
-									selected == 'classrooms' ? styles.selected : ''
-								}`}
-							/>
-						</a>
+						<Tooltip title='Classroom' placement='top'>
+							<a>
+								<CgBriefcase
+									className={`${styles.nav__item} w-8 h-8 ${
+										selected == 'classrooms' ? styles.selected : ''
+									}`}
+								/>
+							</a>
+						</Tooltip>
 					</Link>
 				)}
 				{userType == 'moderator' && (
 					<Link href={`/institutions?user=${user?.id}`}>
-						<a>
-							<AiOutlineBank
-								className={`${styles.nav__item} w-8 h-8 ${
-									selected == 'institutions' ? styles.selected : ''
-								}`}
-							/>
-						</a>
+						<Tooltip title='Institutions' placement='top'>
+							<a>
+								<AiOutlineBank
+									className={`${styles.nav__item} w-8 h-8 ${
+										selected == 'institutions' ? styles.selected : ''
+									}`}
+								/>
+							</a>
+						</Tooltip>
 					</Link>
 				)}
 			</>
@@ -89,43 +96,51 @@ function Navigation() {
 		<nav className={styles.nav}>
 			<div className={styles.nav__list}>
 				<Link href='/home'>
-					<a>
-						<AiOutlineHome
-							className={`${styles.nav__item} w-8 h-8 ${
-								selected == 'home' ? styles.selected : ''
-							}`}
-						/>
-					</a>
+					<Tooltip title='Feed' placement='top'>
+						<a>
+							<AiOutlineHome
+								className={`${styles.nav__item} w-8 h-8 ${
+									selected == 'home' ? styles.selected : ''
+								}`}
+							/>
+						</a>
+					</Tooltip>
 				</Link>
 				<Link href={`/library?user=${user?.id}`}>
-					<a>
-						<AiOutlineRead
-							className={`${styles.nav__item} w-8 h-8 ${
-								selected == 'library' ? styles.selected : ''
-							}`}
-						/>
-					</a>
+					<Tooltip title='Library' placement='top'>
+						<a>
+							<AiOutlineRead
+								className={`${styles.nav__item} w-8 h-8 ${
+									selected == 'library' ? styles.selected : ''
+								}`}
+							/>
+						</a>
+					</Tooltip>
 				</Link>
 
 				<CheckUser />
 
 				<Link href='/discover'>
-					<a>
-						<AiOutlineCompass
-							className={`${styles.nav__item} w-8 h-8 ${
-								selected == 'discover' ? styles.selected : ''
-							}`}
-						/>
-					</a>
+					<Tooltip title='Discover' placement='top'>
+						<a>
+							<AiOutlineCompass
+								className={`${styles.nav__item} w-8 h-8 ${
+									selected == 'discover' ? styles.selected : ''
+								}`}
+							/>
+						</a>
+					</Tooltip>
 				</Link>
 				<Link href={`/messages?user=${user?.id}`}>
-					<a>
-						<AiOutlineComment
-							className={`${styles.nav__item} w-8 h-8 ${
-								selected == 'messages' ? styles.selected : ''
-							}`}
-						/>
-					</a>
+					<Tooltip title='Messages' placement='top'>
+						<a>
+							<AiOutlineComment
+								className={`${styles.nav__item} w-8 h-8 ${
+									selected == 'messages' ? styles.selected : ''
+								}`}
+							/>
+						</a>
+					</Tooltip>
 				</Link>
 			</div>
 		</nav>

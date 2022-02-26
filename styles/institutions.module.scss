@@ -1,6 +1,6 @@
 .header {
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-end;
 	align-items: center;
 	margin-bottom: var(--size-fluid-1);
 }
@@ -35,7 +35,7 @@
 }
 
 .profileContent {
-	margin-top: 50px;
+	margin-top: var(--size-fluid-1);
 }
 
 .alert {
