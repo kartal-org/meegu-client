@@ -1,0 +1,12 @@
+.library {
+	padding-block: var(--size-fluid-1);
+	gap: 10px;
+}
+
+@media screen and (min-width: 980px) {
+	.library {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 20px;
+	}
+}
