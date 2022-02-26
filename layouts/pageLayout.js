@@ -10,12 +10,27 @@ import { useRouter } from 'next/router';
 import { useUser } from '../contexts/userProvider';
 import logo from '../public/meeguLogoWText.svg';
 import Image from 'next/image';
+import CustomSnackBar from '../components/reusable/snackBar';
+import { useSnackBar } from '../contexts/useSnackBar';
+import Tooltip from '@mui/material/Tooltip';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { Avatar } from '@mui/material';
 
 // This sets the layout of authenticated pages
 
 function PageLayout({ children }) {
 	const router = useRouter();
 	const user = useUser();
+	const snackBar = useSnackBar();
+	const [anchorEl, setAnchorEl] = React.useState(null);
+	const open = Boolean(anchorEl);
+	const handleClick = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
 	return (
 		<>
 			<AuthLayout />
@@ -36,15 +51,45 @@ function PageLayout({ children }) {
 							</a>
 						</Link>
 					</div>
-					<div>
-						<NotificationsIcon onClick={() => router.push(`/notifications/${user.id}`)} />
-						<AccountCircle onClick={() => router.push(`/users/${user.id}`)} />
+					<div className={styles.header__buttons}>
+						<Tooltip title='Notifications' placement='bottom'>
+							<NotificationsIcon onClick={() => router.push(`/notifications/${user.id}`)} />
+						</Tooltip>
+						<Tooltip title='Account Options' placement='bottom'>
+							<Avatar
+								src={user?.profileImage}
+								onClick={handleClick}
+								//  onClick={() => router.push(`/users/${user.id}`)}
+							/>
+						</Tooltip>
+						<Menu
+							id='basic-menu'
+							anchorEl={anchorEl}
+							open={open}
+							onClose={handleClose}
+							MenuListProps={{
+								'aria-labelledby': 'basic-button',
+							}}
+						>
+							<MenuItem
+								onClick={() => {
+									handleClose();
+									router.push(`/users/${user.id}`);
+								}}
+							>
+								Profile
+							</MenuItem>
+
+							<MenuItem onClick={handleClose}>Settings</MenuItem>
+							<MenuItem onClick={handleClose}>Logout</MenuItem>
+						</Menu>
 					</div>
 				</header>
 				<main className={styles.main}>{children}</main>
 				<div className={styles.navigation}>
 					<Navigation />
 				</div>
+				<CustomSnackBar isOpen={snackBar.open} message={snackBar.message} />
 			</div>
 		</>
 	);

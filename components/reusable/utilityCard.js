@@ -10,7 +10,7 @@ function UtilityCard(props) {
 				<Image
 					src={illustration}
 					layout='fill'
-					objectFit='cover'
+					objectFit='contain'
 					className={styles.card__illustration}
 				></Image>
 			</div>

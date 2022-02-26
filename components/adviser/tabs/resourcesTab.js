@@ -54,13 +54,13 @@ function ResourcesTab({ institution, resources }) {
 							subtitle='Resource'
 							content={item.description}
 							illustration={fileImg}
-							actions={
-								<>
-									{/* <Link href={`/institutions/}`}> */}
-									<Button variant='contained'>Open</Button>
-									{/* </Link> */}
-								</>
-							}
+							// actions={
+							// 	<>
+							// 		{/* <Link href={`/institutions/}`}> */}
+							// 		<Button variant='contained'>Open</Button>
+							// 		{/* </Link> */}
+							// 	</>
+							// }
 						></ArticleCard>
 					))}
 				</div>

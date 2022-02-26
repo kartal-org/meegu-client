@@ -19,6 +19,7 @@ import CustomizedDialogs from '../../components/reusable/dialog2';
 import ChipList from '../../components/reusable/chips';
 import { useUser } from '../../contexts/userProvider';
 import { useRouter } from 'next/router';
+import { useSnackBarUpdate } from '../../contexts/useSnackBar';
 
 const Input = styled('input')({
 	display: 'none',
@@ -28,16 +29,12 @@ function UserProfile({ account, affliate }) {
 	const [profile, setProfile] = useState(account);
 	const [profilePicPreview, setProfilePicPreview] = useState(profile.profileImage);
 	const [coverPhotoPreview, setcoverPhotoPreview] = useState(profile.profileCover);
-	const profilePictureBtn = useRef();
 	const user = useUser();
 	const router = useRouter();
+	const snackBarUpdate = useSnackBarUpdate();
 	// console.log(router);
 
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm({
+	const { register, handleSubmit } = useForm({
 		defaultValues: {
 			profileImage: profile.profileImage,
 			profileCover: profile.profileCover,
@@ -83,16 +80,19 @@ function UserProfile({ account, affliate }) {
 		formData.append('username', username);
 		formData.append('email', email);
 		formData.append('about', about);
-		if (profile.profileImage !== profilePicPreview) {
-			//profile pic is changed
-			console.log('profile', profilePic);
-			formData.append('profileImage', profilePic, profilePic.name);
-		}
-		if (profile.profileCover !== coverPhotoPreview) {
-			//cover has changed
-			console.log('cover', coverPhoto);
 
-			formData.append('profileImage', coverPhoto, coverPhoto.name);
+		console.log('form data:', data);
+		console.log('form data:', data);
+		if (profile.profileImage !== profileImage) {
+			//profile pic is changed
+			console.log('profile', profileImage);
+			formData.append('profileImage', profileImage[0], profileImage[0].name);
+		}
+		if (profile.profileCover !== profileCover) {
+			//cover has changed
+			console.log('cover', profileCover);
+
+			formData.append('profileCover', profileCover[0], profileCover[0].name);
 		}
 
 		const response = await fetch(process.env.BACKEND_API_UR + `/users/${account.id}/`, {
@@ -104,6 +104,7 @@ function UserProfile({ account, affliate }) {
 		});
 		const result = await response.json();
 		setProfile(result);
+		snackBarUpdate(true, 'Profile Updated!');
 		console.log(result);
 	}
 	return (

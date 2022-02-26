@@ -71,18 +71,6 @@ function index({ institutions }) {
 		<>
 			<h1 className={styles.page_title}>Institutions</h1>
 			<div className={styles.header}>
-				<FormControl>
-					<Select
-						labelId='demo-simple-select-label'
-						id='demo-simple-select'
-						value={age}
-						onChange={handleChange}
-					>
-						<MenuItem value={10}>Owned</MenuItem>
-						<MenuItem value={20}>Owned 2</MenuItem>
-					</Select>
-				</FormControl>
-
 				<Modal title='Create Institution' button='Create Institution' maxWidth='lg'>
 					<form
 						autoComplete='off'

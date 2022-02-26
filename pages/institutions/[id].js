@@ -15,6 +15,9 @@ import ArticlesTab from '../../components/adviser/tabs/articlesTab';
 import ResourcesTab from '../../components/adviser/tabs/resourcesTab';
 import PeoplesTab from '../../components/adviser/tabs/peoplesTab';
 import SubscriptionTab from '../../components/adviser/tabs/subscriptionTab';
+import ChipList from '../../components/reusable/chips';
+import { useRouter } from 'next/router';
+import VerificationTab from '../../components/moderator/tabs/verificationTab';
 
 function InsideInstitution({ institution, recommendations, articles, resources, members }) {
 	const [institutionProfile, setInstitutionProfile] = useState(institution);
@@ -22,6 +25,7 @@ function InsideInstitution({ institution, recommendations, articles, resources, 
 	const [coverPhotoPreview, setcoverPhotoPreview] = useState(institutionProfile.profileCover);
 	const profilePictureBtn = useRef();
 	const user = useUser();
+	const router = useRouter();
 
 	const [recommendationList, setRecommendationList] = useState(recommendations);
 
@@ -52,16 +56,23 @@ function InsideInstitution({ institution, recommendations, articles, resources, 
 		formData.append('email', email);
 		formData.append('about', about);
 
-		if (institutionProfile.profileImage !== profilePicPreview) {
-			//profile pic is changed
-			console.log('profile', profilePic);
-			formData.append('profileImage', profilePic, profilePic.name);
-		}
-		if (institutionProfile.profileCover !== coverPhotoPreview) {
-			//cover has changed
-			console.log('cover', coverPhoto);
+		console.log(institutionProfile.profileCover);
+		console.log(profileCover);
+		console.log(institutionProfile.profileCover !== profileCover);
+		console.log(institutionProfile.profileImage);
+		console.log(profileImage);
+		console.log(institutionProfile.profileImage !== profileImage);
 
-			formData.append('profileImage', coverPhoto, coverPhoto.name);
+		if (institutionProfile.profileImage !== profileImage) {
+			//profile pic is changed
+			console.log('profile', profileImage);
+			formData.append('profileImage', profileImage[0], profileImage[0].name);
+		}
+		if (institutionProfile.profileCover !== profileCover) {
+			//cover has changed
+			console.log('cover', profileCover[0]);
+
+			formData.append('profileCover', profileCover[0], profileCover[0].name);
 		}
 
 		const responseEdit = await fetch(
@@ -103,8 +114,22 @@ function InsideInstitution({ institution, recommendations, articles, resources, 
 							className={styles.editProfile_form}
 							// onSubmit={handleSubmit(editProfile)}
 						>
-							<TextField fullWidth label='Profile Picture' {...register('profileImage')} />
-							<TextField fullWidth label='Profile Cover' {...register('profileCover')} />
+							<CustomizedDialogs
+								title='Change Profile Picture'
+								primaryAction={<Button>Ok</Button>}
+								openBtn={<Button>Edit Profile Picture</Button>}
+							>
+								<input type='file' {...register('profileImage')} />
+							</CustomizedDialogs>
+							<CustomizedDialogs
+								title='Change Profile Cover'
+								primaryAction={<Button>Ok</Button>}
+								openBtn={<Button>Edit Profile Cover</Button>}
+							>
+								<input type='file' {...register('profileCover')} />
+							</CustomizedDialogs>
+							{/* <TextField fullWidth label='Profile Picture' {...register('profileImage')} />
+							<TextField fullWidth label='Profile Cover' {...register('profileCover')} /> */}
 							<TextField fullWidth label='Institution Name' {...register('name')} />
 							<TextField fullWidth label='About' multiline rows={2} {...register('about')} />
 							<TextField fullWidth label='Contact' {...register('contact')} />
@@ -116,38 +141,54 @@ function InsideInstitution({ institution, recommendations, articles, resources, 
 			</Profile>
 
 			<div className={styles.profileContent}>
-				<CustomTabs
-					defaultVal='articles'
-					tabs={[
+				<ChipList
+					defaultVal={router.query.tab ? router.query.tab : 'articles'}
+					chips={[
 						{
 							label: 'Articles',
 							value: 'articles',
-							content: (
-								<ArticlesTab
-									institution={institution}
-									recommendationList={recommendationList}
-									setRecommendationList={setRecommendationList}
-									articles={articles}
-								/>
-							),
+							route: `/institutions/${router.query.id}?tab=articles`,
 						},
 						{
 							label: 'Resources',
 							value: 'resources',
-							content: <ResourcesTab resources={resources} institution={institution} />,
+							route: `/institutions/${router.query.id}?tab=resources`,
 						},
 						{
 							label: 'People',
 							value: 'peoples',
-							content: <PeoplesTab members={members} />,
+							route: `/institutions/${router.query.id}?tab=peoples`,
 						},
 						{
 							label: 'Subscription',
 							value: 'subscription',
-							content: <SubscriptionTab />,
+							route: `/institutions/${router.query.id}?tab=subscription`,
+						},
+						{
+							label: 'Verification',
+							value: 'verification',
+							route: `/institutions/${router.query.id}?tab=verification`,
 						},
 					]}
 				/>
+
+				{router.query.tab === 'articles' || router.query.tab == '' ? (
+					<ArticlesTab
+						institution={institution}
+						recommendationList={recommendationList}
+						setRecommendationList={setRecommendationList}
+						articles={articles}
+					/>
+				) : null}
+
+				{router.query.tab === 'resources' && (
+					<ResourcesTab resources={resources} institution={institution} />
+				)}
+
+				{router.query.tab === 'peoples' && <PeoplesTab members={members} />}
+
+				{router.query.tab === 'subscription' && <SubscriptionTab />}
+				{router.query.tab === 'verification' && <VerificationTab />}
 			</div>
 		</>
 	);
@@ -236,6 +277,19 @@ export async function getServerSideProps(context) {
 
 	// console.log(institutionID);
 	// props.institution = []
+
+	// response for institution subscriptions
+	const responseGetSubscriptions = await fetch(
+		process.env.BACKEND_API_UR + `/transactions?institution=${institutionID}`,
+		{
+			headers: {
+				Authorization: `Bearer ${access_token}`,
+			},
+		}
+	);
+	const resultGetSubscriptions = await responseGetSubscriptions.json();
+	console.log(resultGetSubscriptions);
+	props.subscriptions = resultGetSubscriptions;
 	return { props };
 }
 

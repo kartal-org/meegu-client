@@ -28,11 +28,13 @@
 			}
 
 			&:hover {
-				background-color: #e2e2e2;
+				color: var(--primary-color);
 				cursor: pointer;
 			}
 			&.active {
-				background-color: #e2e2e2;
+				color: var(--primary-color);
+				// background-blend-mode: multiply;
+				// opacity: 0.35;
 			}
 		}
 

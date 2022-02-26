@@ -212,7 +212,6 @@ function index({ conversations, messages, conversation }) {
 							label='Type Message...'
 							className='textField'
 							color='primary'
-							focused
 							{...sendMessageRegister('content')}
 						/>
 						<Button type='submit'>Send Message</Button>

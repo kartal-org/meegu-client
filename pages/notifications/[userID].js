@@ -35,6 +35,25 @@ function Notifications({ notifications }) {
 				);
 
 			default:
+				return (
+					<article
+						onClick={() => {
+							setReadNotification(id);
+							router.push(`/institutions/${redirectID}`);
+						}}
+						className={`${styles.notification} ${!isRead && styles.active}`}
+					>
+						<img alt='Notification Icon' className={styles.notification__icon}></img>
+						<div>
+							<p className={styles.notification__highlight}>
+								We are happy to welcome your organization!
+							</p>
+							<p className={styles.notification__message}>
+								Your verification request for institution is now approved!
+							</p>
+						</div>
+					</article>
+				);
 				break;
 		}
 	}
