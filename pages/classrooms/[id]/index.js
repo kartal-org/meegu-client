@@ -39,7 +39,7 @@ function ClassroomInside({ classroom, files, classroomId, recommended }) {
 			</header>
 			<main>
 				<div className={styles.cardContainer}>
-					{files.map((file) => (
+					{files?.map((file) => (
 						<UtilityCard
 							title={file.name}
 							illustration={fileIllustration}
@@ -93,20 +93,21 @@ export async function getServerSideProps(context) {
 	const result = await response.json();
 	console.log(result);
 	props.classroom = result.data;
-
-	const responseFileSubmitted = await fetch(
-		process.env.BACKEND_API_UR + `/workspaces/files?workspace=${classroomId}&status=submitted`,
-		{
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${access_token}`,
-			},
-		}
-	);
-	const result2 = await responseFileSubmitted.json();
-	console.log(result2);
-	props.files = result2.data;
+	if (status == 'submitted' || status == '') {
+		const responseFileSubmitted = await fetch(
+			process.env.BACKEND_API_UR + `/workspaces/files?workspace=${classroomId}&status=submitted`,
+			{
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${access_token}`,
+				},
+			}
+		);
+		const result2 = await responseFileSubmitted.json();
+		console.log(result2);
+		props.files = result2.data;
+	}
 
 	if (status == 'recommended') {
 		//get recommendations
@@ -122,7 +123,7 @@ export async function getServerSideProps(context) {
 		);
 		const resultRecommended = await responseRecommendations.json();
 		console.log(resultRecommended);
-		props.files = resultRecommended;
+		props.recommended = resultRecommended;
 	}
 
 	return { props };

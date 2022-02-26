@@ -108,3 +108,14 @@ input {
 .ql-toolbar.ql-snow > * {
 	color: var(--primary-color);
 }
+.MuiDialog-paper {
+	background-color: var(--background-color-dark);
+}
+
+.MuiSlider-root {
+	color: var(--primary-color) !important;
+}
+
+.MuiSlider-root:hover {
+	color: var(--primary-color) !important;
+}
