@@ -42,6 +42,7 @@ export default ({ data, setData }) => {
 	React.useEffect(() => {
 		if (quill) {
 			quill.on('text-change', (delta, oldDelta, source) => {
+				console.log(quill.root.innerHTML);
 				setData(quill.root.innerHTML);
 			});
 		}

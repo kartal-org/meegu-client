@@ -9,7 +9,7 @@ import PageLayout from '../../layouts/pageLayout';
 import styles from '../../styles/institutions.module.scss';
 import CustomizedDialogs from '../../components/reusable/dialog2';
 
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Alert } from '@mui/material';
 
 import ArticlesTab from '../../components/adviser/tabs/articlesTab';
 import ResourcesTab from '../../components/adviser/tabs/resourcesTab';
@@ -117,7 +117,7 @@ function InsideInstitution({ institution, recommendations, articles, resources, 
 
 			<div className={styles.profileContent}>
 				<CustomTabs
-					defaultValue='articles'
+					defaultVal='articles'
 					tabs={[
 						{
 							label: 'Articles',

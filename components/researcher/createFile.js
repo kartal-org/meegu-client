@@ -61,12 +61,9 @@ function CreateFile({ setFileList, fileList }) {
 		<div className={styles.container}>
 			<CustomizedDialogs
 				openBtn={
-					<UtilityCard
-						title='Create Document File'
-						illustration={workspaceIllustration}
-					></UtilityCard>
+					<UtilityCard title='Create File' illustration={workspaceIllustration}></UtilityCard>
 				}
-				title='Create Document File'
+				title='Create File'
 				primaryAction={<Button onClick={handleSubmit(createFile)}>Create</Button>}
 			>
 				<form onSubmit={handleSubmit(createFile)}>

@@ -40,15 +40,16 @@ function OneFile({ file, comments }) {
 
 	async function editFile(data, e) {
 		e.preventDefault();
-		console.log(data);
+		console.log(quillContent);
+		const formData = new FormData();
+		formData.append('name', data.name);
+		formData.append('richText', quillContent);
 		const response = await fetch(process.env.BACKEND_API_UR + `/workspaces/files/${file.id}/`, {
 			method: 'PATCH',
 			headers: {
 				Authorization: `Bearer ${Cookies.get('access_token')}`,
-				'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
-				accept: '*/*',
 			},
-			body: JSON.stringify({ name: data.name, richText: quillContent }),
+			body: formData,
 		});
 		const result = await response.json();
 		const { data: fileResult } = result;
@@ -91,6 +92,27 @@ function OneFile({ file, comments }) {
 	function checkContent() {
 		console.log(quillContent);
 	}
+
+	async function submitFile() {
+		// e.preventDefault();
+		console.log(quillContent);
+		const formData = new FormData();
+		formData.append('status', 'submitted');
+
+		const response = await fetch(process.env.BACKEND_API_UR + `/workspaces/files/${file.id}/`, {
+			method: 'PATCH',
+			headers: {
+				Authorization: `Bearer ${Cookies.get('access_token')}`,
+			},
+			body: formData,
+		});
+		const result = await response.json();
+		const { data: fileResult } = result;
+
+		setValue('name', fileResult.name);
+
+		console.log(fileResult);
+	}
 	return (
 		<div>
 			{file.pdf ? (
@@ -110,9 +132,10 @@ function OneFile({ file, comments }) {
 							<Button onClick={handleSubmit(editFile)} variant='contained'>
 								Save Changes
 							</Button>
-							<IconButton>
+							{/* <IconButton>
 								<MoreHorizIcon />
-							</IconButton>
+							</IconButton> */}
+							<Button onClick={submitFile}>Submit File</Button>
 						</div>
 					</header>
 

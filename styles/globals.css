@@ -112,10 +112,43 @@ input {
 	background-color: var(--background-color-dark);
 }
 
-.MuiSlider-root {
-	color: var(--primary-color) !important;
+.MuiOutlinedInput-notchedOutline {
+	border-color: var(--white) !important;
+	color: var(--white) !important;
+	/* background-color: #484a71; */
 }
 
-.MuiSlider-root:hover {
-	color: var(--primary-color) !important;
+.MuiFormLabel-root {
+	color: var(--white) !important;
+}
+
+.ql-toolbar.ql-snow > * {
+	color: var(--white) !important;
+	fill: var(--white) !important;
+	/* background-color: white; */
+}
+
+.ql-link > svg {
+	color: var(--white) !important;
+	background-color: white;
+
+	fill: var(--white) !important;
+}
+
+.ql-toolbar .ql-stroke {
+	fill: none;
+	stroke: #fff;
+}
+
+.ql-toolbar .ql-fill {
+	fill: #fff;
+	stroke: none;
+}
+
+.ql-toolbar .ql-picker {
+	color: #fff;
+}
+.ql-formats {
+	background-color: white;
+	color: #fff;
 }

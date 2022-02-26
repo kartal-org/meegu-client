@@ -1,6 +1,7 @@
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import Cookies from "js-cookie";
+import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import Cookies from 'js-cookie';
+import QuillEditor from '../../../components/quillEditor';
 
 import {
 	TextField,
@@ -10,19 +11,21 @@ import {
 	FormControl,
 	Select,
 	Divider,
-} from "@mui/material";
+} from '@mui/material';
 
-import PageLayout from "../../../layouts/pageLayout";
-import { useUser } from "../../../contexts/userProvider";
-import Modal from "../../../components/modal.js";
+import PageLayout from '../../../layouts/pageLayout';
+import { useUser } from '../../../contexts/userProvider';
+import Modal from '../../../components/modal.js';
 
-import styles from "../../../styles/classrooms.module.scss";
+import styles from '../../../styles/classrooms.module.scss';
+import quillEditor from '../../../components/quillEditor';
 
 function FileInside({ file, comments, institutions }) {
 	const user = useUser();
 	const [commentList, setCommentList] = useState(comments);
 	const [institutionList, setInstitutionList] = useState(institutions);
 	const [selectedInstitution, setSelectedInstitution] = useState();
+	const [fileContent, setFileContent] = useState(file.richText);
 
 	const handleChange = (event) => {
 		setSelectedInstitution(event.target.value);
@@ -59,21 +62,18 @@ function FileInside({ file, comments, institutions }) {
 
 		const { content } = comment_data;
 
-		const responseComment = await fetch(
-			process.env.BACKEND_API_UR + `/classrooms/comments`,
-			{
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${Cookies.get("access_token")}`,
-				},
-				body: JSON.stringify({
-					author: user.id,
-					file: file.id,
-					content,
-				}),
-			}
-		);
+		const responseComment = await fetch(process.env.BACKEND_API_UR + `/classrooms/comments`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${Cookies.get('access_token')}`,
+			},
+			body: JSON.stringify({
+				author: user.id,
+				file: file.id,
+				content,
+			}),
+		});
 		const resultComment = await responseComment.json();
 		console.log(resultComment);
 
@@ -85,10 +85,10 @@ function FileInside({ file, comments, institutions }) {
 		console.log(data, selectedInstitution);
 
 		const response = await fetch(process.env.BACKEND_API_UR + `/classrooms/`, {
-			method: "POST",
+			method: 'POST',
 			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${Cookies.get("access_token")}`,
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${Cookies.get('access_token')}`,
 			},
 			body: JSON.stringify({
 				title: data.title,
@@ -107,97 +107,93 @@ function FileInside({ file, comments, institutions }) {
 		<>
 			This is inside the file
 			<div className={styles.infoLayout}>
-				<form autoComplete="off">
+				<form autoComplete='off'>
 					<TextField
 						fullWidth
-						id="outlined-basic"
-						label="File Name"
-						variant="outlined"
-						{...register("name")}
+						id='outlined-basic'
+						label='File Name'
+						variant='outlined'
+						{...register('name')}
 						autoFocus
 					/>
 
 					<div className={styles.infoActions}>
-						<Button variant="outlined" sx={{ mr: 1 }}>
+						<Button variant='outlined' sx={{ mr: 1 }}>
 							Save
 						</Button>
-						<Button variant="outlined">Edit</Button>
+						<Button variant='outlined'>Edit</Button>
 					</div>
 				</form>
 			</div>
 			<Divider sx={{ m: 1 }} />
 			<div className={styles.fileLayout}>
-				<div className="bg-red-200">file structure here</div>
+				<div>
+					<QuillEditor data={fileContent} setData={setFileContent} />
+				</div>
 
 				<div className={styles.rightContent}>
-					<Modal
-						title="Create Recommendation"
-						button="Create Recommendation"
-						maxWidth="md"
-					>
+					<Modal title='Create Recommendation' button='Create Recommendation' maxWidth='md'>
 						<form
-							autoComplete="off"
+							autoComplete='off'
 							onSubmit={handleSubmitRecommend(addRecommendation)}
 							className={styles.createRecommendationForm}
 						>
 							<TextField
 								fullWidth
-								id="outlined-basic"
-								label="Title"
-								variant="outlined"
+								id='outlined-basic'
+								label='Title'
+								variant='outlined'
 								sx={{ mb: 1 }}
-								{...registerRecommend("title")}
+								{...registerRecommend('title')}
 							/>
 							<TextField
 								fullWidth
-								id="outlined-basic"
-								label="Description"
-								variant="outlined"
+								id='outlined-basic'
+								label='Description'
+								variant='outlined'
 								multiline
 								rows={4}
 								sx={{ mb: 1 }}
-								{...registerRecommend("desc")}
+								{...registerRecommend('desc')}
 							/>
 							<FormControl fullWidth>
-								<InputLabel id="demo-simple-select-label">
-									Select Institution
-								</InputLabel>
+								<InputLabel id='demo-simple-select-label'>Select Institution</InputLabel>
 								<Select
-									labelId="demo-simple-select-label"
-									id="demo-simple-select"
+									labelId='demo-simple-select-label'
+									id='demo-simple-select'
 									value={selectedInstitution}
-									label="Select Institution"
+									label='Select Institution'
 									onChange={handleChange}
 									sx={{ mb: 1 }}
 								>
 									{institutionList?.map((item) => (
 										<MenuItem value={item} key={item.id}>
-											<div className="bg-red-100 p-2">
+											<div className='bg-red-100 p-2'>
 												<p>{item.name}</p>
 											</div>
 										</MenuItem>
 									))}
 								</Select>
 							</FormControl>
-							<Button type="submit">Create</Button>
+							<Button type='submit'>Create</Button>
 						</form>
 					</Modal>
 
 					<p className={styles.commentHead}>Comments (56)</p>
 
 					<form
-						autoComplete="off"
+						autoComplete='off'
 						onSubmit={handleSubmitComment(addComment)}
 						className={styles.createComment}
 					>
 						<TextField
 							fullWidth
-							id="outlined-basic"
-							label="Write your comment here"
-							variant="standard"
-							{...registerComment("content")}
+							id='outlined-basic'
+							label='Write your comment here'
+							variant='standard'
+							{...registerComment('content')}
 						/>
-						<Button type="submit" sx={{ mt: 1 }}>
+						<Button type='submit' sx={{ mt: 1 }}>
 							Create
 						</Button>
 					</form>
@@ -226,16 +222,13 @@ export async function getServerSideProps(context) {
 	const props = {};
 
 	//response for file detail
-	const response = await fetch(
-		process.env.BACKEND_API_UR + `/workspaces/files/${fileID}/`,
-		{
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${access_token}`,
-			},
-		}
-	);
+	const response = await fetch(process.env.BACKEND_API_UR + `/workspaces/files/${fileID}/`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${access_token}`,
+		},
+	});
 
 	const result = await response.json();
 	console.log(result);
@@ -245,9 +238,9 @@ export async function getServerSideProps(context) {
 	const responseComment = await fetch(
 		process.env.BACKEND_API_UR + `/classrooms/comments?file=${fileID}`,
 		{
-			method: "GET",
+			method: 'GET',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 				Authorization: `Bearer ${access_token}`,
 			},
 		}
@@ -261,9 +254,9 @@ export async function getServerSideProps(context) {
 	const responseGetInstitution = await fetch(
 		process.env.BACKEND_API_UR + `/institutions?isStaff=${true}`,
 		{
-			method: "GET",
+			method: 'GET',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 				Authorization: `Bearer ${access_token}`,
 			},
 		}
