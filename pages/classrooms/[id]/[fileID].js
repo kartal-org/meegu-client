@@ -109,7 +109,6 @@ function FileInside({ file, comments, institutions }) {
 
 	return (
 		<>
-			This is inside the file
 			<div className={styles.infoLayout}>
 				<form autoComplete="off">
 					<TextField
@@ -120,13 +119,6 @@ function FileInside({ file, comments, institutions }) {
 						{...register("name")}
 						autoFocus
 					/>
-
-					<div className={styles.infoActions}>
-						<Button variant="outlined" sx={{ mr: 1 }}>
-							Save
-						</Button>
-						<Button variant="outlined">Edit</Button>
-					</div>
 				</form>
 			</div>
 			<Divider sx={{ m: 1 }} />
@@ -147,7 +139,6 @@ function FileInside({ file, comments, institutions }) {
 					>
 						<form
 							autoComplete="off"
-							// onSubmit={handleSubmitRecommend(addRecommendation)}
 							className={styles.createRecommendationForm}
 						>
 							<TextField
@@ -155,7 +146,7 @@ function FileInside({ file, comments, institutions }) {
 								id="outlined-basic"
 								label="Title"
 								variant="outlined"
-								sx={{ mb: 1 }}
+								sx={{ mb: 2 }}
 								{...registerRecommend("title")}
 							/>
 							<TextField
@@ -165,7 +156,7 @@ function FileInside({ file, comments, institutions }) {
 								variant="outlined"
 								multiline
 								rows={4}
-								sx={{ mb: 1 }}
+								sx={{ mb: 2 }}
 								{...registerRecommend("desc")}
 							/>
 							<FormControl fullWidth>
@@ -178,7 +169,6 @@ function FileInside({ file, comments, institutions }) {
 									value={selectedInstitution}
 									label="Select Institution"
 									onChange={handleChange}
-									sx={{ mb: 1 }}
 								>
 									{institutionList?.map((item) => (
 										<MenuItem value={item} key={item.id}>
@@ -191,56 +181,6 @@ function FileInside({ file, comments, institutions }) {
 							</FormControl>
 						</form>
 					</CustomizedDialogs>
-					{/* <Modal
-						title="Create Recommendation"
-						button="Create Recommendation"
-						maxWidth="md"
-					>
-						<form
-							autoComplete='off'
-							onSubmit={handleSubmitRecommend(addRecommendation)}
-							className={styles.createRecommendationForm}
-						>
-							<TextField
-								fullWidth
-								id='outlined-basic'
-								label='Title'
-								variant='outlined'
-								sx={{ mb: 1 }}
-								{...registerRecommend('title')}
-							/>
-							<TextField
-								fullWidth
-								id='outlined-basic'
-								label='Description'
-								variant='outlined'
-								multiline
-								rows={4}
-								sx={{ mb: 1 }}
-								{...registerRecommend('desc')}
-							/>
-							<FormControl fullWidth>
-								<InputLabel id='demo-simple-select-label'>Select Institution</InputLabel>
-								<Select
-									labelId='demo-simple-select-label'
-									id='demo-simple-select'
-									value={selectedInstitution}
-									label='Select Institution'
-									onChange={handleChange}
-									sx={{ mb: 1 }}
-								>
-									{institutionList?.map((item) => (
-										<MenuItem value={item} key={item.id}>
-											<div className='bg-red-100 p-2'>
-												<p>{item.name}</p>
-											</div>
-										</MenuItem>
-									))}
-								</Select>
-							</FormControl>
-							<Button type='submit'>Create</Button>
-						</form>
-					</Modal> */}
 
 					<p className={styles.commentHead}>Comments (56)</p>
 
