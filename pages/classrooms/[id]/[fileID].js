@@ -15,6 +15,7 @@ import {
 import PageLayout from "../../../layouts/pageLayout";
 import { useUser } from "../../../contexts/userProvider";
 import Modal from "../../../components/modal.js";
+import CustomizedDialogs from "../../../components/reusable/dialog2";
 
 import styles from "../../../styles/classrooms.module.scss";
 
@@ -130,7 +131,62 @@ function FileInside({ file, comments, institutions }) {
 				<div className="bg-red-200">file structure here</div>
 
 				<div className={styles.rightContent}>
-					<Modal
+					<CustomizedDialogs
+						openBtn={<Button>Create Recommendation</Button>}
+						title="Create Recommendation"
+						primaryAction={
+							<Button onClick={handleSubmitRecommend(addRecommendation)}>
+								Create
+							</Button>
+						}
+					>
+						<form
+							autoComplete="off"
+							// onSubmit={handleSubmitRecommend(addRecommendation)}
+							className={styles.createRecommendationForm}
+						>
+							<TextField
+								fullWidth
+								id="outlined-basic"
+								label="Title"
+								variant="outlined"
+								sx={{ mb: 1 }}
+								{...registerRecommend("title")}
+							/>
+							<TextField
+								fullWidth
+								id="outlined-basic"
+								label="Description"
+								variant="outlined"
+								multiline
+								rows={4}
+								sx={{ mb: 1 }}
+								{...registerRecommend("desc")}
+							/>
+							<FormControl fullWidth>
+								<InputLabel id="demo-simple-select-label">
+									Select Institution
+								</InputLabel>
+								<Select
+									labelId="demo-simple-select-label"
+									id="demo-simple-select"
+									value={selectedInstitution}
+									label="Select Institution"
+									onChange={handleChange}
+									sx={{ mb: 1 }}
+								>
+									{institutionList?.map((item) => (
+										<MenuItem value={item} key={item.id}>
+											<div className="bg-red-100 p-2">
+												<p>{item.name}</p>
+											</div>
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+						</form>
+					</CustomizedDialogs>
+					{/* <Modal
 						title="Create Recommendation"
 						button="Create Recommendation"
 						maxWidth="md"
@@ -181,7 +237,7 @@ function FileInside({ file, comments, institutions }) {
 							</FormControl>
 							<Button type="submit">Create</Button>
 						</form>
-					</Modal>
+					</Modal> */}
 
 					<p className={styles.commentHead}>Comments (56)</p>
 
