@@ -20,7 +20,24 @@
 		// background-color: aqua;
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
 		margin-block: var(--size-fluid-1);
+
+		// .logo__wrapper {
+		// 	position: relative;
+		// 	// width: 10rem;
+		// 	// display: flex;
+		// 	// flex-direction: row;
+		// }
+
+		.logo {
+			// background-image: var(--primary-gradient);
+
+			// -webkit-background-clip: text;
+			// -webkit-text-fill-color: transparent;
+			margin: 0;
+			padding: 0;
+		}
 	}
 
 	.main {
@@ -32,6 +49,7 @@
 	.navigation {
 		@include wrapper;
 		position: fixed;
+
 		bottom: 20px;
 		left: 50%;
 		transform: translateX(-50%);
