@@ -81,10 +81,10 @@ function Notifications({ notifications }) {
 		<>
 			<header className={styles.page__header}>
 				<h1 className={styles.page__title}>Notifications</h1>
-				<div>
+				{/* <div>
 					<Button onClick={deleteAllNotification}>Clear All</Button>
 					<Button onClick={setReadAllNotification}>Mark all read</Button>
-				</div>
+				</div> */}
 			</header>
 			<main className={styles.page__content}>
 				<section className={styles.notification__list}>
