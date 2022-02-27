@@ -1,18 +1,18 @@
-import { useRouter } from "next/router";
-import React from "react";
-import Cookies from "js-cookie";
+import { useRouter } from 'next/router';
+import React from 'react';
+import Cookies from 'js-cookie';
 
-import { useUser } from "../../contexts/userProvider";
-import styles from "./home.module.scss";
+import { useUser } from '../../contexts/userProvider';
+import styles from './home.module.scss';
 
-import ArticleCard from "../../components/reusable/articleCard";
-import ChipList from "../../components/reusable/chips";
-import fileImg from "../../public/file_illustration.svg";
-import PageLayout from "../../layouts/pageLayout";
+import ArticleCard from '../../components/reusable/articleCard';
+import ChipList from '../../components/reusable/chips';
+import fileImg from '../../public/file_illustration.svg';
+import PageLayout from '../../layouts/pageLayout';
 
-import { Button } from "@mui/material";
-import { useHomeFilters } from "../../hooks/useHomeFilters";
-import { useSnackBarUpdate } from "../../contexts/useSnackBar";
+import { Button } from '@mui/material';
+import { useHomeFilters } from '../../hooks/useHomeFilters';
+import { useSnackBarUpdate } from '../../contexts/useSnackBar';
 
 function index({ articles }) {
 	const router = useRouter();
@@ -28,23 +28,20 @@ function index({ articles }) {
 		// e.preventDefault();
 		// console.log(data)
 
-		const responsePostLibrary = await fetch(
-			process.env.BACKEND_API_UR + `/libraries/`,
-			{
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${Cookies.get("access_token")}`,
-				},
-				body: JSON.stringify({
-					user: user.id,
-					article: articleID,
-				}),
-			}
-		);
+		const responsePostLibrary = await fetch(process.env.BACKEND_API_UR + `/libraries/`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${Cookies.get('access_token')}`,
+			},
+			body: JSON.stringify({
+				user: user.id,
+				article: articleID,
+			}),
+		});
 		const resultLibrary = await responsePostLibrary.json();
 		console.log(resultLibrary);
-		snackBarUpdate(true, "Added to Library");
+		snackBarUpdate(true, 'Added to Library');
 
 		// setLibraryList([...libraryList, result]);
 	}
@@ -54,29 +51,25 @@ function index({ articles }) {
 			<div className={styles.chips}>
 				<ChipList
 					chips={useHomeFilters()}
-					defaultVal={router.query.status ? router.query.status : "all"}
+					defaultVal={router.query.status ? router.query.status : 'all'}
 				/>
 			</div>
 			<div className={styles.home}>
 				{articles?.map((article) => (
-					<div
-					// onClick={() => viewFile(article.id)} key={article.id}
-					>
+					<div onClick={() => router.push(`/articles/${article.id}`)}>
 						<ArticleCard
 							title={article.title}
-							subtitle="PDF"
+							subtitle='PDF'
 							content={article.abstract}
 							illustration={fileImg}
 							actions={
 								<>
-									<Button variant="contained">Open</Button>
+									<Button variant='contained'>Open</Button>
 								</>
 							}
 						>
 							<div>
-								<Button onClick={() => postLibrary(article.id)}>
-									Add to Library
-								</Button>
+								<Button onClick={() => postLibrary(article.id)}>Add to Library</Button>
 							</div>
 						</ArticleCard>
 					</div>
@@ -89,7 +82,7 @@ function index({ articles }) {
 export async function getServerSideProps({ req, query }) {
 	const props = {};
 
-	const request = await fetch(process.env.BACKEND_API_UR + "/publications", {
+	const request = await fetch(process.env.BACKEND_API_UR + '/publications', {
 		headers: {
 			Authorization: `Bearer ${req.cookies.access_token}`,
 		},

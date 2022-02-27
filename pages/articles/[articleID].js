@@ -3,11 +3,26 @@ import PdfViewer from '../../components/pdfViewer';
 import PageLayout from '../../layouts/pageLayout';
 
 function ArticleViewer({ article }) {
-	const file = article.recommendation ? article.recommendation.file.pdf : article.pdf;
+	const pdfFile = article.recommendation ? article.recommendation.file.pdf : article.pdf;
+	const richTextFile = article.recommendation
+		? article.recommendation.file.richText
+		: article.richText;
 
 	return (
-		<div>
-			<PdfViewer file={file} />
+		<div className={styles.page__container}>
+			<header className={styles.page__header}>
+				<h1 className={styles.article__title}>{article.title}</h1>
+			</header>
+			<main className={styles.page__content}>
+				{pdfFile ? (
+					<PdfViewer file={pdfFile} />
+				) : (
+					<div
+						className='article-content'
+						dangerouslySetInnerHTML={{ __html: richTextFile }}
+					/>
+				)}
+			</main>
 		</div>
 	);
 }
