@@ -1,22 +1,22 @@
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { useEffect } from "react";
-import React from "react";
-import Cookies from "js-cookie";
-import Image from "next/image";
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import React from 'react';
+import Cookies from 'js-cookie';
+import Image from 'next/image';
 
-import { Button } from "@mui/material";
+import { Button } from '@mui/material';
 
-import styles from "./tabs.module.scss";
-import SubsCard from "../../reusable/subsCard";
-import CustomizedDialogs from "../../reusable/dialog2";
-import UtilityCard from "../../reusable/utilityCard";
-import Paypal from "../../../helpers/paypal";
+import styles from './tabs.module.scss';
+import SubsCard from '../../reusable/subsCard';
+import CustomizedDialogs from '../../reusable/dialog2';
+import UtilityCard from '../../reusable/utilityCard';
+import Paypal from '../../../helpers/paypal';
 // import { PayPalButtons } from '@paypal/react-paypal-js';
 
-import promoPic from "../../../public/classroom.png";
-import transactionImg from "../../../public/notification_icon.png";
-import { AiOutlineDollar } from "react-icons/ai";
+import promoPic from '../../../public/classroom.png';
+import transactionImg from '../../../public/notification_icon.png';
+import { AiOutlineDollar } from 'react-icons/ai';
 
 function SubscriptionTab({ institutionID }) {
 	const [plans, setPlans] = useState([]);
@@ -24,27 +24,27 @@ function SubscriptionTab({ institutionID }) {
 	const router = useRouter();
 
 	async function fetchPlans() {
-		const request = await fetch(
-			process.env.BACKEND_API_UR + `/transactions/plans`,
-			{
-				headers: {
-					Authorization: `Bearer ${Cookies.get("access_token")}`,
-				},
-			}
-		);
+		const request = await fetch(process.env.BACKEND_API_UR + `/transactions/plans`, {
+			headers: {
+				Authorization: `Bearer ${Cookies.get('access_token')}`,
+			},
+		});
 		const result = await request.json();
 		console.log(result);
 		setPlans(result);
 	}
 
 	async function fetchTransactions() {
-		const request = await fetch(process.env.BACKEND_API_UR + `/transactions`, {
-			headers: {
-				Authorization: `Bearer ${Cookies.get("access_token")}`,
-			},
-		});
+		const request = await fetch(
+			process.env.BACKEND_API_UR + `/transactions?institution=${institutionID}`,
+			{
+				headers: {
+					Authorization: `Bearer ${Cookies.get('access_token')}`,
+				},
+			}
+		);
 		const result = await request.json();
-		console.log("transaction", result);
+		console.log('transaction', result);
 		setTransactionList(result);
 	}
 
@@ -58,17 +58,17 @@ function SubscriptionTab({ institutionID }) {
 				<div className={styles.subsContainerItem}>
 					<div>
 						<CustomizedDialogs
-							title="Buy Subscription"
+							title='Buy Subscription'
 							openBtn={<Button>Buy Subscription</Button>}
-							maxWidth="md"
+							maxWidth='md'
 						>
 							<h3>Please Select Your Plan </h3>
 							<br />
-							<div className="card-container">
+							<div className='card-container'>
 								{plans?.map((plan) => (
 									<CustomizedDialogs
 										key={plan.id}
-										title="Buy Subscription"
+										title='Buy Subscription'
 										openBtn={
 											<UtilityCard illustration={promoPic} title={plan.name}>
 												<p>
@@ -88,8 +88,8 @@ function SubscriptionTab({ institutionID }) {
 
 				<div className={styles.subsContainerItem}>
 					<SubsCard
-						title={transactionList[0] ? transactionList[0].plan.name : "None"}
-						subtitle="Latest Subscription Plan"
+						title={transactionList[0] ? transactionList[0].plan.name : 'None'}
+						subtitle='Latest Subscription Plan'
 					></SubsCard>
 
 					<div className={styles.transactionList}>
@@ -107,7 +107,7 @@ function SubscriptionTab({ institutionID }) {
 										<p className={styles.date}>date here</p>
 									</div>
 									<p className={styles.transaction_message}>
-										Please enjoy the services we offer for just{" "}
+										Please enjoy the services we offer for just{' '}
 										<strong>{item.plan.price}</strong>
 									</p>
 								</div>
