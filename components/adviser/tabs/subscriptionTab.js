@@ -98,12 +98,17 @@ function SubscriptionTab() {
 								<div className={styles.transaction_icon}>
 									<AiOutlineDollar />
 								</div>
-								<div>
-									<p className={styles.transaction_highlight}>
-										You've successfully subscribe to our {item.plan.name}!
-									</p>
+								<div className={styles.list}>
+									<div className={styles.listHeader}>
+										<p className={styles.transaction_highlight}>
+											You've successfully subscribed to our {item.plan.name}!
+										</p>
+
+										<p className={styles.date}>date here</p>
+									</div>
 									<p className={styles.transaction_message}>
-										Please enjoy the services we offer!
+										Please enjoy the services we offer for just{" "}
+										<strong>{item.plan.price}</strong>
 									</p>
 								</div>
 							</div>
