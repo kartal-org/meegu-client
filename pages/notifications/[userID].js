@@ -77,6 +77,10 @@ function Notifications({ notifications }) {
 		console.log(result);
 	}
 
+	function getRedirectLink(notif) {
+		if (notif.type === 'submission') return '/classrooms/';
+	}
+
 	return (
 		<>
 			<header className={styles.page__header}>
@@ -89,7 +93,19 @@ function Notifications({ notifications }) {
 			<main className={styles.page__content}>
 				<section className={styles.notification__list}>
 					{notificationList?.map((notif) => (
-						<NotificationTypes key={notif.id} notification={notif} />
+						<article
+							onClick={() => {
+								setReadNotification(id);
+								router.push(`/institutions/${redirectID}`);
+							}}
+							className={`${styles.notification} ${!isRead && styles.active}`}
+						>
+							<img alt='Notification Icon' className={styles.notification__icon}></img>
+							<div>
+								<p className={styles.notification__highlight}>A notification new!</p>
+								<p className={styles.notification__message}>{notif.message}</p>
+							</div>
+						</article>
 					))}
 				</section>
 			</main>

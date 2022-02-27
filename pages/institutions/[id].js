@@ -35,6 +35,7 @@ function InsideInstitution({ institution, recommendations, articles, resources, 
 	const profilePictureBtn = useRef();
 	const user = useUser();
 	const router = useRouter();
+	const canPublish = subscriptions && institution.is_verified;
 
 	const [recommendationList, setRecommendationList] = useState(recommendations);
 
@@ -198,6 +199,7 @@ function InsideInstitution({ institution, recommendations, articles, resources, 
 						recommendationList={recommendationList}
 						setRecommendationList={setRecommendationList}
 						articles={articles}
+						canPublish={canPublish}
 					/>
 				) : null}
 
