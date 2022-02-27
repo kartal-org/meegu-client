@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import styles from './resource.module.scss';
-import InputBase from '@mui/material/InputBase';
-import SearchIcon from '@mui/icons-material/Search';
-import { Autocomplete, IconButton, TextField } from '@mui/material';
+import React, { useEffect, useState } from "react";
+import styles from "./resource.module.scss";
+import InputBase from "@mui/material/InputBase";
+import SearchIcon from "@mui/icons-material/Search";
+import { Autocomplete, Button, IconButton, TextField } from "@mui/material";
 
 //validation
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/router';
-import { Box } from '@mui/system';
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
+import { Box } from "@mui/system";
 
-const access_token = Cookies.get('access_token');
+const access_token = Cookies.get("access_token");
+
+import ArticleCard from "../reusable/articleCard";
+import pdfImg from "../../public/pdf-file.png";
+import templateImg from "../../public/template-file.png";
 
 function ImportResource() {
 	const [resourceList, setResourceList] = useState([]);
@@ -31,10 +35,10 @@ function ImportResource() {
 			: `/resources?forStudent=${true}`;
 		// request = get /resources?forStudent=true&search=data.searchText
 		const request = await fetch(process.env.BACKEND_API_UR + queryLink, {
-			method: 'GET',
+			method: "GET",
 			headers: {
 				Authorization: `Bearer ${access_token}`,
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 			},
 		});
 		const result = await request.json();
@@ -54,17 +58,20 @@ function ImportResource() {
 	async function importResource(resource) {
 		console.log(resource);
 		console.log(router.query.id);
-		const request = await fetch(process.env.BACKEND_API_UR + '/resources/import', {
-			method: 'POST',
-			headers: {
-				Authorization: `Bearer ${access_token}`,
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				resource,
-				workspace: router.query.id,
-			}),
-		});
+		const request = await fetch(
+			process.env.BACKEND_API_UR + "/resources/import",
+			{
+				method: "POST",
+				headers: {
+					Authorization: `Bearer ${access_token}`,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					resource,
+					workspace: router.query.id,
+				}),
+			}
+		);
 		const result = await request.json();
 		console.log(result);
 		router.reload();
@@ -72,15 +79,18 @@ function ImportResource() {
 	return (
 		<div>
 			<header className={styles.header}>
-				<form onSubmit={handleSubmit(searchResource)} className={styles.searchbox}>
+				<form
+					onSubmit={handleSubmit(searchResource)}
+					className={styles.searchbox}
+				>
 					<input
 						className={styles.searchinput}
-						type='search'
-						placeholder='Search Resources'
-						{...register('searchText')}
+						type="search"
+						placeholder="Search Resources"
+						{...register("searchText")}
 					/>
 
-					<IconButton type='submit' sx={{ p: '10px' }} aria-label='search'>
+					<IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
 						<SearchIcon />
 					</IconButton>
 				</form>
@@ -111,16 +121,52 @@ function ImportResource() {
 						</Box>
 					)}
 				/> */}
+
 				{resourceList?.map((resource) => (
-					<article key={resource.id} className={styles.card}>
-						{resource.pdf ? 'PDF ni sya' : 'Template ni sya'}
+					<article key={resource.id}>
+						{resource.pdf ? (
+							<ArticleCard
+								title={resource.name}
+								subtitle={resource.institution.name}
+								content={resource.description}
+								illustration={pdfImg}
+								actions={
+									<>
+										<Button>Open</Button>
+									</>
+								}
+							>
+								<Button onClick={() => importResource(resource.id)}>
+									Import
+								</Button>
+							</ArticleCard>
+						) : (
+							<ArticleCard
+								title={resource.name}
+								subtitle={resource.institution.name}
+								content={resource.description}
+								illustration={templateImg}
+								actions={
+									<>
+										<Button>Open</Button>
+									</>
+								}
+							>
+								<Button onClick={() => importResource(resource.id)}>
+									Import
+								</Button>
+							</ArticleCard>
+						)}
+					</article>
+				))}
+				{/* <article key={resource.id} className={styles.card}>
+						{resource.pdf ? "PDF ni sya" : "Template ni sya"}
 						<h3>{resource.name}</h3>
 						<p>{resource.institution.name}</p>
 						<p>{resource.description}</p>
 						<button onClick={() => importResource(resource.id)}>Import</button>
 						<button>Open</button>
-					</article>
-				))}
+					</article> */}
 			</main>
 		</div>
 	);
