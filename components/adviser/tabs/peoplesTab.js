@@ -9,11 +9,33 @@ import { Button, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import CustomizedDialogs from '../../reusable/dialog2';
 import { Box } from '@mui/system';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 function PeoplesTab({ institutionID }) {
 	const [membersList, setMembersList] = useState([]);
 	const [userList, setUserList] = useState([]);
 	const [selectedUser, setSelectedUser] = useState();
+
+	const [memberType, setMemberType] = React.useState('all');
+
+	const handleChange = (event) => {
+		setMemberType(event.target.value);
+	};
+
+	useEffect(() => {
+		if (memberType === 'all') {
+			getMembers();
+		}
+		if (memberType === 'researcher') {
+			getMembers('researcher');
+		}
+		if (memberType === 'adviser') {
+			getMembers('adviser');
+		}
+	}, [memberType]);
 
 	const { register, handleSubmit } = useForm();
 
@@ -80,7 +102,7 @@ function PeoplesTab({ institutionID }) {
 	}, []);
 	return (
 		<>
-			<div>
+			<div className={styles.wrapper_end}>
 				<CustomizedDialogs
 					title='Add People'
 					openBtn={<Button>Add People</Button>}
@@ -129,6 +151,14 @@ function PeoplesTab({ institutionID }) {
 						/> */}
 					</form>
 				</CustomizedDialogs>
+				<FormControl sx={{ m: 1, width: 150 }}>
+					<InputLabel>Member Type</InputLabel>
+					<Select value={memberType} label='Member Type' autoWidth onChange={handleChange}>
+						<MenuItem value={'all'}>All</MenuItem>
+						<MenuItem value={'adviser'}>Adviser</MenuItem>
+						<MenuItem value={'researcher'}>Student Researcher</MenuItem>
+					</Select>
+				</FormControl>
 			</div>
 			<div className={styles.peopleContainer}>
 				{membersList?.map((member) => (
