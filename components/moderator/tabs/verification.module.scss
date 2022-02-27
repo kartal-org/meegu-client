@@ -7,9 +7,15 @@
 	// background-color: aqua;
 	margin-bottom: 20px;
 
-	// p {
-	// 	color: rgb(14, 62, 133);
-	// }
+	.header {
+		color: rgb(154, 200, 243);
+		font-size: 18px;
+		font-weight: 600;
+		letter-spacing: 1px;
+	}
+	.body {
+		color: rgb(211, 211, 211);
+	}
 }
 
 @media screen and (min-width: 980px) {

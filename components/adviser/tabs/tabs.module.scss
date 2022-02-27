@@ -33,6 +33,7 @@
 .transactionList {
 	margin-top: 30px;
 	margin-bottom: 30px;
+
 	.transaction {
 		border-top: 1px solid #e2e2e2;
 		width: 100%;
@@ -42,6 +43,8 @@
 		padding: 0.5em 1em;
 
 		&_icon {
+			font-size: 24px;
+			color: var(--blue-3);
 		}
 
 		&_highlight {

@@ -83,9 +83,11 @@ function VerificationTab() {
 
 					<div className={styles.verificationItem}>
 						<Alert severity="info" variant="outlined">
-							<AlertTitle>Info</AlertTitle>
+							<AlertTitle>
+								<p className={styles.header}>Not Verified !</p>
+							</AlertTitle>
 							{/* This is an info alert — <strong>check it out!</strong> */}
-							<p>
+							<p className={styles.body}>
 								Hello it seems that this institution is still{" "}
 								<strong>not verified</strong>. That means you don't have the
 								capacity and ability to publish articles and resources yet.
@@ -118,21 +120,43 @@ function VerificationTab() {
 				</div> */}
 
 			{verification?.status == "pending" && (
-				<div>
-					<p>Your verification is still on process please bear with us</p>
+				<div className={styles.verificationItem}>
+					<Alert severity="warning" variant="outlined">
+						<AlertTitle>
+							<p className={styles.header}>Pending !</p>
+						</AlertTitle>
+						<p className={styles.body}>
+							Hello it seems that this institution is still{" "}
+							<strong>in process</strong>. Please bear with us.
+						</p>
+					</Alert>
 				</div>
 			)}
 
 			{verification?.status == "approved" && (
-				<div>
-					<p>This institution is verified by us.</p>
+				<div className={styles.verificationItem}>
+					<Alert severity="success" variant="outlined">
+						<AlertTitle>
+							<p className={styles.header}>Verified !</p>
+						</AlertTitle>
+						<p className={styles.body}>
+							<strong>Congratulations !</strong> we have succesfully verified
+							your institution. Please enjoy our services.
+						</p>
+					</Alert>
 				</div>
 			)}
 			{verification?.status == "disapproved" && (
-				<div>
-					<p>
-						Sorry but this institution is denied of its verification request.
-					</p>
+				<div className={styles.verificationItem}>
+					<Alert severity="error" variant="outlined">
+						<AlertTitle>
+							<p className={styles.header}>Denied !</p>
+						</AlertTitle>
+						<p className={styles.body}>
+							We apologize, but this institution has been
+							<strong>denied</strong> of its verification request.
+						</p>
+					</Alert>
 				</div>
 			)}
 		</div>

@@ -1,17 +1,22 @@
-import React from "react";
-import SubsCard from "../../reusable/subsCard";
-
-import styles from "./tabs.module.scss";
-// import { PayPalButtons } from '@paypal/react-paypal-js';
-import Paypal from "../../../helpers/paypal";
-import CustomizedDialogs from "../../reusable/dialog2";
-import { Button } from "@mui/material";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useEffect } from "react";
+import React from "react";
 import Cookies from "js-cookie";
+import Image from "next/image";
+
+import { Button } from "@mui/material";
+
+import styles from "./tabs.module.scss";
+import SubsCard from "../../reusable/subsCard";
+import CustomizedDialogs from "../../reusable/dialog2";
 import UtilityCard from "../../reusable/utilityCard";
+import Paypal from "../../../helpers/paypal";
+// import { PayPalButtons } from '@paypal/react-paypal-js';
+
 import promoPic from "../../../public/classroom.png";
-import { useRouter } from "next/router";
+import transactionImg from "../../../public/notification_icon.png";
+import { AiOutlineDollar } from "react-icons/ai";
 
 function SubscriptionTab() {
 	const [plans, setPlans] = useState([]);
@@ -90,10 +95,9 @@ function SubscriptionTab() {
 					<div className={styles.transactionList}>
 						{transactionList?.map((item) => (
 							<div className={styles.transaction}>
-								<img
-									alt="Transaction Icon"
-									className={styles.transaction_icon}
-								></img>
+								<div className={styles.transaction_icon}>
+									<AiOutlineDollar />
+								</div>
 								<div>
 									<p className={styles.transaction_highlight}>
 										You've successfully subscribe to our {item.plan.name}!
