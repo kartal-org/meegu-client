@@ -7,10 +7,11 @@
 	border: 1px solid rgba(126, 126, 126, 0.04);
 }
 .chip_list {
+	// background-color: blueviolet;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	width: clamp(20rem, 70vw, 50rem);
+	width: clamp(20rem, 70vw, 80rem);
 	flex-wrap: wrap;
 	gap: var(--size-fluid-1);
 	margin-top: var(--size-fluid-1);

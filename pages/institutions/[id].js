@@ -25,9 +25,11 @@ import ResourcesTab from "../../components/adviser/tabs/resourcesTab";
 import ArticlesTab from "../../components/adviser/tabs/articlesTab";
 import PeoplesTab from "../../components/adviser/tabs/peoplesTab";
 import SubscriptionTab from "../../components/adviser/tabs/subscriptionTab";
+import RecommendationsTab from "../../components/moderator/tabs/recommendationsTab";
 
 import CloseIcon from "@mui/icons-material/Close";
 import { blue } from "@mui/material/colors";
+
 function InsideInstitution({
 	institution,
 	recommendations,
@@ -205,6 +207,11 @@ function InsideInstitution({
 							route: `/institutions/${router.query.id}?tab=articles`,
 						},
 						{
+							label: "Recommendations",
+							value: "recommendations",
+							route: `/institutions/${router.query.id}?tab=recommendations`,
+						},
+						{
 							label: "Resources",
 							value: "resources",
 							route: `/institutions/${router.query.id}?tab=resources`,
@@ -233,6 +240,15 @@ function InsideInstitution({
 						recommendationList={recommendationList}
 						setRecommendationList={setRecommendationList}
 						articles={articles}
+					/>
+				) : null}
+
+				{router.query.tab === "recommendations" || router.query.tab == "" ? (
+					<RecommendationsTab
+						institution={institution}
+						recommendationList={recommendationList}
+						setRecommendationList={setRecommendationList}
+						// articles={articles}
 					/>
 				) : null}
 
