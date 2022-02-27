@@ -147,6 +147,11 @@ input {
 .MuiAutocomplete-listbox {
 	background-color: var(--background-color-dark) !important;
 }
+
+.MuiRating-icon {
+	fill: none;
+	color: var(--primary-color);
+}
 /* button > svg,
 span > svg,
 span > select {
@@ -156,6 +161,23 @@ span > select {
 } */
 .MuiMenu-paper {
 	background-color: #0b0f1f;
+}
+
+.MuiAccordion-root {
+	background-color: var(--background-color-dark);
+	color: var(--white);
+	border-color: var(--white);
+}
+/* .MuiPaper-elevation, */
+.MuiAccordion-gutters,
+.MuiAccordionSummary-root,
+.MuiAccordionSummary-expandIconWrapper,
+.MuiAccordionSummary-content,
+.MuiAccordionSummary-contentGutters,
+.MuiAccordionSummary-gutters {
+	/* background-color: var(--background-color-dark); */
+	color: var(--white);
+	border-color: var(--white) !important;
 }
 
 .article-content > ul > li {
