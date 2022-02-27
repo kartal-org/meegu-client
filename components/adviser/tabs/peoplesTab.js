@@ -47,8 +47,9 @@ function PeoplesTab({ institutionID }) {
 			},
 		});
 		const result = await response.json();
+		console.log(result);
 
-		setUserList(result);
+		setUserList(result.data);
 	}
 	async function addPeople(data, e) {
 		e.preventDefault();
@@ -93,7 +94,7 @@ function PeoplesTab({ institutionID }) {
 								setSelectedUser(newInputValue);
 							}}
 							// value={selectedUser}
-							options={userList.filter((array) =>
+							options={userList?.filter((array) =>
 								membersList.map((val) => val.user).some((filter) => filter.id !== array.id)
 							)}
 							getOptionLabel={(option) => option.first_name + ' ' + option.last_name}

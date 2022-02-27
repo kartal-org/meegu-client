@@ -93,7 +93,7 @@ export async function getServerSideProps(context) {
 	const result = await response.json();
 	console.log(result);
 	props.classroom = result.data;
-	if (status == 'submitted' || status == '') {
+	if (status == 'submitted' || status == null) {
 		const responseFileSubmitted = await fetch(
 			process.env.BACKEND_API_UR + `/workspaces/files?workspace=${classroomId}&status=submitted`,
 			{

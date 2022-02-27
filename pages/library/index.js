@@ -1,15 +1,15 @@
-import { useRouter } from "next/router";
-import { useState } from "react";
-import React from "react";
-import Cookies from "js-cookie";
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import React from 'react';
+import Cookies from 'js-cookie';
 
-import PageLayout from "../../layouts/pageLayout";
-import ArticleCard from "../../components/reusable/articleCard";
-import styles from "./library.module.scss";
+import PageLayout from '../../layouts/pageLayout';
+import ArticleCard from '../../components/reusable/articleCard';
+import styles from './library.module.scss';
 
-import fileImg from "../../public/file_illustration.svg";
+import fileImg from '../../public/file_illustration.svg';
 
-import { Button } from "@mui/material";
+import { Button } from '@mui/material';
 
 function index({ libItems }) {
 	const [libraryList, setLibraryList] = useState(libItems);
@@ -22,20 +22,15 @@ function index({ libItems }) {
 
 	async function deleteFile(libItem) {
 		// e.preventDefault();
-		const response = await fetch(
-			process.env.BACKEND_API_UR + `/libraries/${libItem.id}/`,
-			{
-				method: "PATCH",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${Cookies.get("access_token")}`,
-				},
-				body: JSON.stringify({ isActive: false }),
-			}
-		);
+		const response = await fetch(process.env.BACKEND_API_UR + `/libraries/${libItem}/`, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${Cookies.get('access_token')}`,
+			},
+		});
 		const result = await response.json();
-		const { lib } = result;
-		setLibraryList(libraryList.filter((val) => val.id !== libItem.id));
+		setLibraryList(libraryList.filter((val) => val.id !== result.id));
 	}
 
 	return (
@@ -48,19 +43,16 @@ function index({ libItems }) {
 					>
 						<ArticleCard
 							title={lib.article.title}
-							subtitle="PDF"
+							subtitle='PDF'
 							content={lib.article.abstract}
 							illustration={fileImg}
 							actions={
 								<>
-									<Button variant="contained">Open</Button>
+									<Button variant='contained'>Open</Button>
 								</>
 							}
 						>
-							<Button onClick={() => deleteFile(lib.id)}>
-								{" "}
-								Remove from Library
-							</Button>
+							<Button onClick={() => deleteFile(lib.id)}> Remove from Library</Button>
 						</ArticleCard>
 					</article>
 				))}
@@ -75,7 +67,7 @@ export async function getServerSideProps(context) {
 	const props = {};
 
 	const request = await fetch(process.env.BACKEND_API_UR + `/libraries/`, {
-		method: "GET",
+		method: 'GET',
 		headers: {
 			Authorization: `Bearer ${req.cookies.access_token}`,
 		},
