@@ -81,7 +81,11 @@ function PeoplesTab({ institutionID }) {
 		const getUser = userList.filter(
 			(val) => `${val.first_name} ${val.last_name}` === selectedUser
 		);
-		console.log({ user: getUser[0].id, institution: institutionID, isActive: true });
+		console.log({
+			user: getUser[0].id,
+			institution: institutionID,
+			isActive: true,
+		});
 
 		const request = await fetch(process.env.BACKEND_API_UR + '/institutions/members', {
 			method: 'POST',
@@ -89,7 +93,11 @@ function PeoplesTab({ institutionID }) {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${Cookies.get('access_token')}`,
 			},
-			body: JSON.stringify({ user: getUser[0].id, institution: institutionID, isActive: true }),
+			body: JSON.stringify({
+				user: getUser[0].id,
+				institution: institutionID,
+				isActive: true,
+			}),
 		});
 		const result = await request.json();
 		console.log(result);
