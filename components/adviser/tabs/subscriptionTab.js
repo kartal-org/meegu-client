@@ -18,7 +18,7 @@ import promoPic from "../../../public/classroom.png";
 import transactionImg from "../../../public/notification_icon.png";
 import { AiOutlineDollar } from "react-icons/ai";
 
-function SubscriptionTab() {
+function SubscriptionTab({ institutionID }) {
 	const [plans, setPlans] = useState([]);
 	const [transactionList, setTransactionList] = useState([]);
 	const router = useRouter();
@@ -78,7 +78,7 @@ function SubscriptionTab() {
 											</UtilityCard>
 										}
 									>
-										<Paypal institution={router.query.id} plan={plan} />
+										<Paypal institution={institutionID} plan={plan} />
 									</CustomizedDialogs>
 								))}
 							</div>

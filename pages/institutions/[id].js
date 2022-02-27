@@ -25,17 +25,18 @@ import ResourcesTab from "../../components/adviser/tabs/resourcesTab";
 import ArticlesTab from "../../components/adviser/tabs/articlesTab";
 import PeoplesTab from "../../components/adviser/tabs/peoplesTab";
 import SubscriptionTab from "../../components/adviser/tabs/subscriptionTab";
-import RecommendationsTab from "../../components/moderator/tabs/recommendationsTab";
 
 import CloseIcon from "@mui/icons-material/Close";
 import { blue } from "@mui/material/colors";
+import VerificationNotice from "../../components/moderator/verificationNotice";
+import NoSubscriptionNotice from "../../components/moderator/noSubscriptionNotice";
+import RecommendationsTab from "../../components/moderator/tabs/recommendationsTab";
 
 function InsideInstitution({
 	institution,
 	recommendations,
 	articles,
 	resources,
-	members,
 }) {
 	const color = blue[300];
 
@@ -114,29 +115,14 @@ function InsideInstitution({
 		console.log(resultEdit);
 	}
 
+	console.log(!institution.isVerified);
+
 	return (
 		<>
 			{/* <div className={styles.alert}>kasdjg</div> */}
-			<Alert
-				severity="info"
-				variant="filled"
-				action={
-					<IconButton
-						aria-label="close"
-						color="inherit"
-						size="small"
-						// onClick={() => {
-						// 	setOpen(false);
-						// }}
-					>
-						<CloseIcon fontSize="inherit" />
-					</IconButton>
-				}
-				sx={{ mb: 3 }}
-			>
-				<AlertTitle>Info</AlertTitle>
-				This is an Info alert — <strong>check it out!</strong>
-			</Alert>
+			{/* {!institution.is_verified && <VerificationNotice />}
+			<NoSubscriptionNotice /> */}
+
 			<Profile
 				name={institutionProfile.name}
 				cover={institutionProfile.profileCover}
@@ -256,17 +242,23 @@ function InsideInstitution({
 					<ResourcesTab resources={resources} institution={institution} />
 				)}
 
-				{router.query.tab === "peoples" && <PeoplesTab members={members} />}
+				{router.query.tab === "peoples" && (
+					<PeoplesTab institutionID={institution.id} />
+				)}
 
-				{router.query.tab === "subscription" && <SubscriptionTab />}
-				{router.query.tab === "verification" && <VerificationTab />}
+				{router.query.tab === "subscription" && (
+					<SubscriptionTab institutionID={institution.id} />
+				)}
+				{router.query.tab === "verification" && (
+					<VerificationTab institutionID={institution.id} />
+				)}
 			</div>
 		</>
 	);
 }
 
 export async function getServerSideProps(context) {
-	const { req, res, query } = context;
+	const { req, query } = context;
 	const access_token = req.cookies.access_token;
 	const institutionID = query.id;
 	const props = {};
@@ -331,37 +323,6 @@ export async function getServerSideProps(context) {
 	// console.log(resultResource);
 	props.resources = resultResource;
 
-	//response for get institution members
-	const responseGetMembers = await fetch(
-		process.env.BACKEND_API_UR +
-			`/institutions/members?institution=${institutionID}`,
-		{
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${access_token}`,
-			},
-		}
-	);
-	const resultMember = await responseGetMembers.json();
-	console.log("members", resultMember);
-	props.members = resultMember;
-
-	// console.log(institutionID);
-	// props.institution = []
-
-	// response for institution subscriptions
-	const responseGetSubscriptions = await fetch(
-		process.env.BACKEND_API_UR + `/transactions?institution=${institutionID}`,
-		{
-			headers: {
-				Authorization: `Bearer ${access_token}`,
-			},
-		}
-	);
-	const resultGetSubscriptions = await responseGetSubscriptions.json();
-	console.log(resultGetSubscriptions);
-	props.subscriptions = resultGetSubscriptions;
 	return { props };
 }
 

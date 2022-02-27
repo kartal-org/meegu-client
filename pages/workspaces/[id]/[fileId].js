@@ -11,12 +11,16 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import QuillEditor from '../../../components/quillEditor';
 import { Button } from '@mui/material';
 import PdfViewer from '../../../components/pdfViewer';
+import CommentSection from '../../../components/researcher/commentSection';
+import { useSnackBarUpdate } from '../../../contexts/useSnackBar';
 
 function OneFile({ file, comments }) {
 	const user = useUser();
 	const router = useRouter();
 	const [commentList, setCommentList] = useState(comments);
 	const [quillContent, setQuillContent] = useState(file.richText);
+	const [fileStatus, setFileStatus] = useState(file.status);
+	const snackBarUpdate = useSnackBarUpdate();
 	const {
 		register, // register inputs
 		handleSubmit, // handle form submit
@@ -55,6 +59,7 @@ function OneFile({ file, comments }) {
 		const { data: fileResult } = result;
 
 		setValue('name', fileResult.name);
+		snackBarUpdate(true, 'File Saved!');
 
 		console.log(fileResult);
 	}
@@ -112,6 +117,7 @@ function OneFile({ file, comments }) {
 		setValue('name', fileResult.name);
 
 		console.log(fileResult);
+		setFileStatus('submitted');
 	}
 	return (
 		<div>
@@ -129,17 +135,33 @@ function OneFile({ file, comments }) {
 							/>
 						</form>
 						<div>
-							<Button onClick={handleSubmit(editFile)} variant='contained'>
-								Save Changes
-							</Button>
+							{fileStatus !== 'ongoing' ? null : (
+								<Button onClick={handleSubmit(editFile)}>Save Changes</Button>
+							)}
+							{fileStatus !== 'ongoing' ? (
+								<Button onClick={() => setFileStatus('ongoing')}>Edit Submission</Button>
+							) : (
+								<Button onClick={submitFile}>Submit File</Button>
+							)}
+
 							{/* <IconButton>
 								<MoreHorizIcon />
 							</IconButton> */}
-							<Button onClick={submitFile}>Submit File</Button>
 						</div>
 					</header>
 
-					<QuillEditor data={quillContent} setData={setQuillContent} />
+					<main className={styles.page__content}>
+						{fileStatus !== 'ongoing' ? (
+							<div
+								className='article-content'
+								dangerouslySetInnerHTML={{ __html: quillContent }}
+							/>
+						) : (
+							<QuillEditor data={quillContent} setData={setQuillContent} />
+						)}
+
+						<CommentSection fileID={file.id} />
+					</main>
 				</>
 			)}
 		</div>

@@ -20,6 +20,7 @@ import ChipList from '../../components/reusable/chips';
 import { useUser } from '../../contexts/userProvider';
 import { useRouter } from 'next/router';
 import { useSnackBarUpdate } from '../../contexts/useSnackBar';
+import Link from 'next/link';
 
 const Input = styled('input')({
 	display: 'none',
@@ -118,7 +119,19 @@ function UserProfile({ account, affliate }) {
 					<div>
 						<h3>{profile.first_name + ' ' + profile.last_name}</h3>
 						<p style={{ textTransform: 'capitalize' }}>
-							<em>{profile.type}</em>
+							<em>{profile.type}</em>{' '}
+							<span>
+								|
+								<span className={styles.affliate}>
+									{affliate[0] ? (
+										<Link href={`/institutions/${affliate[0].id}`}>
+											<a>{affliate[0].name}</a>
+										</Link>
+									) : (
+										''
+									)}
+								</span>
+							</span>
 						</p>
 						<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, in.</p>
 					</div>
