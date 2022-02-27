@@ -113,6 +113,7 @@ function ImportResource() {
 				/> */}
 				{resourceList?.map((resource) => (
 					<article key={resource.id} className={styles.card}>
+						{resource.pdf ? 'PDF ni sya' : 'Template ni sya'}
 						<h3>{resource.name}</h3>
 						<p>{resource.institution.name}</p>
 						<p>{resource.description}</p>
