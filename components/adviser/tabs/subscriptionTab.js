@@ -1,17 +1,22 @@
-import React from 'react';
-import SubsCard from '../../reusable/subsCard';
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { useEffect } from "react";
+import React from "react";
+import Cookies from "js-cookie";
+import Image from "next/image";
 
-import styles from './tabs.module.scss';
+import { Button } from "@mui/material";
+
+import styles from "./tabs.module.scss";
+import SubsCard from "../../reusable/subsCard";
+import CustomizedDialogs from "../../reusable/dialog2";
+import UtilityCard from "../../reusable/utilityCard";
+import Paypal from "../../../helpers/paypal";
 // import { PayPalButtons } from '@paypal/react-paypal-js';
-import Paypal from '../../../helpers/paypal';
-import CustomizedDialogs from '../../reusable/dialog2';
-import { Button } from '@mui/material';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import Cookies from 'js-cookie';
-import UtilityCard from '../../reusable/utilityCard';
-import promoPic from '../../../public/classroom.png';
-import { useRouter } from 'next/router';
+
+import promoPic from "../../../public/classroom.png";
+import transactionImg from "../../../public/notification_icon.png";
+import { AiOutlineDollar } from "react-icons/ai";
 
 function SubscriptionTab({ institutionID }) {
 	const [plans, setPlans] = useState([]);
@@ -19,11 +24,14 @@ function SubscriptionTab({ institutionID }) {
 	const router = useRouter();
 
 	async function fetchPlans() {
-		const request = await fetch(process.env.BACKEND_API_UR + `/transactions/plans`, {
-			headers: {
-				Authorization: `Bearer ${Cookies.get('access_token')}`,
-			},
-		});
+		const request = await fetch(
+			process.env.BACKEND_API_UR + `/transactions/plans`,
+			{
+				headers: {
+					Authorization: `Bearer ${Cookies.get("access_token")}`,
+				},
+			}
+		);
 		const result = await request.json();
 		console.log(result);
 		setPlans(result);
@@ -32,11 +40,11 @@ function SubscriptionTab({ institutionID }) {
 	async function fetchTransactions() {
 		const request = await fetch(process.env.BACKEND_API_UR + `/transactions`, {
 			headers: {
-				Authorization: `Bearer ${Cookies.get('access_token')}`,
+				Authorization: `Bearer ${Cookies.get("access_token")}`,
 			},
 		});
 		const result = await request.json();
-		console.log('transaction', result);
+		console.log("transaction", result);
 		setTransactionList(result);
 	}
 
@@ -47,47 +55,20 @@ function SubscriptionTab({ institutionID }) {
 	return (
 		<>
 			<div className={styles.subscriptionContainer}>
-				{/* <CustomizedDialogs
-					title="Buy Subscription"
-					openBtn={<Button>Buy Subscription</Button>}
-					maxWidth="md"
-				>
-					<h3>Please Select Your Plan </h3>
-					<br />
-					<div className="card-container">
-						{plans?.map((plan) => (
-							<CustomizedDialogs
-								key={plan.id}
-								title="Buy Subscription"
-								openBtn={
-									<UtilityCard illustration={promoPic} title={plan.name}>
-										<p>
-											<em>PHP {plan.price}</em>
-										</p>
-										<p>{plan.description}</p>
-									</UtilityCard>
-								}
-							>
-								<Paypal institution={router.query.id} plan={plan} />
-							</CustomizedDialogs>
-						))}
-					</div>
-				</CustomizedDialogs> */}
-
 				<div className={styles.subsContainerItem}>
 					<div>
 						<CustomizedDialogs
-							title='Buy Subscription'
+							title="Buy Subscription"
 							openBtn={<Button>Buy Subscription</Button>}
-							maxWidth='md'
+							maxWidth="md"
 						>
 							<h3>Please Select Your Plan </h3>
 							<br />
-							<div className='card-container'>
+							<div className="card-container">
 								{plans?.map((plan) => (
 									<CustomizedDialogs
 										key={plan.id}
-										title='Buy Subscription'
+										title="Buy Subscription"
 										openBtn={
 											<UtilityCard illustration={promoPic} title={plan.name}>
 												<p>
@@ -106,7 +87,33 @@ function SubscriptionTab({ institutionID }) {
 				</div>
 
 				<div className={styles.subsContainerItem}>
-					<SubsCard title='Subscription Plan' subtitle='Current Subscription Plan'></SubsCard>
+					<SubsCard
+						title={transactionList[0] ? transactionList[0].plan.name : "None"}
+						subtitle="Latest Subscription Plan"
+					></SubsCard>
+
+					<div className={styles.transactionList}>
+						{transactionList?.map((item) => (
+							<div className={styles.transaction}>
+								<div className={styles.transaction_icon}>
+									<AiOutlineDollar />
+								</div>
+								<div className={styles.list}>
+									<div className={styles.listHeader}>
+										<p className={styles.transaction_highlight}>
+											You've successfully subscribed to our {item.plan.name}!
+										</p>
+
+										<p className={styles.date}>date here</p>
+									</div>
+									<p className={styles.transaction_message}>
+										Please enjoy the services we offer for just{" "}
+										<strong>{item.plan.price}</strong>
+									</p>
+								</div>
+							</div>
+						))}
+					</div>
 				</div>
 			</div>
 		</>

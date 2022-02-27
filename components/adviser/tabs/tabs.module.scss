@@ -9,14 +9,73 @@
 	margin-bottom: 10px;
 }
 
+//people tab
+.addPeopleBtn {
+	margin-top: 25px;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
 .peopleContainer {
 	display: grid;
 	gap: 10px;
 	margin-top: 20px;
 }
+.addPeopleForm {
+	padding: 3px;
+}
 
+//subs tab
 .subscriptionContainer {
 	margin-top: 20px;
+}
+
+.transactionList {
+	margin-top: 30px;
+	margin-bottom: 30px;
+
+	.transaction {
+		border-top: 1px solid #e2e2e2;
+
+		width: 100%;
+		display: flex;
+		align-items: center;
+		gap: 20px;
+		padding: 0.5em 1em;
+
+		&_icon {
+			font-size: 24px;
+			color: var(--blue-3);
+		}
+
+		&_highlight {
+			font-weight: bold;
+		}
+
+		&_message {
+			color: #c0c0c0;
+			font-weight: 100;
+			font-size: 14px;
+		}
+
+		.list {
+			width: 100%;
+		}
+
+		.listHeader {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			.date {
+				font-size: 12px;
+			}
+		}
+	}
+
+	&:last-child {
+		border-bottom: 1px solid #c5c5c5;
+	}
 }
 
 @media screen and (min-width: 980px) {

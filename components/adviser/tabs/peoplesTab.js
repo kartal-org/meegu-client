@@ -138,24 +138,6 @@ function PeoplesTab({ institutionID }) {
 						avatar={member.user.profileImage}
 					></PeopleCard>
 				))}
-				{/* {membersList.map((item) => (
-					<PeopleCard
-						key={item.id}
-						name={item.name}
-						role='Adviser'
-						avatar={fileImg}
-					></PeopleCard>
-				))} */}
-				{/* <PeopleCard
-					name="Maria Thania Sinogaya"
-					role="Adviser"
-					avatar={fileImg}
-				></PeopleCard>
-				<PeopleCard
-					name="Maria Thania Sinogaya"
-					role="Adviser"
-					avatar={fileImg}
-				></PeopleCard> */}
 			</div>
 		</>
 	);

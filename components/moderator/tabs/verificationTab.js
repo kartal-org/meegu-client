@@ -1,10 +1,11 @@
-import { Button } from '@mui/material';
+import { Alert, AlertTitle, Button } from '@mui/material';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSnackBarUpdate } from '../../../contexts/useSnackBar';
 import CustomizedDialogs from '../../reusable/dialog2';
+import styles from './verification.module.scss';
 
 function VerificationTab({ institutionID }) {
 	const [verification, setVerification] = useState();
@@ -57,40 +58,100 @@ function VerificationTab({ institutionID }) {
 	return (
 		<div>
 			{!verification && (
-				<div>
+				<div className={styles.verificationLayout}>
+					<div className={styles.verificationItem}>
+						<CustomizedDialogs
+							title='Verify Institution'
+							openBtn={<Button>Get Verified</Button>}
+							primaryAction={
+								<Button onClick={handleSubmit(sendVerification)}>Submit</Button>
+							}
+						>
+							<form onSubmit={handleSubmit(sendVerification)}>
+								<p>
+									Please upload a proof that your institution exist and your are in-charge.
+								</p>
+								<input type='file' {...register('document')} />
+							</form>
+						</CustomizedDialogs>
+					</div>
+
+					<div className={styles.verificationItem}>
+						<Alert severity='info' variant='outlined'>
+							<AlertTitle>
+								<p className={styles.header}>Not Verified !</p>
+							</AlertTitle>
+							{/* This is an info alert — <strong>check it out!</strong> */}
+							<p className={styles.body}>
+								Hello it seems that this institution is still <strong>not verified</strong>.
+								That means you don't have the capacity and ability to publish articles and
+								resources yet.
+							</p>
+						</Alert>
+					</div>
+				</div>
+			)}
+			{/* <div>
 					<p>
-						Hello it seems that this institution is still not verified. That means you don't
-						have the capacity to publish articles and resources yet.
+						Hello it seems that this institution is still not verified. That
+						means you don't have the capacity to publish articles and resources
+						yet.
 					</p>
 					<CustomizedDialogs
-						title='Verify Institution'
+						title="Verify Institution"
 						openBtn={<Button>Get Verified</Button>}
-						primaryAction={<Button onClick={handleSubmit(sendVerification)}>Submit</Button>}
+						primaryAction={
+							<Button onClick={handleSubmit(sendVerification)}>Submit</Button>
+						}
 					>
 						<form onSubmit={handleSubmit(sendVerification)}>
 							<p>
-								Please upload a proof that your institution exist and your are in-charge.
+								Please upload a proof that your institution exist and your are
+								in-charge.
 							</p>
-							<input type='file' {...register('document')} />
+							<input type="file" {...register("document")} />
 						</form>
 					</CustomizedDialogs>
-				</div>
-			)}
+				</div> */}
 
 			{verification?.status == 'pending' && (
-				<div>
-					<p>Your verification is still on process please bear with us</p>
+				<div className={styles.verificationItem}>
+					<Alert severity='warning' variant='outlined'>
+						<AlertTitle>
+							<p className={styles.header}>Pending !</p>
+						</AlertTitle>
+						<p className={styles.body}>
+							Hello it seems that this institution is still <strong>in process</strong>.
+							Please bear with us.
+						</p>
+					</Alert>
 				</div>
 			)}
 
 			{verification?.status == 'approved' && (
-				<div>
-					<p>This institution is verified by us.</p>
+				<div className={styles.verificationItem}>
+					<Alert severity='success' variant='outlined'>
+						<AlertTitle>
+							<p className={styles.header}>Verified !</p>
+						</AlertTitle>
+						<p className={styles.body}>
+							<strong>Congratulations !</strong> we have succesfully verified your
+							institution. Please enjoy our services.
+						</p>
+					</Alert>
 				</div>
 			)}
 			{verification?.status == 'disapproved' && (
-				<div>
-					<p>Sorry but this institution is denied of its verification request.</p>
+				<div className={styles.verificationItem}>
+					<Alert severity='error' variant='outlined'>
+						<AlertTitle>
+							<p className={styles.header}>Denied !</p>
+						</AlertTitle>
+						<p className={styles.body}>
+							We apologize, but this institution has been
+							<strong>denied</strong> of its verification request.
+						</p>
+					</Alert>
 				</div>
 			)}
 		</div>

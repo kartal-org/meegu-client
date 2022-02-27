@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import React from "react";
+import Cookies from "js-cookie";
 
 import PageLayout from "../../layouts/pageLayout";
 import ArticleCard from "../../components/reusable/articleCard";
@@ -19,11 +20,32 @@ function index({ libItems }) {
 		router.push(`/articles/${item}`);
 	}
 
+	async function deleteFile(libItem) {
+		// e.preventDefault();
+		const response = await fetch(
+			process.env.BACKEND_API_UR + `/libraries/${libItem.id}/`,
+			{
+				method: "PATCH",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${Cookies.get("access_token")}`,
+				},
+				body: JSON.stringify({ isActive: false }),
+			}
+		);
+		const result = await response.json();
+		const { lib } = result;
+		setLibraryList(libraryList.filter((val) => val.id !== libItem.id));
+	}
+
 	return (
 		<>
 			<div className={styles.library}>
 				{libraryList?.map((lib) => (
-					<article key={lib.id} onClick={() => viewFile(lib.article.id)}>
+					<article
+						key={lib.id}
+						// onClick={() => viewFile(lib.article.id)}
+					>
 						<ArticleCard
 							title={lib.article.title}
 							subtitle="PDF"
@@ -34,7 +56,12 @@ function index({ libItems }) {
 									<Button variant="contained">Open</Button>
 								</>
 							}
-						></ArticleCard>
+						>
+							<Button onClick={() => deleteFile(lib.id)}>
+								{" "}
+								Remove from Library
+							</Button>
+						</ArticleCard>
 					</article>
 				))}
 			</div>
@@ -44,6 +71,7 @@ function index({ libItems }) {
 
 export async function getServerSideProps(context) {
 	const { req, query } = context;
+	const articleID = query.id;
 	const props = {};
 
 	const request = await fetch(process.env.BACKEND_API_UR + `/libraries/`, {
