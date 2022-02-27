@@ -10,9 +10,10 @@ import ChipList from '../../components/reusable/chips';
 import fileImg from '../../public/file_illustration.svg';
 import PageLayout from '../../layouts/pageLayout';
 
-import { Button } from '@mui/material';
+import { Button, Rating } from '@mui/material';
 import { useHomeFilters } from '../../hooks/useHomeFilters';
 import { useSnackBarUpdate } from '../../contexts/useSnackBar';
+import StarIcon from '@mui/icons-material/Star';
 
 function index({ articles }) {
 	const router = useRouter();
@@ -69,6 +70,8 @@ function index({ articles }) {
 							}
 						>
 							<div>
+								<Rating value={article.rating} readOnly precision={0.25} />
+								<p>{article.reviews} reviews</p>
 								<Button onClick={() => postLibrary(article.id)}>Add to Library</Button>
 							</div>
 						</ArticleCard>

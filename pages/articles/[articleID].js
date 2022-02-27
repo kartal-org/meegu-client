@@ -19,9 +19,8 @@ function ArticleViewer({ article }) {
 	};
 
 	const pdfFile = article.recommendation ? article.recommendation.file.pdf : article.pdf;
-	const richTextFile = article.recommendation
-		? article.recommendation.file.richText
-		: article.richText;
+	const richTextFile = article.recommendation && article.recommendation.file.richText;
+	console.log(richTextFile);
 
 	return (
 		<div className={styles.page__container}>
