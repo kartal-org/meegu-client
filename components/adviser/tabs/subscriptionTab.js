@@ -13,7 +13,7 @@ import UtilityCard from '../../reusable/utilityCard';
 import promoPic from '../../../public/classroom.png';
 import { useRouter } from 'next/router';
 
-function SubscriptionTab() {
+function SubscriptionTab({ institutionID }) {
 	const [plans, setPlans] = useState([]);
 	const [transactionList, setTransactionList] = useState([]);
 	const router = useRouter();
@@ -97,7 +97,7 @@ function SubscriptionTab() {
 											</UtilityCard>
 										}
 									>
-										<Paypal institution={router.query.id} plan={plan} />
+										<Paypal institution={institutionID} plan={plan} />
 									</CustomizedDialogs>
 								))}
 							</div>

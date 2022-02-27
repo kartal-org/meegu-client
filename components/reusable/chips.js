@@ -12,6 +12,10 @@ export default function ChipList(props) {
 	console.log(router.query);
 	console.log(chipActive);
 
+	useEffect(() => {
+		setChipActive(defaultVal);
+	}, [defaultVal]);
+
 	function onChipClick(chip, e) {
 		e.preventDefault();
 		setChipActive(chip.value);

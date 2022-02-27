@@ -9,3 +9,14 @@
 	flex-direction: column;
 	gap: 1rem;
 }
+
+.affliate {
+	font-weight: 400;
+	transition: 300ms ease-in-out;
+	margin-left: var(--size-fluid-1);
+
+	&:hover {
+		text-decoration: underline;
+		color: var(--primary-color);
+	}
+}

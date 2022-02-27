@@ -6,9 +6,14 @@ export async function middleware(req, event) {
 	const refresh_token = req.cookies.refresh_token ? req.cookies.refresh_token : false;
 	const inLandingPage = req.nextUrl.pathname === '/';
 	const hasTokens = access_token && refresh_token;
+	const url = req.nextUrl.clone();
+	url.pathname = '/';
 
 	if (!hasTokens && !inLandingPage) {
-		return NextResponse.redirect('/');
+		console.log(req.nextUrl.pathname);
+		console.log('hello');
+		console.log(url);
+		return NextResponse.rewrite(url);
 	}
 	// if (hasTokens && inLandingPage) {
 	// 	console.log(true);

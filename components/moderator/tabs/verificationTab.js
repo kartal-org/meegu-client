@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useSnackBarUpdate } from '../../../contexts/useSnackBar';
 import CustomizedDialogs from '../../reusable/dialog2';
 
-function VerificationTab() {
+function VerificationTab({ institutionID }) {
 	const [verification, setVerification] = useState();
 	const router = useRouter();
 	const access_token = Cookies.get('access_token');
@@ -17,7 +17,7 @@ function VerificationTab() {
 	async function fetchVerification() {
 		console.log(access_token);
 		const request = await fetch(
-			process.env.BACKEND_API_UR + `/institutions/verification?institution=${router.query.id}`,
+			process.env.BACKEND_API_UR + `/institutions/verification?institution=${institutionID}`,
 			{
 				headers: {
 					Authorization: `Bearer ${access_token}`,
@@ -40,7 +40,7 @@ function VerificationTab() {
 		console.log(data);
 		const formData = new FormData();
 		formData.append('document', data.document[0], data.document[0].name);
-		formData.append('institution', router.query.id);
+		formData.append('institution', institutionID);
 
 		const request = await fetch(process.env.BACKEND_API_UR + `/institutions/verification`, {
 			method: 'POST',
