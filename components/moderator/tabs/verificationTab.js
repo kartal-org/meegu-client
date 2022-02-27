@@ -1,15 +1,16 @@
-import { Button } from '@mui/material';
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useSnackBarUpdate } from '../../../contexts/useSnackBar';
-import CustomizedDialogs from '../../reusable/dialog2';
+import { Alert, AlertTitle, Button } from "@mui/material";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useSnackBarUpdate } from "../../../contexts/useSnackBar";
+import CustomizedDialogs from "../../reusable/dialog2";
+import styles from "./verification.module.scss";
 
 function VerificationTab() {
 	const [verification, setVerification] = useState();
 	const router = useRouter();
-	const access_token = Cookies.get('access_token');
+	const access_token = Cookies.get("access_token");
 	const snackBarUpdate = useSnackBarUpdate();
 
 	const { register, handleSubmit } = useForm();
@@ -17,7 +18,8 @@ function VerificationTab() {
 	async function fetchVerification() {
 		console.log(access_token);
 		const request = await fetch(
-			process.env.BACKEND_API_UR + `/institutions/verification?institution=${router.query.id}`,
+			process.env.BACKEND_API_UR +
+				`/institutions/verification?institution=${router.query.id}`,
 			{
 				headers: {
 					Authorization: `Bearer ${access_token}`,
@@ -39,58 +41,98 @@ function VerificationTab() {
 		e.preventDefault();
 		console.log(data);
 		const formData = new FormData();
-		formData.append('document', data.document[0], data.document[0].name);
-		formData.append('institution', router.query.id);
+		formData.append("document", data.document[0], data.document[0].name);
+		formData.append("institution", router.query.id);
 
-		const request = await fetch(process.env.BACKEND_API_UR + `/institutions/verification`, {
-			method: 'POST',
-			headers: {
-				Authorization: `Bearer ${access_token}`,
-			},
-			body: formData,
-		});
+		const request = await fetch(
+			process.env.BACKEND_API_UR + `/institutions/verification`,
+			{
+				method: "POST",
+				headers: {
+					Authorization: `Bearer ${access_token}`,
+				},
+				body: formData,
+			}
+		);
 		const result = await request.json();
 		console.log(result);
-		snackBarUpdate(true, 'Verification Send!');
+		snackBarUpdate(true, "Verification Send!");
 	}
 
 	return (
 		<div>
 			{!verification && (
-				<div>
+				<div className={styles.verificationLayout}>
+					<div className={styles.verificationItem}>
+						<CustomizedDialogs
+							title="Verify Institution"
+							openBtn={<Button>Get Verified</Button>}
+							primaryAction={
+								<Button onClick={handleSubmit(sendVerification)}>Submit</Button>
+							}
+						>
+							<form onSubmit={handleSubmit(sendVerification)}>
+								<p>
+									Please upload a proof that your institution exist and your are
+									in-charge.
+								</p>
+								<input type="file" {...register("document")} />
+							</form>
+						</CustomizedDialogs>
+					</div>
+
+					<div className={styles.verificationItem}>
+						<Alert severity="info" variant="outlined">
+							<AlertTitle>Info</AlertTitle>
+							{/* This is an info alert — <strong>check it out!</strong> */}
+							<p>
+								Hello it seems that this institution is still{" "}
+								<strong>not verified</strong>. That means you don't have the
+								capacity and ability to publish articles and resources yet.
+							</p>
+						</Alert>
+					</div>
+				</div>
+			)}
+			{/* <div>
 					<p>
-						Hello it seems that this institution is still not verified. That means you don't
-						have the capacity to publish articles and resources yet.
+						Hello it seems that this institution is still not verified. That
+						means you don't have the capacity to publish articles and resources
+						yet.
 					</p>
 					<CustomizedDialogs
-						title='Verify Institution'
+						title="Verify Institution"
 						openBtn={<Button>Get Verified</Button>}
-						primaryAction={<Button onClick={handleSubmit(sendVerification)}>Submit</Button>}
+						primaryAction={
+							<Button onClick={handleSubmit(sendVerification)}>Submit</Button>
+						}
 					>
 						<form onSubmit={handleSubmit(sendVerification)}>
 							<p>
-								Please upload a proof that your institution exist and your are in-charge.
+								Please upload a proof that your institution exist and your are
+								in-charge.
 							</p>
-							<input type='file' {...register('document')} />
+							<input type="file" {...register("document")} />
 						</form>
 					</CustomizedDialogs>
-				</div>
-			)}
+				</div> */}
 
-			{verification?.status == 'pending' && (
+			{verification?.status == "pending" && (
 				<div>
 					<p>Your verification is still on process please bear with us</p>
 				</div>
 			)}
 
-			{verification?.status == 'approved' && (
+			{verification?.status == "approved" && (
 				<div>
 					<p>This institution is verified by us.</p>
 				</div>
 			)}
-			{verification?.status == 'disapproved' && (
+			{verification?.status == "disapproved" && (
 				<div>
-					<p>Sorry but this institution is denied of its verification request.</p>
+					<p>
+						Sorry but this institution is denied of its verification request.
+					</p>
 				</div>
 			)}
 		</div>

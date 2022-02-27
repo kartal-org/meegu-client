@@ -1,14 +1,27 @@
-import React, { useState } from 'react';
-import PageLayout from '../../../layouts/pageLayout';
-import PeopleCard from '../../reusable/peopleCard';
-import styles from './tabs.module.scss';
+import React, { useState } from "react";
+import PageLayout from "../../../layouts/pageLayout";
+import PeopleCard from "../../reusable/peopleCard";
+import styles from "./tabs.module.scss";
 
-import fileImg from '../../../public/Files.png';
+import fileImg from "../../../public/Files.png";
+import { Button, TextField } from "@mui/material";
+import CustomizedDialogs from "../../reusable/dialog2";
 
 function PeoplesTab({ members }) {
 	const [membersList, setMembersList] = useState(members);
 	return (
 		<>
+			<div className={styles.addPeopleBtn}>
+				<CustomizedDialogs
+					title="Add People"
+					primaryAction={<Button>Add</Button>}
+					openBtn={<Button>Add People</Button>}
+				>
+					<form className={styles.addPeopleForm}>
+						<TextField fullWidth label="Username" />
+					</form>
+				</CustomizedDialogs>
+			</div>
 			<div className={styles.peopleContainer}>
 				{membersList.map((member) => (
 					<PeopleCard
@@ -18,24 +31,6 @@ function PeoplesTab({ members }) {
 						avatar={member.user.profileImage}
 					></PeopleCard>
 				))}
-				{/* {membersList.map((item) => (
-					<PeopleCard
-						key={item.id}
-						name={item.name}
-						role='Adviser'
-						avatar={fileImg}
-					></PeopleCard>
-				))} */}
-				{/* <PeopleCard
-					name="Maria Thania Sinogaya"
-					role="Adviser"
-					avatar={fileImg}
-				></PeopleCard>
-				<PeopleCard
-					name="Maria Thania Sinogaya"
-					role="Adviser"
-					avatar={fileImg}
-				></PeopleCard> */}
 			</div>
 		</>
 	);
