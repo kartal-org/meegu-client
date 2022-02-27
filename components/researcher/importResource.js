@@ -77,7 +77,6 @@ function ImportResource() {
 						className={styles.searchinput}
 						type='search'
 						placeholder='Search Resources'
-						onInput={handleSubmit(searchResource)}
 						{...register('searchText')}
 					/>
 
