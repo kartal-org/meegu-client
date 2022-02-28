@@ -26,13 +26,17 @@ import VerificationNotice from '../../components/moderator/verificationNotice';
 import NoSubscriptionNotice from '../../components/moderator/noSubscriptionNotice';
 import RecommendationsTab from '../../components/moderator/tabs/recommendationsTab';
 
+import defaultProfilePic from '../../public/default.jpg';
+import defaultProfileCover from '../../public/coverDefault.jpg';
+import { useSnackBarUpdate } from '../../contexts/useSnackBar';
+
 function InsideInstitution({
 	institution,
 	recommendations,
 	articles,
 	resources,
-	subscriptions,
-	verification,
+	isSubscribe,
+	isVerificationSend,
 }) {
 	const color = blue[300];
 
@@ -42,7 +46,8 @@ function InsideInstitution({
 	const profilePictureBtn = useRef();
 	const user = useUser();
 	const router = useRouter();
-	const canPublish = subscriptions && institution.is_verified;
+	const canPublish = isSubscribe && institution.is_verified;
+	const snackBarUpdate = useSnackBarUpdate();
 
 	const [recommendationList, setRecommendationList] = useState(recommendations);
 
@@ -105,20 +110,28 @@ function InsideInstitution({
 		const resultEdit = await responseEdit.json();
 		setInstitutionProfile(resultEdit);
 		console.log(resultEdit);
+		snackBarUpdate(true, 'Edit Saved!');
 	}
 
-	console.log(!institution.isVerified);
+	console.log(institution.profileImage);
+	console.log(canPublish);
 
 	return (
 		<>
 			{/* <div className={styles.alert}>kasdjg</div> */}
-			{!verification && <VerificationNotice />}
-			{subscriptions && <NoSubscriptionNotice />}
+			{!isVerificationSend && <VerificationNotice />}
+			{!isSubscribe && <NoSubscriptionNotice />}
 
 			<Profile
 				name={institutionProfile.name}
-				cover={institutionProfile.profileCover}
-				pic={institutionProfile.profileImage}
+				cover={
+					institutionProfile.profileCover
+						? institutionProfile.profileCover
+						: defaultProfileCover
+				}
+				pic={
+					institutionProfile.profileImage ? institutionProfile.profileImag : defaultProfilePic
+				}
 			>
 				<div className={styles.split}>
 					<div>
@@ -154,7 +167,13 @@ function InsideInstitution({
 							{/* <TextField fullWidth label='Profile Picture' {...register('profileImage')} />
 							<TextField fullWidth label='Profile Cover' {...register('profileCover')} /> */}
 							<TextField fullWidth label='Institution Name' {...register('name')} />
-							<TextField fullWidth label='About' multiline rows={2} {...register('about')} />
+							<TextField
+								fullWidth
+								label='About'
+								multiline
+								minRows={4}
+								{...register('about')}
+							/>
 							<TextField fullWidth label='Contact' {...register('contact')} />
 							<TextField fullWidth label='Address' {...register('address')} />
 							<TextField fullWidth label='Email' {...register('email')} />
@@ -314,7 +333,7 @@ export async function getServerSideProps(context) {
 	);
 	const resultSubscription = await responseGetSubscription.json();
 	// console.log(resultResource);
-	props.subscriptions = resultSubscription;
+	props.isSubscribe = resultSubscription.length > 0;
 	const responseGetVerification = await fetch(
 		process.env.BACKEND_API_UR + `/institutions/verification?institution=${institutionID}`,
 		{
@@ -326,8 +345,10 @@ export async function getServerSideProps(context) {
 		}
 	);
 	const resultVerification = await responseGetVerification.json();
-	// console.log(resultResource);
-	props.verification = resultVerification;
+	console.log('helo', resultVerification);
+	console.log('helo', resultVerification.length);
+	props.isVerificationSend = resultVerification.length > 0;
+	console.log(props.isVerificationSend);
 
 	return { props };
 }

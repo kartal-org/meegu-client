@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import Cookies from "js-cookie";
-import Link from "next/link";
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import Cookies from 'js-cookie';
+import Link from 'next/link';
 
 import {
 	TextField,
@@ -11,25 +11,26 @@ import {
 	MenuItem,
 	Select,
 	Typography,
-} from "@mui/material";
+} from '@mui/material';
 
-import PageLayout from "../../layouts/pageLayout";
-import { useUser } from "../../contexts/userProvider";
+import PageLayout from '../../layouts/pageLayout';
+import { useUser } from '../../contexts/userProvider';
 
-import Modal from "../../components/modal";
-import UtilityCard from "../../components/reusable/utilityCard";
+import Modal from '../../components/modal';
+import UtilityCard from '../../components/reusable/utilityCard';
 
-import institutionImg from "../../public/institutions.png";
-import emptyIllustration from "../../public/not-found.svg";
+import institutionImg from '../../public/institutions.png';
+import emptyIllustration from '../../public/not-found.svg';
 
-import styles from "../../styles/institutions.module.scss";
-import Image from "next/image";
+import styles from '../../styles/institutions.module.scss';
+import Image from 'next/image';
+import CustomizedDialogs from '../../components/reusable/dialog2';
 
 function index({ institutions }) {
 	const user = useUser();
 	const [institutionList, setInstitutionList] = useState(institutions);
 
-	const [age, setAge] = React.useState("");
+	const [age, setAge] = React.useState('');
 
 	const handleChange = (event) => {
 		setAge(event.target.value);
@@ -48,24 +49,21 @@ function index({ institutions }) {
 
 		const { name, about, contact, email, address } = data;
 
-		const response = await fetch(
-			process.env.BACKEND_API_UR + `/institutions/`,
-			{
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${Cookies.get("access_token")}`,
-				},
-				body: JSON.stringify({
-					creator: user.id,
-					name,
-					about,
-					contact,
-					email,
-					address,
-				}),
-			}
-		);
+		const response = await fetch(process.env.BACKEND_API_UR + `/institutions/`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${Cookies.get('access_token')}`,
+			},
+			body: JSON.stringify({
+				creator: user.id,
+				name,
+				about,
+				contact,
+				email,
+				address,
+			}),
+		});
 		const result = await response.json();
 		console.log(result);
 
@@ -76,61 +74,60 @@ function index({ institutions }) {
 		<>
 			<h1 className={styles.page_title}>Institutions</h1>
 			<div className={styles.header}>
-				<Modal
-					title="Create Institution"
-					button="Create Institution"
-					maxWidth="lg"
+				<CustomizedDialogs
+					title='Create Institution'
+					openBtn={<Button>Create Institution</Button>}
+					primaryAction={<Button onClick={handleSubmit(createInstitution)}>Create</Button>}
 				>
 					<form
-						autoComplete="off"
+						autoComplete='off'
 						onSubmit={handleSubmit(createInstitution)}
-						className={styles.createInstitutionForm}
+						// className={styles.createInstitutionForm}
 					>
 						<TextField
 							fullWidth
-							id="outlined-basic"
-							label="Insitution Name"
-							variant="outlined"
+							id='outlined-basic'
+							label='Insitution Name'
+							variant='outlined'
 							sx={{ mb: 2 }}
-							{...register("name")}
+							{...register('name')}
 						/>
 						<TextField
 							fullWidth
-							id="outlined-basic"
-							label="About"
-							variant="outlined"
+							id='outlined-basic'
+							label='About'
+							variant='outlined'
 							multiline
-							rows={2}
+							rows={4}
 							sx={{ mb: 2 }}
-							{...register("about")}
+							{...register('about')}
 						/>
 						<TextField
 							fullWidth
-							id="outlined-basic"
-							label="Contact"
-							variant="outlined"
+							id='outlined-basic'
+							label='Contact'
+							variant='outlined'
 							sx={{ mb: 2 }}
-							{...register("contact")}
+							{...register('contact')}
 						/>
 						<TextField
 							fullWidth
-							id="outlined-basic"
-							label="Address"
-							variant="outlined"
+							id='outlined-basic'
+							label='Address'
+							variant='outlined'
 							sx={{ mb: 2 }}
-							{...register("address")}
+							{...register('address')}
 						/>
 						<TextField
 							fullWidth
-							id="outlined-basic"
-							label="Email"
-							variant="outlined"
+							id='outlined-basic'
+							label='Email'
+							variant='outlined'
 							sx={{ mb: 2 }}
-							{...register("email")}
+							{...register('email')}
 						/>
-						<Button type="submit">Create</Button>
 					</form>
-				</Modal>
+				</CustomizedDialogs>
 			</div>
 
 			<Divider sx={{ m: 2 }} />
@@ -140,10 +137,7 @@ function index({ institutions }) {
 					{institutionList?.map((item) => (
 						<Link href={`/institutions/${item.id}`}>
 							<a>
-								<UtilityCard
-									title={item.name}
-									illustration={institutionImg}
-								></UtilityCard>
+								<UtilityCard title={item.name} illustration={institutionImg}></UtilityCard>
 							</a>
 						</Link>
 					))}
@@ -153,8 +147,8 @@ function index({ institutions }) {
 					<div className={styles.illustration}>
 						<Image
 							src={emptyIllustration}
-							layout="fill"
-							objectFit="contain"
+							layout='fill'
+							objectFit='contain'
 							className={styles.illustration}
 						></Image>
 					</div>
@@ -176,9 +170,9 @@ export async function getServerSideProps(context) {
 	const responseGetInstitution = await fetch(
 		process.env.BACKEND_API_UR + `/institutions?isOwner=${true}/`,
 		{
-			method: "GET",
+			method: 'GET',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 				Authorization: `Bearer ${access_token}`,
 			},
 		}

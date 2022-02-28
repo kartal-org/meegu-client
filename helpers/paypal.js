@@ -72,9 +72,7 @@ export default function Paypal({ plan, institution }) {
 						{plan.description}
 					</div>
 					<div className='flex w-full items-center justify-center'>
-						<Button variant='contained' onClick={buyPlan}>
-							Choose This
-						</Button>
+						<Button onClick={buyPlan}>Choose This</Button>
 					</div>
 				</>
 			) : (
