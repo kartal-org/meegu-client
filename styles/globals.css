@@ -234,3 +234,7 @@ span > select {
 	background: #555;
 	margin-left: 5px;
 } */
+
+img {
+	max-width: 100%;
+}

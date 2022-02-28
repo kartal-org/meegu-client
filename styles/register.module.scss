@@ -29,9 +29,10 @@
 	// padding-block: var(--size-fluid-2);
 	padding-inline: var(--size-fluid-5);
 	cursor: pointer;
+	transition: 400ms ease-in-out;
 
 	&:hover {
-		transform: scale(1.9);
+		transform: scale(1.5);
 	}
 }
 

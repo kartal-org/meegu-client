@@ -86,9 +86,11 @@
 
 	@media screen and (min-width: 980px) {
 		.footerSplit {
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-			gap: 10px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			// grid-template-columns: 1fr 1fr;
+			// gap: 10px;
 
 			.splitItem:nth-child(1) {
 				margin-bottom: 0;
@@ -116,6 +118,7 @@
 
 		&:hover {
 			background-color: #0a3069c2;
+			cursor: pointer;
 		}
 	}
 }

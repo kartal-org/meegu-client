@@ -50,7 +50,7 @@ function ArticleViewer({ article }) {
 							</Typography>
 						</AccordionSummary>
 						<AccordionDetails>
-							<ArticleInfoSection />
+							<ArticleInfoSection article={article} />
 						</AccordionDetails>
 					</Accordion>
 					<Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>

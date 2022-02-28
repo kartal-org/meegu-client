@@ -11,6 +11,7 @@ import CustomizedDialogs from '../reusable/dialog2';
 import { Button, TextField } from '@mui/material';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import { useSnackBarUpdate } from '../../contexts/useSnackBar';
 
 const HEADER = {
 	Authorization: `Bearer ${Cookies.get('access_token')}`,
@@ -21,6 +22,7 @@ function CreateFile({ setFileList, fileList }) {
 	const { register, handleSubmit } = useForm();
 	const { register: uploadRegister, handleSubmit: uploadSubmit } = useForm();
 	const router = useRouter();
+	const snackBarUpdate = useSnackBarUpdate();
 
 	async function createFile(data, e) {
 		e.preventDefault();
@@ -37,6 +39,7 @@ function CreateFile({ setFileList, fileList }) {
 		const result = await request.json();
 		console.log(result);
 		setFileList([...fileList, result.data]);
+		snackBarUpdate(true, 'File Created!');
 	}
 
 	async function uploadFile(data, e) {
@@ -56,6 +59,7 @@ function CreateFile({ setFileList, fileList }) {
 		const result = await request.json();
 		console.log(result);
 		setFileList([...fileList, result.data]);
+		snackBarUpdate(true, 'File Uploaded!');
 	}
 	return (
 		<div className={styles.container}>

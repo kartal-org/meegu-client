@@ -26,7 +26,14 @@ import VerificationNotice from '../../components/moderator/verificationNotice';
 import NoSubscriptionNotice from '../../components/moderator/noSubscriptionNotice';
 import RecommendationsTab from '../../components/moderator/tabs/recommendationsTab';
 
-function InsideInstitution({ institution, recommendations, articles, resources, subscriptions }) {
+function InsideInstitution({
+	institution,
+	recommendations,
+	articles,
+	resources,
+	subscriptions,
+	verification,
+}) {
 	const color = blue[300];
 
 	const [institutionProfile, setInstitutionProfile] = useState(institution);
@@ -105,7 +112,7 @@ function InsideInstitution({ institution, recommendations, articles, resources, 
 	return (
 		<>
 			{/* <div className={styles.alert}>kasdjg</div> */}
-			{!institution.is_verified && <VerificationNotice />}
+			{!verification && <VerificationNotice />}
 			{subscriptions && <NoSubscriptionNotice />}
 
 			<Profile
@@ -294,6 +301,7 @@ export async function getServerSideProps(context) {
 	const resultResource = await responseGetResources.json();
 	// console.log(resultResource);
 	props.resources = resultResource;
+
 	const responseGetSubscription = await fetch(
 		process.env.BACKEND_API_UR + `/transactions?institution=${institutionID}`,
 		{
@@ -307,6 +315,19 @@ export async function getServerSideProps(context) {
 	const resultSubscription = await responseGetSubscription.json();
 	// console.log(resultResource);
 	props.subscriptions = resultSubscription;
+	const responseGetVerification = await fetch(
+		process.env.BACKEND_API_UR + `/institutions/verification?institution=${institutionID}`,
+		{
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${access_token}`,
+			},
+		}
+	);
+	const resultVerification = await responseGetVerification.json();
+	// console.log(resultResource);
+	props.verification = resultVerification;
 
 	return { props };
 }

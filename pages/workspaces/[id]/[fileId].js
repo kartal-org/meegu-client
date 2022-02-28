@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 import PageLayout from '../../../layouts/pageLayout';
 import styles from './oneFile.module.scss';
@@ -26,6 +26,7 @@ function OneFile({ file, comments }) {
 		handleSubmit, // handle form submit
 		resetField,
 		setValue,
+		control,
 		formState: { errors },
 	} = useForm({
 		defaultValues: {
@@ -119,51 +120,54 @@ function OneFile({ file, comments }) {
 		console.log(fileResult);
 		setFileStatus('submitted');
 	}
+
+	function FileEditor() {
+		return (
+			<>
+				{fileStatus !== 'ongoing' ? (
+					<div
+						className='article-content'
+						style={{ maxWidth: '90vw' }}
+						dangerouslySetInnerHTML={{ __html: quillContent }}
+					/>
+				) : (
+					<QuillEditor data={quillContent} setData={setQuillContent} />
+				)}
+			</>
+		);
+	}
 	return (
 		<div>
-			{file.pdf ? (
-				<PdfViewer file={file.pdf} />
-			) : (
-				<>
-					<header className={styles.page__header}>
-						<form>
-							<input
-								className={styles.file__name}
-								type='text'
-								placeholder='File Name'
-								{...register('name')}
-							/>
-						</form>
-						<div>
-							{fileStatus !== 'ongoing' ? null : (
-								<Button onClick={handleSubmit(editFile)}>Save Changes</Button>
-							)}
-							{fileStatus !== 'ongoing' ? (
-								<Button onClick={() => setFileStatus('ongoing')}>Edit Submission</Button>
-							) : (
-								<Button onClick={submitFile}>Submit File</Button>
-							)}
+			<header className={styles.page__header}>
+				<form className={styles.file__name__form}>
+					<input
+						className={styles.file__name}
+						type='text'
+						placeholder='File Name'
+						{...register('name')}
+					/>
+				</form>
+				<div>
+					{fileStatus !== 'ongoing' ? null : (
+						<Button onClick={handleSubmit(editFile)}>Save Changes</Button>
+					)}
+					{fileStatus !== 'ongoing' ? (
+						<Button onClick={() => setFileStatus('ongoing')}>Edit Submission</Button>
+					) : (
+						<Button onClick={submitFile}>Submit File</Button>
+					)}
 
-							{/* <IconButton>
+					{/* <IconButton>
 								<MoreHorizIcon />
 							</IconButton> */}
-						</div>
-					</header>
+				</div>
+			</header>
 
-					<main className={styles.page__content}>
-						{fileStatus !== 'ongoing' ? (
-							<div
-								className='article-content'
-								dangerouslySetInnerHTML={{ __html: quillContent }}
-							/>
-						) : (
-							<QuillEditor data={quillContent} setData={setQuillContent} />
-						)}
+			<main className={styles.page__content}>
+				{file.pdf ? <PdfViewer file={file.pdf} /> : <FileEditor />}
 
-						<CommentSection fileID={file.id} />
-					</main>
-				</>
-			)}
+				<CommentSection fileID={file.id} />
+			</main>
 		</div>
 	);
 }

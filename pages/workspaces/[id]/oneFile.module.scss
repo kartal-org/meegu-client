@@ -2,11 +2,15 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	margin-bottom: var(--size-fluid-2);
+	.file__name__form {
+		flex-grow: 2;
+	}
 	.file__name {
-		width: 80%;
+		width: 90%;
 		border: none;
 		padding: 0.25em;
-		font-size: var(--font-size-fluid-2);
+		font-size: var(--font-size-fluid-1);
 		font-weight: var(--font-weight-7);
 		white-space: nowrap;
 		overflow: hidden;
