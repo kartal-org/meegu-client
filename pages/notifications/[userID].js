@@ -95,14 +95,17 @@ function Notifications({ notifications }) {
 					{notificationList?.map((notif) => (
 						<article
 							onClick={() => {
-								setReadNotification(id);
-								router.push(`/institutions/${redirectID}`);
+								setReadNotification(notif.id);
+								// router.push(`/institutions/${redirectID}`);
 							}}
-							className={`${styles.notification} ${!isRead && styles.active}`}
+							className={`${styles.notification} ${!notif.isRead && styles.active}`}
 						>
 							<img alt='Notification Icon' className={styles.notification__icon}></img>
 							<div>
-								<p className={styles.notification__highlight}>A notification new!</p>
+								{!notif.isRead && (
+									<p className={styles.notification__highlight}>New Notification!</p>
+								)}
+
 								<p className={styles.notification__message}>{notif.message}</p>
 							</div>
 						</article>

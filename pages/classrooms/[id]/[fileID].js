@@ -21,6 +21,7 @@ import CustomizedDialogs from '../../../components/reusable/dialog2';
 import styles from '../../../styles/classrooms.module.scss';
 import quillEditor from '../../../components/quillEditor';
 import CommentSection from '../../../components/researcher/commentSection';
+import { useSnackBarUpdate } from '../../../contexts/useSnackBar';
 
 function FileInside({ file, comments, institutions }) {
 	const user = useUser();
@@ -28,6 +29,7 @@ function FileInside({ file, comments, institutions }) {
 	const [institutionList, setInstitutionList] = useState(institutions);
 	const [selectedInstitution, setSelectedInstitution] = useState();
 	const [fileContent, setFileContent] = useState(file.richText);
+	const snackBarUpdate = useSnackBarUpdate();
 
 	console.log(fileContent);
 
@@ -104,6 +106,7 @@ function FileInside({ file, comments, institutions }) {
 		});
 
 		const result = await response.json();
+		snackBarUpdate(true, 'Recommendation Added!');
 		console.log(result);
 	}
 
