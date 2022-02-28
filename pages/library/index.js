@@ -1,15 +1,17 @@
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import React from 'react';
-import Cookies from 'js-cookie';
+import { useRouter } from "next/router";
+import { useState } from "react";
+import React from "react";
+import Cookies from "js-cookie";
 
-import PageLayout from '../../layouts/pageLayout';
-import ArticleCard from '../../components/reusable/articleCard';
-import styles from './library.module.scss';
+import PageLayout from "../../layouts/pageLayout";
+import ArticleCard from "../../components/reusable/articleCard";
+import styles from "./library.module.scss";
 
-import fileImg from '../../public/file_illustration.svg';
+import fileImg from "../../public/file_illustration.svg";
+import emptyIllustration from "../../public/no-choice.svg";
 
-import { Button } from '@mui/material';
+import { Button } from "@mui/material";
+import Image from "next/image";
 
 function index({ libItems }) {
 	const [libraryList, setLibraryList] = useState(libItems);
@@ -22,40 +24,65 @@ function index({ libItems }) {
 
 	async function deleteFile(libItem) {
 		// e.preventDefault();
-		const response = await fetch(process.env.BACKEND_API_UR + `/libraries/${libItem}/`, {
-			method: 'DELETE',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${Cookies.get('access_token')}`,
-			},
-		});
+		const response = await fetch(
+			process.env.BACKEND_API_UR + `/libraries/${libItem}/`,
+			{
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${Cookies.get("access_token")}`,
+				},
+			}
+		);
 		const result = await response.json();
 		setLibraryList(libraryList.filter((val) => val.id !== result.id));
 	}
 
 	return (
 		<>
-			<div className={styles.library}>
-				{libraryList?.map((lib) => (
-					<article
-						key={lib.id}
-						// onClick={() => viewFile(lib.article.id)}
-					>
-						<ArticleCard
-							title={lib.article.title}
-							subtitle='PDF'
-							content={lib.article.abstract}
-							illustration={fileImg}
-							actions={
-								<>
-									<Button variant='contained'>Open</Button>
-								</>
-							}
-						>
-							<Button onClick={() => deleteFile(lib.id)}> Remove from Library</Button>
-						</ArticleCard>
-					</article>
-				))}
+			<div className={styles.mainContainer}>
+				{libraryList.length > 0 ? (
+					<div className={styles.library}>
+						{libraryList?.map((lib) => (
+							<article
+								key={lib.id}
+								// onClick={() => viewFile(lib.article.id)}
+							>
+								<ArticleCard
+									title={lib.article.title}
+									subtitle="PDF"
+									content={lib.article.abstract}
+									illustration={fileImg}
+									actions={
+										<>
+											<Button variant="contained">Open</Button>
+										</>
+									}
+								>
+									<Button onClick={() => deleteFile(lib.id)}>
+										{" "}
+										Remove from Library
+									</Button>
+								</ArticleCard>
+							</article>
+						))}
+					</div>
+				) : (
+					<div className={styles.emptyContainer}>
+						<div className={styles.illustration}>
+							<Image
+								src={emptyIllustration}
+								layout="fill"
+								objectFit="contain"
+								className={styles.illustration}
+							></Image>
+						</div>
+						<p>
+							You saved no articles yet.{" "}
+							<strong>Search and add them now </strong>
+						</p>
+					</div>
+				)}
 			</div>
 		</>
 	);
@@ -67,7 +94,7 @@ export async function getServerSideProps(context) {
 	const props = {};
 
 	const request = await fetch(process.env.BACKEND_API_UR + `/libraries/`, {
-		method: 'GET',
+		method: "GET",
 		headers: {
 			Authorization: `Bearer ${req.cookies.access_token}`,
 		},

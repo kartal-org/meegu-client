@@ -8,6 +8,8 @@ import styles from "../../styles/classrooms.module.scss";
 import UtilityCard from "../../components/reusable/utilityCard";
 
 import { Button } from "@mui/material";
+import Image from "next/image";
+import emptyIllustration from "../../public/not-found.svg";
 
 function index({ classrooms }) {
 	console.log(classrooms);
@@ -16,21 +18,38 @@ function index({ classrooms }) {
 		<>
 			<h1 className={styles.page_title}>Classrooms</h1>
 
-			<div className={styles.cardContainer}>
-				{classrooms.map((classroom) => (
-					<UtilityCard
-						title={classroom.name}
-						illustration={workspaceIllustration}
-						actions={
-							<>
-								<Link href={`/classrooms/${classroom.id}/`}>
-									<Button variant="contained">Open</Button>
-								</Link>
-							</>
-						}
-					></UtilityCard>
-				))}
-			</div>
+			{classrooms.length > 0 ? (
+				<div className={styles.cardContainer}>
+					{classrooms.map((classroom) => (
+						<UtilityCard
+							title={classroom.name}
+							illustration={workspaceIllustration}
+							actions={
+								<>
+									<Link href={`/classrooms/${classroom.id}/`}>
+										<Button variant="contained">Open</Button>
+									</Link>
+								</>
+							}
+						></UtilityCard>
+					))}
+				</div>
+			) : (
+				<div className={styles.emptyContainer}>
+					<div className={styles.illustration}>
+						<Image
+							src={emptyIllustration}
+							layout="fill"
+							objectFit="contain"
+							className={styles.illustration}
+						></Image>
+					</div>
+					<p>
+						You have no monitored classrooms yet.
+						{/* <strong>Create now </strong> */}
+					</p>
+				</div>
+			)}
 		</>
 	);
 }
