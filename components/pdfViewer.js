@@ -18,7 +18,7 @@ function PdfViewer({ file }) {
 							marginRight: 'auto',
 						}}
 					>
-						<Viewer fileUrl={file} plugins={[defaultLayoutPluginInstance]} />
+						<Viewer theme='dark' fileUrl={file} plugins={[defaultLayoutPluginInstance]} />
 					</div>
 				</Worker>
 			)}

@@ -278,7 +278,7 @@ export async function getServerSideProps(context) {
 
 	//response for get recos
 	const responseGetRecommendation = await fetch(
-		process.env.BACKEND_API_UR + `/classrooms?institution=${institutionID}`,
+		process.env.BACKEND_API_UR + `/classrooms?institution=${institutionID}&status=pending`,
 		{
 			method: 'GET',
 			headers: {

@@ -14,6 +14,7 @@ import CustomTabs from '../../reusable/tabs';
 import SelectFile from '../selectFile';
 import UploadFile from '../uploadFile';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 function ArticlesTab({
 	recommendationList,
@@ -23,6 +24,7 @@ function ArticlesTab({
 	canPublish,
 }) {
 	const [articleList, setArticleList] = useState(articles);
+	const router = useRouter();
 
 	return (
 		<>
@@ -36,6 +38,7 @@ function ArticlesTab({
 								primaryAction={<Button>Done</Button>}
 							>
 								<CustomTabs
+									defaultVal='upload'
 									tabs={[
 										{
 											label: 'Upload File',
@@ -70,18 +73,25 @@ function ArticlesTab({
 					{articleList.length > 0 ? (
 						<div>
 							{articleList.map((item) => (
-								<ArticleCard
-									key={item.id}
-									title={item.title}
-									subtitle='PDF'
-									content={item.abstract}
-									illustration={fileImg}
-									// actions={
-									// 	<>
-									// 		<Button variant='contained'>Open</Button>
-									// 	</>
-									// }
-								></ArticleCard>
+								<div
+									onClick={() => {
+										// alert('Yeah you click');
+										router.push(`/articles/${item.id}`);
+									}}
+								>
+									<ArticleCard
+										key={item.id}
+										title={item.title}
+										subtitle='PDF'
+										content={item.abstract}
+										illustration={fileImg}
+										// actions={
+										// 	<>
+										// 		<Button variant='contained'>Open</Button>
+										// 	</>
+										// }
+									></ArticleCard>
+								</div>
 							))}
 						</div>
 					) : (

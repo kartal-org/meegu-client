@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import PageLayout from "../../layouts/pageLayout";
-import Link from "next/link";
+import React, { useState } from 'react';
+import PageLayout from '../../layouts/pageLayout';
+import Link from 'next/link';
 
-import workspaceIllustration from "../../public/workspace-illustration.png";
+import workspaceIllustration from '../../public/workspace-illustration.png';
 
-import styles from "../../styles/classrooms.module.scss";
-import UtilityCard from "../../components/reusable/utilityCard";
+import styles from '../../styles/classrooms.module.scss';
+import UtilityCard from '../../components/reusable/utilityCard';
 
-import { Button } from "@mui/material";
-import Image from "next/image";
-import emptyIllustration from "../../public/not-found.svg";
+import { Button } from '@mui/material';
+import Image from 'next/image';
+import emptyIllustration from '../../public/not-found.svg';
 
 function index({ classrooms }) {
 	console.log(classrooms);
@@ -21,17 +21,20 @@ function index({ classrooms }) {
 			{classrooms.length > 0 ? (
 				<div className={styles.cardContainer}>
 					{classrooms.map((classroom) => (
-						<UtilityCard
-							title={classroom.name}
-							illustration={workspaceIllustration}
-							actions={
-								<>
-									<Link href={`/classrooms/${classroom.id}/`}>
-										<Button variant="contained">Open</Button>
-									</Link>
-								</>
-							}
-						></UtilityCard>
+						<Link key={classroom.id} href={`/classrooms/${classroom.id}/`}>
+							<a>
+								<UtilityCard
+									title={classroom.name}
+									illustration={workspaceIllustration}
+									// actions={
+									// 	<>
+									// 			<Button>Open</Button>
+									// 		</Link>
+									// 	</>
+									// }
+								></UtilityCard>
+							</a>
+						</Link>
 					))}
 				</div>
 			) : (
@@ -39,8 +42,8 @@ function index({ classrooms }) {
 					<div className={styles.illustration}>
 						<Image
 							src={emptyIllustration}
-							layout="fill"
-							objectFit="contain"
+							layout='fill'
+							objectFit='contain'
 							className={styles.illustration}
 						></Image>
 					</div>
@@ -59,16 +62,13 @@ export async function getServerSideProps(context) {
 	const access_token = req.cookies.access_token;
 	const props = {};
 
-	const response = await fetch(
-		process.env.BACKEND_API_UR + `/workspaces?isAdviser=${true}`,
-		{
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${access_token}`,
-			},
-		}
-	);
+	const response = await fetch(process.env.BACKEND_API_UR + `/workspaces?isAdviser=${true}`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${access_token}`,
+		},
+	});
 
 	const result = await response.json();
 	// console.log(result);

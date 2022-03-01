@@ -15,6 +15,8 @@ function ReviewSection() {
 	const router = useRouter();
 	const [reviewList, setReviewList] = useState([]);
 	const user = useUser();
+	// alert('Iam here');
+	console.log('Iam here');
 
 	const { register, handleSubmit, control } = useForm();
 
@@ -57,10 +59,11 @@ function ReviewSection() {
 		console.log(result);
 		setReviewList([result, ...reviewList]);
 	}
+	console.log('length', reviewList.filter((val) => val.user.id === user.id).length);
 
 	return (
 		<div>
-			{!reviewList.filter((val) => val.user.id === user.id) && (
+			{reviewList.filter((val) => val.user.id === user.id).length === 0 && (
 				<CustomizedDialogs
 					title='Add Review'
 					openBtn={<Button>Add Review</Button>}
@@ -96,24 +99,26 @@ function ReviewSection() {
 			)}
 
 			<ul className={styles.review__list}>
-				{reviewList?.map((review) => (
-					<li className={styles.review} key={review.id}>
-						<Avatar
-							src={review.user?.profileImage}
-							alt={`${review.user?.first_name}'s Profile Picture`}
-						/>
-						<div className={styles.review__content}>
-							<p className={styles.review__author}>
-								{review.user?.first_name} {review?.user.last_name}
-							</p>
-							<p className={styles.review__timeStamp}>
-								<em>{moment(review?.dateUpdated).fromNow()}</em>
-							</p>
-							<Rating readOnly value={review.rate} />
-							<p className={styles.review__message}>{review?.comment}</p>
-						</div>
-					</li>
-				))}
+				{reviewList.length > 0
+					? reviewList?.map((review) => (
+							<li className={styles.review} key={review.id}>
+								<Avatar
+									src={review.user?.profileImage}
+									alt={`${review.user?.first_name}'s Profile Picture`}
+								/>
+								<div className={styles.review__content}>
+									<p className={styles.review__author}>
+										{review.user?.first_name} {review?.user.last_name}
+									</p>
+									<p className={styles.review__timeStamp}>
+										<em>{moment(review?.dateUpdated).fromNow()}</em>
+									</p>
+									<Rating readOnly value={review.rate} />
+									<p className={styles.review__message}>{review?.comment}</p>
+								</div>
+							</li>
+					  ))
+					: 'No review yet'}
 			</ul>
 		</div>
 	);

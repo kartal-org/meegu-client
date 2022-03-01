@@ -69,7 +69,7 @@ function index({ conversations, messages, conversation }) {
 
 	async function sendMessage(data, e) {
 		e.preventDefault();
-
+		console.log();
 		const request = await fetch(process.env.BACKEND_API_UR + `/chats/messages`, {
 			method: 'POST',
 			headers: {
@@ -91,6 +91,7 @@ function index({ conversations, messages, conversation }) {
 
 	async function createConversation(data, e) {
 		// e.preventDefault();
+		console.log([user.username, data.username]);
 		const request = await fetch(process.env.BACKEND_API_UR + `/chats/`, {
 			method: 'POST',
 			headers: {
@@ -99,6 +100,7 @@ function index({ conversations, messages, conversation }) {
 			},
 			body: JSON.stringify({
 				members: [user.username, data.username],
+				name: `${user.username} - ${data.username}`,
 				isActive: true,
 			}),
 		});
@@ -167,9 +169,14 @@ function index({ conversations, messages, conversation }) {
 								}}
 							>
 								<div className={styles.convo__split}>
-									<Avatar src={getReceiver(convo.members).profileImage} />
-									{`${getReceiver(convo.members).first_name} ${
-										getReceiver(convo.members).last_name
+									<Avatar
+										src={
+											getReceiver(convo.members)?.profileImage &&
+											getReceiver(convo.members)?.profileImage
+										}
+									/>
+									{`${getReceiver(convo.members)?.first_name} ${
+										getReceiver(convo.members)?.last_name
 									}`}
 								</div>
 							</li>

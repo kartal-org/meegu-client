@@ -51,6 +51,7 @@ function ArticleViewer({ article }) {
 						</AccordionSummary>
 						<AccordionDetails>
 							<ArticleInfoSection article={article} />
+							<ReviewSection />
 						</AccordionDetails>
 					</Accordion>
 					<Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
@@ -66,6 +67,7 @@ function ArticleViewer({ article }) {
 						</AccordionDetails>
 					</Accordion>
 				</div>
+				<ReviewSection />
 			</main>
 		</div>
 	);

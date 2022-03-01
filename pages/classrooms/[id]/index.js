@@ -40,34 +40,42 @@ function ClassroomInside({ classroom, files, classroomId, recommended }) {
 			<main>
 				<div className={styles.cardContainer}>
 					{files?.map((file) => (
-						<UtilityCard
-							title={file.name}
-							illustration={fileIllustration}
-							actions={
-								<>
-									<Link href={`/classrooms/${classroom.id}/${file.id}`}>
-										<Button variant='contained'>Open</Button>
-									</Link>
-								</>
-							}
-						></UtilityCard>
+						<Link key={file.id} href={`/classrooms/${classroom.id}/${file.id}`}>
+							<a>
+								<UtilityCard
+									title={file.name}
+									illustration={fileIllustration}
+									// actions={
+									// 	<>
+									// 		<Link href={`/classrooms/${classroom.id}/${file.id}`}>
+									// 			<Button>Open</Button>
+									// 		</Link>
+									// 	</>
+									// }
+								></UtilityCard>
+							</a>
+						</Link>
 					))}
 				</div>
 				<div className={styles.cardContainer}>
 					{recommended?.map((item) => (
-						<UtilityCard
-							title={item.title}
-							illustration={fileIllustration}
-							actions={
-								<>
-									<Link href={`/classrooms/${classroom.id}/${item.file.id}`}>
-										<Button variant='contained'>Open</Button>
-									</Link>
-								</>
-							}
-						>
-							<div className='bg-blue-100'>{item.description}</div>
-						</UtilityCard>
+						<Link key={item.id} href={`/classrooms/${classroom.id}/${item.file.id}`}>
+							<a>
+								<UtilityCard
+									title={item.title}
+									illustration={fileIllustration}
+									// actions={
+									// 	<>
+									// 		<Link href={`/classrooms/${classroom.id}/${item.file.id}`}>
+									// 			<Button>Open</Button>
+									// 		</Link>
+									// 	</>
+									// }
+								>
+									<div className='bg-blue-100'>{item.description}</div>
+								</UtilityCard>
+							</a>
+						</Link>
 					))}
 				</div>
 			</main>

@@ -1,7 +1,8 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import Cookies from "js-cookie";
-import { Button, TextField } from "@mui/material";
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import Cookies from 'js-cookie';
+import { Button, TextField } from '@mui/material';
+import { useSnackBarUpdate } from '../../contexts/useSnackBar';
 
 function UploadFile({ institutionID, articleList, setArticleList }) {
 	const {
@@ -10,6 +11,7 @@ function UploadFile({ institutionID, articleList, setArticleList }) {
 		setValue,
 		formState: { errors },
 	} = useForm({});
+	const snackBarUpdate = useSnackBarUpdate();
 
 	async function uploadFile(data, e) {
 		e.preventDefault();
@@ -19,25 +21,23 @@ function UploadFile({ institutionID, articleList, setArticleList }) {
 
 		const formData = new FormData();
 
-		formData.append("pdf", pdf[0], pdf[0].name);
-		formData.append("title", title);
-		formData.append("abstract", abstract);
-		formData.append("status", "published");
-		formData.append("institution", institutionID);
+		formData.append('pdf', pdf[0], pdf[0].name);
+		formData.append('title', title);
+		formData.append('abstract', abstract);
+		formData.append('status', 'published');
+		formData.append('institution', institutionID);
 
-		const responseUploadFile = await fetch(
-			process.env.BACKEND_API_UR + `/publications/`,
-			{
-				method: "POST",
-				headers: {
-					Authorization: `Bearer ${Cookies.get("access_token")}`,
-				},
-				body: formData,
-			}
-		);
+		const responseUploadFile = await fetch(process.env.BACKEND_API_UR + `/publications/`, {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${Cookies.get('access_token')}`,
+			},
+			body: formData,
+		});
 		const resultUpload = await responseUploadFile.json();
 		console.log(resultUpload);
 		setArticleList([...articleList, resultUpload]);
+		snackBarUpdate(true, 'Article Published!');
 	}
 	return (
 		<>
@@ -45,25 +45,20 @@ function UploadFile({ institutionID, articleList, setArticleList }) {
 				// className={styles.editProfile_form}
 				onSubmit={handleSubmit(uploadFile)}
 			>
+				<TextField fullWidth label='Title' sx={{ mb: 2 }} {...register('title')} />
 				<TextField
 					fullWidth
-					label="Title"
-					sx={{ mb: 2 }}
-					{...register("title")}
-				/>
-				<TextField
-					fullWidth
-					label="Abstract"
+					label='Abstract'
 					sx={{ mb: 2 }}
 					multiline
-					rows={5}
-					{...register("abstract")}
+					minRows={7}
+					{...register('abstract')}
 				/>
-				<input type="file" {...register("pdf")} />
-
-				<Button type="submit" variant="contained">
-					Upload
-				</Button>
+				<input type='file' {...register('pdf')} />
+				<br></br>
+				<br></br>
+				<br></br>
+				<Button type='submit'>Upload</Button>
 			</form>
 		</>
 	);

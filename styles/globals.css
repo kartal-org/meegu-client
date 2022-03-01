@@ -180,6 +180,21 @@ span > select {
 	border-color: var(--white) !important;
 }
 
+.MuiSelect-icon,
+.MuiSelect-iconOpen,
+.MuiSelect-iconFilled,
+.MuiSelect-iconOutlined {
+	color: var(--white);
+}
+.article-content {
+	height: 80vh;
+	width: 100%;
+	border: 1px solid var(--white);
+	border-radius: var(--radius-conditional-2);
+	padding: 0.8rem;
+	margin: 0;
+	overflow: auto;
+}
 .article-content > ul > li {
 	list-style: disc inside !important;
 	/* list-style-position: inside; */

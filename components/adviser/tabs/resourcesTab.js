@@ -9,14 +9,43 @@ import fileImg from '../../../public/file_illustration.svg';
 import emptyIllustration from '../../../public/no_data_illustration.svg';
 
 import Image from 'next/image';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import CustomizedDialogs from '../../reusable/dialog2';
 import CustomTabs from '../../reusable/tabs';
 import UploadResource from '../uploadResource';
+import { useForm } from 'react-hook-form';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 
 function ResourcesTab({ institution, resources }) {
 	const [resourceList, setResourceList] = useState(resources);
 	console.log(institution.id);
+	const { register, handleSubmit } = useForm();
+	const router = useRouter();
+
+	async function addFile(data, e) {
+		e.preventDefault();
+
+		const { name, description } = data;
+
+		const formData = new FormData();
+
+		formData.append('name', name);
+		formData.append('description', description);
+		formData.append('institution', institution.id);
+		formData.append('isActive', true);
+
+		const responseUploadResource = await fetch(process.env.BACKEND_API_UR + `/resources/`, {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${Cookies.get('access_token')}`,
+			},
+			body: formData,
+		});
+		const resultUploadResource = await responseUploadResource.json();
+		console.log(resultUploadResource);
+		setResourceList([resultUploadResource, ...resourceList]);
+	}
 	return (
 		<>
 			<div className={`${styles.container} ${styles.articles}`}>
@@ -28,10 +57,33 @@ function ResourcesTab({ institution, resources }) {
 							primaryAction={<Button>Done</Button>}
 						>
 							<CustomTabs
-								defaultVal='upload'
+								defaultVal='quill'
 								tabs={[
 									{
-										label: 'Upload Resource',
+										label: 'Create Template',
+										value: 'quill',
+										content: (
+											<form onSubmit={handleSubmit(addFile)}>
+												<TextField
+													fullWidth
+													sx={{ mb: 2 }}
+													label='Resource Name'
+													{...register('name')}
+												/>
+												<TextField
+													fullWidth
+													sx={{ mb: 2 }}
+													multiline
+													minRows={5}
+													label='Description'
+													{...register('description')}
+												/>
+												<Button type='submit'>Create Document</Button>
+											</form>
+										),
+									},
+									{
+										label: 'Upload Pdf',
 										value: 'upload',
 										content: (
 											<UploadResource
@@ -41,11 +93,6 @@ function ResourcesTab({ institution, resources }) {
 											/>
 										),
 									},
-									{
-										label: 'Use Quill',
-										value: 'quill',
-										content: 'add textfield here then redirect',
-									},
 								]}
 							/>
 						</CustomizedDialogs>
@@ -53,20 +100,22 @@ function ResourcesTab({ institution, resources }) {
 					{resourceList.length > 0 ? (
 						<div>
 							{resourceList.map((item) => (
-								<ArticleCard
-									key={item.id}
-									title={item.name}
-									subtitle='Resource'
-									content={item.description}
-									illustration={fileImg}
-									// actions={
-									// 	<>
-									// 		{/* <Link href={`/institutions/}`}> */}
-									// 		<Button variant='contained'>Open</Button>
-									// 		{/* </Link> */}
-									// 	</>
-									// }
-								></ArticleCard>
+								<div onClick={() => router.push(`/institutions/resources/${item.id}`)}>
+									<ArticleCard
+										key={item.id}
+										title={item.name}
+										subtitle='Resource'
+										content={item.description}
+										illustration={fileImg}
+										// actions={
+										// 	<>
+										// 		{/* <Link href={`/institutions/}`}> */}
+										// 		<Button variant='contained'>Open</Button>
+										// 		{/* </Link> */}
+										// 	</>
+										// }
+									></ArticleCard>
+								</div>
 							))}
 						</div>
 					) : (

@@ -63,11 +63,11 @@ function index({ articles }) {
 							subtitle='PDF'
 							content={article.abstract}
 							illustration={fileImg}
-							actions={
-								<>
-									<Button variant='contained'>Open</Button>
-								</>
-							}
+							// actions={
+							// 	<>
+							// 		<Button variant='contained'>Open</Button>
+							// 	</>
+							// }
 						>
 							<div>
 								<Rating value={article.rating} readOnly precision={0.25} />
