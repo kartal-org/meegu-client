@@ -100,20 +100,15 @@ function ResourcesTab({ institution, resources }) {
 					{resourceList.length > 0 ? (
 						<div>
 							{resourceList.map((item) => (
-								<div onClick={() => router.push(`/institutions/resources/${item.id}`)}>
+								<div
+									key={item.id}
+									onClick={() => router.push(`/institutions/resources/${item.id}`)}
+								>
 									<ArticleCard
-										key={item.id}
 										title={item.name}
 										subtitle='Resource'
 										content={item.description}
 										illustration={fileImg}
-										// actions={
-										// 	<>
-										// 		{/* <Link href={`/institutions/}`}> */}
-										// 		<Button variant='contained'>Open</Button>
-										// 		{/* </Link> */}
-										// 	</>
-										// }
 									></ArticleCard>
 								</div>
 							))}
@@ -126,6 +121,7 @@ function ResourcesTab({ institution, resources }) {
 									layout='fill'
 									objectFit='contain'
 									className={styles.illustration}
+									alt='No Resources yet Illustration'
 								></Image>
 							</div>
 							<p>

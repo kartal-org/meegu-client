@@ -12,8 +12,8 @@ function NoSubscriptionNotice() {
 			<div className={styles.notice__content}>
 				<h3 className={styles.notice__title}>Hello Again!</h3>
 				<p className={styles.notice__message}>
-					We notice that you haven't subscribe to any subscription plans yet that means you
-					can't add publications and resources yet. And that's sucks!
+					We notice that you haven&#39;t subscribe to any subscription plans yet that means you
+					can&#39;t add publications and resources yet. And that&#39;s sucks!
 				</p>
 				<Button
 					onClick={() => router.replace(`/institutions/${institutionID}?tab=subscription`)}

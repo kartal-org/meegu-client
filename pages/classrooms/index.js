@@ -45,6 +45,7 @@ function index({ classrooms }) {
 							layout='fill'
 							objectFit='contain'
 							className={styles.illustration}
+							alt='Empty Classroom Illustration'
 						></Image>
 					</div>
 					<p>

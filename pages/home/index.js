@@ -15,7 +15,7 @@ import { useHomeFilters } from '../../hooks/useHomeFilters';
 import { useSnackBarUpdate } from '../../contexts/useSnackBar';
 import StarIcon from '@mui/icons-material/Star';
 
-function index({ articles }) {
+function HomePage({ articles }) {
 	const router = useRouter();
 	const user = useUser();
 	const snackBarUpdate = useSnackBarUpdate();
@@ -57,7 +57,7 @@ function index({ articles }) {
 			</div>
 			<div className={styles.home}>
 				{articles?.map((article) => (
-					<div onClick={() => router.push(`/articles/${article.id}`)}>
+					<div key={article.id} onClick={() => router.push(`/articles/${article.id}`)}>
 						<ArticleCard
 							title={article.title}
 							subtitle='PDF'
@@ -96,5 +96,5 @@ export async function getServerSideProps({ req, query }) {
 	return { props };
 }
 
-index.Layout = PageLayout;
-export default index;
+HomePage.Layout = PageLayout;
+export default HomePage;

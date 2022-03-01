@@ -13,7 +13,7 @@ import emptyIllustration from '../../public/no-choice.svg';
 import { Button } from '@mui/material';
 import Image from 'next/image';
 
-function index({ libItems }) {
+function LibraryPage({ libItems }) {
 	const [libraryList, setLibraryList] = useState(libItems);
 	const router = useRouter();
 
@@ -70,6 +70,7 @@ function index({ libItems }) {
 								layout='fill'
 								objectFit='contain'
 								className={styles.illustration}
+								alt='Empty Library Illustration'
 							></Image>
 						</div>
 						<p>
@@ -100,5 +101,5 @@ export async function getServerSideProps(context) {
 	return { props };
 }
 
-index.Layout = PageLayout;
-export default index;
+LibraryPage.Layout = PageLayout;
+export default LibraryPage;

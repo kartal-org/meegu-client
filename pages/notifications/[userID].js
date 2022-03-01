@@ -94,6 +94,7 @@ function Notifications({ notifications }) {
 				<section className={styles.notification__list}>
 					{notificationList?.map((notif) => (
 						<article
+							key={notif.id}
 							onClick={() => {
 								setReadNotification(notif.id);
 								// router.push(`/institutions/${redirectID}`);

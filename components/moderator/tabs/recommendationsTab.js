@@ -19,6 +19,7 @@ function RecommendationsTab({ recommendationList, setRecommendationList }) {
 					<div className={styles.container}>
 						{recommendationList?.map((item) => (
 							<div
+								key={item.id}
 								onClick={() => router.push(`/institutions/recommendations/${item.id}`)}
 								className={styles.containerItem}
 							>
@@ -27,13 +28,7 @@ function RecommendationsTab({ recommendationList, setRecommendationList }) {
 									subtitle={item.adviser.first_name + ' ' + item.adviser.last_name}
 									content={item.description}
 									illustration={fileImg}
-									// actions={
-									// 	<>
-									// 		{/* <Link href={`/institutions/}`}> */}
-									// 		<Button>Open</Button>
-									// 		{/* </Link> */}
-									// 	</>
-									// }
+									alt='Recommendation Card Illustration'
 								></ArticleCard>
 							</div>
 						))}
@@ -46,9 +41,10 @@ function RecommendationsTab({ recommendationList, setRecommendationList }) {
 								layout='fill'
 								objectFit='contain'
 								className={styles.illustration}
+								alt='Not Recommended File Illustration'
 							></Image>
 						</div>
-						<p>You have no recommended files yet. {/* <strong>Publish now </strong> */}</p>
+						<p>You have no recommended files yet.</p>
 					</div>
 				)}
 			</div>

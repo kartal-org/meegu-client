@@ -94,14 +94,14 @@ function SubscriptionTab({ institutionID }) {
 
 					<div className={styles.transactionList}>
 						{transactionList?.map((item) => (
-							<div className={styles.transaction}>
+							<div key={item.id} className={styles.transaction}>
 								<div className={styles.transaction_icon}>
 									<AiOutlineDollar />
 								</div>
 								<div className={styles.list}>
 									<div className={styles.listHeader}>
 										<p className={styles.transaction_highlight}>
-											You've successfully subscribed to our {item.plan.name}!
+											You&#39;ve successfully subscribed to our {item.plan.name}!
 										</p>
 
 										<p className={styles.date}>date here</p>

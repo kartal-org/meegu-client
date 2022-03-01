@@ -74,6 +74,7 @@ function ArticlesTab({
 						<div>
 							{articleList.map((item) => (
 								<div
+									key={item.id}
 									onClick={() => {
 										// alert('Yeah you click');
 										router.push(`/articles/${item.id}`);
@@ -102,6 +103,7 @@ function ArticlesTab({
 									layout='fill'
 									objectFit='contain'
 									className={styles.illustration}
+									alt='Empty Articles'
 								></Image>
 							</div>
 							<p>

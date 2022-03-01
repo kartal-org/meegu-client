@@ -1,15 +1,15 @@
-import { NextSeo } from "next-seo";
-import { useUser, useUserUpdate } from "../contexts/userProvider";
-import { withAuthMedia, genericReq } from "../axios/axiosInstances";
-import AuthLayout from "../layouts/authLayout";
-import { useRouter } from "next/router";
-import Cookies from "js-cookie";
-import styles from "../styles/register.module.scss";
-import Image from "next/image";
+import { NextSeo } from 'next-seo';
+import { useUser, useUserUpdate } from '../contexts/userProvider';
+import { withAuthMedia, genericReq } from '../axios/axiosInstances';
+import AuthLayout from '../layouts/authLayout';
+import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
+import styles from '../styles/register.module.scss';
+import Image from 'next/image';
 
-import adviser from "../public/student.png";
-import moderator from "../public/principal.png";
-import researcher from "../public/student-img.png";
+import adviser from '../public/student.png';
+import moderator from '../public/principal.png';
+import researcher from '../public/student-img.png';
 
 // This page will edit the user type of the new authenticated user.
 
@@ -22,42 +22,45 @@ function Register() {
 	const userTypes = [
 		{
 			id: 1,
-			user: "Researcher",
+			user: 'Researcher',
 			img: (
 				<>
 					<Image
 						src={researcher}
-						layout="fill"
-						objectFit="contain"
+						layout='fill'
+						objectFit='contain'
 						className={styles.illustration}
+						alt='Researcher Illustration'
 					></Image>
 				</>
 			),
 		},
 		{
 			id: 2,
-			user: "Adviser",
+			user: 'Adviser',
 			img: (
 				<>
 					<Image
 						src={adviser}
-						layout="fill"
-						objectFit="contain"
+						layout='fill'
+						objectFit='contain'
 						className={styles.illustration}
+						alt='Adviser Illustration'
 					></Image>
 				</>
 			),
 		},
 		{
 			id: 3,
-			user: "Moderator",
+			user: 'Moderator',
 			img: (
 				<>
 					<Image
 						src={moderator}
-						layout="fill"
-						objectFit="contain"
+						layout='fill'
+						objectFit='contain'
 						className={styles.illustration}
+						alt='Moderator Illustration'
 					></Image>
 				</>
 			),
@@ -67,31 +70,28 @@ function Register() {
 	// console.log(user);
 
 	const handleRegister = async (type) => {
-		console.log(type == "researcher");
+		console.log(type == 'researcher');
 		var data = new FormData();
-		data.append("type", type);
-		const response = await fetch(
-			process.env.BACKEND_API_UR + `/users/${user?.id}/`,
-			{
-				method: "PATCH",
-				headers: {
-					Authorization: `Bearer ${Cookies.get("access_token")}`,
-				},
-				body: data,
-			}
-		);
+		data.append('type', type);
+		const response = await fetch(process.env.BACKEND_API_UR + `/users/${user?.id}/`, {
+			method: 'PATCH',
+			headers: {
+				Authorization: `Bearer ${Cookies.get('access_token')}`,
+			},
+			body: data,
+		});
 		const result = await response.json();
 		// const response = await genericReq(`/users/${user?.id}/`, 'patch', 'withAuthMedia', data);
 		console.log(result);
 		const userType = result.type;
 		switch (userType) {
-			case "researcher":
+			case 'researcher':
 				router.push(`/workspaces?user=${user?.id}`);
 				break;
-			case "adviser":
+			case 'adviser':
 				router.push(`/classrooms?user=${user?.id}`);
 				break;
-			case "moderator":
+			case 'moderator':
 				router.push(`/institutions?user=${user?.id}`);
 				break;
 
@@ -102,7 +102,7 @@ function Register() {
 
 	return (
 		<>
-			<NextSeo title="Check User" />
+			<NextSeo title='Check User' />
 			<div className={styles.container}>
 				<p className={styles.question}>What type of user are you ?</p>
 

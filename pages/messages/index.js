@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
 
-function index({ conversations, messages, conversation }) {
+function MessagesPage({ conversations, messages, conversation }) {
 	const user = useUser();
 	const router = useRouter();
 	const [conversationList, setConversationList] = useState(conversations);
@@ -269,5 +269,5 @@ export async function getServerSideProps({ req, query }) {
 	return { props };
 }
 
-index.Layout = PageLayout;
-export default index;
+MessagesPage.Layout = PageLayout;
+export default MessagesPage;

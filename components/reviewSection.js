@@ -20,22 +20,21 @@ function ReviewSection() {
 
 	const { register, handleSubmit, control } = useForm();
 
-	async function fetchReviews() {
-		const request = await fetch(
-			process.env.BACKEND_API_UR + `/publications/reviews?article=${router.query.articleID}`,
-			{
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${Cookies.get('access_token')}`,
-				},
-			}
-		);
-		const result = await request.json();
-		console.log(result);
-		setReviewList(result);
-	}
-
 	useEffect(() => {
+		async function fetchReviews() {
+			const request = await fetch(
+				process.env.BACKEND_API_UR + `/publications/reviews?article=${router.query.articleID}`,
+				{
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${Cookies.get('access_token')}`,
+					},
+				}
+			);
+			const result = await request.json();
+			console.log(result);
+			setReviewList(result);
+		}
 		fetchReviews();
 	}, []);
 

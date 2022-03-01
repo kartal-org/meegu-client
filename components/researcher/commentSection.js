@@ -14,21 +14,20 @@ function CommentSection({ fileID }) {
 
 	const { register, handleSubmit, resetField } = useForm();
 
-	async function fetchComments() {
-		const request = await fetch(
-			process.env.BACKEND_API_UR + `/classrooms/comments?file=${fileID}`,
-			{
-				headers: {
-					Authorization: `Bearer ${Cookies.get('access_token')}`,
-				},
-			}
-		);
-		const result = await request.json();
-		console.log(result);
-		setCommentList(result);
-	}
-
 	useEffect(() => {
+		async function fetchComments() {
+			const request = await fetch(
+				process.env.BACKEND_API_UR + `/classrooms/comments?file=${fileID}`,
+				{
+					headers: {
+						Authorization: `Bearer ${Cookies.get('access_token')}`,
+					},
+				}
+			);
+			const result = await request.json();
+			console.log(result);
+			setCommentList(result);
+		}
 		fetchComments();
 	}, []);
 

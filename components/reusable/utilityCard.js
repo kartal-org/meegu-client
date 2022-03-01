@@ -12,6 +12,7 @@ function UtilityCard(props) {
 					layout='fill'
 					objectFit='contain'
 					className={styles.card__illustration}
+					alt='Card Illustration'
 				></Image>
 			</div>
 			<h3 className={styles.card_title}>{title}</h3>

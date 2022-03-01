@@ -26,7 +26,7 @@ import styles from '../../styles/institutions.module.scss';
 import Image from 'next/image';
 import CustomizedDialogs from '../../components/reusable/dialog2';
 
-function index({ institutions }) {
+function InstitutionsPage({ institutions }) {
 	const user = useUser();
 	const [institutionList, setInstitutionList] = useState(institutions);
 
@@ -135,7 +135,7 @@ function index({ institutions }) {
 			{institutionList.length > 0 ? (
 				<div className={styles.cardContainer}>
 					{institutionList?.map((item) => (
-						<Link href={`/institutions/${item.id}`}>
+						<Link key={item.id} href={`/institutions/${item.id}`}>
 							<a>
 								<UtilityCard title={item.name} illustration={institutionImg}></UtilityCard>
 							</a>
@@ -150,6 +150,7 @@ function index({ institutions }) {
 							layout='fill'
 							objectFit='contain'
 							className={styles.illustration}
+							alt='No Institution Yet Illustration'
 						></Image>
 					</div>
 					<p>
@@ -184,5 +185,5 @@ export async function getServerSideProps(context) {
 	return { props };
 }
 
-index.Layout = PageLayout;
-export default index;
+InstitutionsPage.Layout = PageLayout;
+export default InstitutionsPage;

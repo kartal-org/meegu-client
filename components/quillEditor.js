@@ -3,7 +3,7 @@ import { useQuill } from 'react-quilljs';
 import 'quill/dist/quill.snow.css';
 import styles from './quillEditor.module.scss';
 
-export default ({ data, setData }) => {
+export default function QuillEditor({ data, setData }) {
 	const placeholder = 'Compose an epic...';
 	const { quill, quillRef, Quill } = useQuill({
 		placeholder,
@@ -44,4 +44,4 @@ export default ({ data, setData }) => {
 			/>
 		</div>
 	);
-};
+}

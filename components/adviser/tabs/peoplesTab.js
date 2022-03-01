@@ -28,6 +28,26 @@ function PeoplesTab({ institutionID }) {
 	};
 
 	useEffect(() => {
+		async function getMembers(type, isNotActive) {
+			let queryLink = type
+				? `/institutions/members?institution=${institutionID}&type=${type}`
+				: `/institutions/members?institution=${institutionID}`;
+
+			queryLink = queryLink + (isNotActive ? `&isNotActive=${true}` : '');
+
+			console.log(queryLink);
+
+			const responseGetMembers = await fetch(process.env.BACKEND_API_UR + queryLink, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${Cookies.get('access_token')}`,
+				},
+			});
+			const resultMember = await responseGetMembers.json();
+			console.log('members', resultMember);
+			setMembersList(resultMember);
+		}
 		if (memberType === 'all') {
 			getMembers();
 		}
@@ -40,27 +60,6 @@ function PeoplesTab({ institutionID }) {
 	}, [memberType]);
 
 	const { register, handleSubmit } = useForm();
-
-	async function getMembers(type, isNotActive) {
-		let queryLink = type
-			? `/institutions/members?institution=${institutionID}&type=${type}`
-			: `/institutions/members?institution=${institutionID}`;
-
-		queryLink = queryLink + (isNotActive ? `&isNotActive=${true}` : '');
-
-		console.log(queryLink);
-
-		const responseGetMembers = await fetch(process.env.BACKEND_API_UR + queryLink, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${Cookies.get('access_token')}`,
-			},
-		});
-		const resultMember = await responseGetMembers.json();
-		console.log('members', resultMember);
-		setMembersList(resultMember);
-	}
 
 	async function fetchPeople(type) {
 		let queryLink = type ? `/users?type=${type}` : '/users?exclude=moderator';
@@ -191,10 +190,11 @@ function PeoplesTab({ institutionID }) {
 								layout='fill'
 								objectFit='contain'
 								className={styles.illustration}
+								alt='No people added yet illustration'
 							></Image>
 						</div>
 						<p>
-							There aren't any users that are affiliated to your institution.{' '}
+							There aren&#39;t any users that are affiliated to your institution.{' '}
 							<strong>Add them now </strong>
 						</p>
 					</div>

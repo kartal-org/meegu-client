@@ -1,6 +1,6 @@
-import Image from "next/image";
-import React from "react";
-import styles from "./articleCard.module.scss";
+import Image from 'next/image';
+import React from 'react';
+import styles from './articleCard.module.scss';
 
 export default function ArticleCard(props) {
 	const { illustration, title, subtitle, content, children, actions } = props;
@@ -13,9 +13,10 @@ export default function ArticleCard(props) {
 						<div className={styles.card_img}>
 							<Image
 								src={illustration}
-								layout="fill"
-								objectFit="cover"
+								layout='fill'
+								objectFit='cover'
 								className={styles.card_illustration}
+								alt='Article Card Illustration'
 							></Image>
 						</div>
 					</div>

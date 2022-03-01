@@ -330,39 +330,6 @@ function OneWorkspace({ workspace, files }) {
 											</Box>
 										)}
 									/>
-									{/* <p>Type something and select from the results to add</p>
-									<TextField
-										label='Type to Search Adviser'
-										fullWidth
-										onChange={(e) => {
-											const text = e.currentTarget.value;
-
-											let timer;
-											const waitTime = 300;
-
-											// Clear timer
-											clearTimeout(timer);
-
-											// Wait for X ms and then process the request
-											timer = setTimeout(() => {
-												searchAdviser(text);
-											}, waitTime);
-										}}
-									/> */}
-									{/* <div className={styles.adviser_list}>
-										{advisers.map((val) => (
-											<p
-												key={val.id}
-												onClick={() => {
-													console.log('hoy');
-													setSelectedAdviser(val);
-													editAdviser(val);
-												}}
-											>
-												{val.first_name} {val.last_name}
-											</p>
-										))}
-									</div> */}
 								</CustomizedDialogs>
 							</form>
 						</CustomizedDialogs>
@@ -407,6 +374,7 @@ function OneWorkspace({ workspace, files }) {
 								layout='fill'
 								objectFit='contain'
 								className={styles.illustration}
+								alt='No files yet Illustration'
 							></Image>
 						</div>
 						<p>
@@ -415,166 +383,6 @@ function OneWorkspace({ workspace, files }) {
 					</div>
 				)}
 			</main>
-			{/* <div className='card-container'>
-					{fileList?.map((val) => (
-						<UtilityCard
-							key={val.id}
-							title={val.name}
-							illustration={fileIllustration}
-							actions={
-								<>
-									<Button
-										variant='contained'
-										onClick={() => {
-											router.push(`/workspaces/${workspace.id}/${val.id}`);
-										}}
-										className={`${styles.fileCard_action_btn} ${styles.primary}`}
-									>
-										Open
-									</Button>
-									<Button
-										variant='contained'
-										color='error'
-										onClick={(e) => deleteFile(val, e)}
-										className={`${styles.fileCard_action_btn} ${styles.error}`}
-									>
-										Delete
-									</Button>
-								</>
-							}
-						/>
-					))}
-				</div> */}
-			{/* <h1>Workspace Info</h1>
-			<form onSubmit={handleSubmit(editWorkspace)}>
-				<div className='form_field'>
-					<label htmlFor='name'> Workspace name: </label>
-					<input type='text' name='name' {...register('name')} />
-				</div>
-				<div className='form_field'>
-					<label htmlFor='creator'>Creator: </label>
-					<input type='text' name='creator' {...register('creator')} disabled />
-				</div>
-				<div className='form_field'>
-					<label htmlFor='adviser'>Adviser: </label>
-					<input type='text' name='adviser' {...register('adviser')} disabled />
-				</div>
-				<div className='form_field'>
-					<select name='members' multiple {...register('members')}>
-						{members.map((val) => (
-							<option key={val.id} value={val.id}>
-								{val.first_name + ' ' + val.last_name}
-							</option>
-						))}
-					</select>
-					<label htmlFor='members'> Members: </label>
-				</div>
-				<button type='submit'>Save Workspace</button>
-				<button onClick={(e) => deleteWorkspace(e)}>Delete workspace</button>
-			</form>
-			<h1>Add Workspace File Form</h1>
-			
-			<h1>Workspace File List</h1>
-			<section className={styles.fileList}>
-				{fileList?.map((val) => (
-					<div key={val.id} className={styles.fileCard}>
-						<h2 className={styles.fileCard_title}>{val.name}</h2>
-						<div className={styles.fileCard_action}>
-							<button
-								onClick={() => {
-									router.push(`/workspaces/${workspace.id}/${val.id}`);
-								}}
-								className={`${styles.fileCard_action_btn} ${styles.primary}`}
-							>
-								Open
-							</button>
-							<button
-								onClick={(e) => deleteFile(val, e)}
-								className={`${styles.fileCard_action_btn} ${styles.error}`}
-							>
-								Delete
-							</button>
-						</div>
-					</div>
-				))}
-			</section>
-			<h1>Add Adviser Form</h1>
-			<p>Type something and select from the results to add</p>
-			<form>
-				<label htmlFor='adviser'> Add Adviser: </label>
-				<input
-					type='text'
-					placeholder='Search User...'
-					name='adviser'
-					onChange={(e) => {
-						const text = e.currentTarget.value;
-
-						let timer;
-						const waitTime = 300;
-
-						// Clear timer
-						clearTimeout(timer);
-
-						// Wait for X ms and then process the request
-						timer = setTimeout(() => {
-							searchAdviser(text);
-						}, waitTime);
-					}}
-				/>
-			</form>
-
-			<div className={styles.adviser_list}>
-				{advisers.map((val) => (
-					<p
-						key={val.id}
-						onClick={() => {
-							console.log('hoy');
-							setSelectedAdviser(val);
-							editAdviser(val);
-						}}
-					>
-						{val.first_name} {val.last_name}
-					</p>
-				))}
-			</div>
-			<h1>Add Member Form</h1>
-			<p>Type something and select from the results to add</p>
-			<form>
-				<label htmlFor='member'> Add Member: </label>
-				<input
-					type='text'
-					placeholder='Search User...'
-					name='member'
-					onChange={(e) => {
-						const text = e.currentTarget.value;
-						let timer;
-						const waitTime = 300;
-
-						// Clear timer
-						clearTimeout(timer);
-
-						// Wait for X ms and then process the request
-						timer = setTimeout(() => {
-							searchResearcher(text);
-						}, waitTime);
-					}}
-				/>
-			</form>
-
-			<div className={styles.adviser_list}>
-				{users?.map((val) => (
-					<p
-						key={val.id}
-						onClick={() => {
-							console.log('hoy');
-							setSelectedUser('adviser', val.first_name + ' ' + val.last_name);
-							addMember(val);
-						}}
-					>
-						{val.first_name} {val.last_name}
-					</p>
-				))}
-			</div> */}
 		</div>
 	);
 }

@@ -15,24 +15,23 @@ function VerificationTab({ institutionID }) {
 
 	const { register, handleSubmit } = useForm();
 
-	async function fetchVerification() {
-		console.log(access_token);
-		const request = await fetch(
-			process.env.BACKEND_API_UR + `/institutions/verification?institution=${institutionID}`,
-			{
-				headers: {
-					Authorization: `Bearer ${access_token}`,
-				},
-			}
-		);
-		const result = await request.json();
-		console.log(result);
-		if (result[0]) {
-			setVerification(result[0]);
-		}
-	}
-
 	useEffect(() => {
+		async function fetchVerification() {
+			console.log(access_token);
+			const request = await fetch(
+				process.env.BACKEND_API_UR + `/institutions/verification?institution=${institutionID}`,
+				{
+					headers: {
+						Authorization: `Bearer ${access_token}`,
+					},
+				}
+			);
+			const result = await request.json();
+			console.log(result);
+			if (result[0]) {
+				setVerification(result[0]);
+			}
+		}
 		fetchVerification();
 	}, []);
 
@@ -84,35 +83,13 @@ function VerificationTab({ institutionID }) {
 							{/* This is an info alert — <strong>check it out!</strong> */}
 							<p className={styles.body}>
 								Hello it seems that this institution is still <strong>not verified</strong>.
-								That means you don't have the capacity and ability to publish articles and
-								resources yet.
+								That means you don&#39;t have the capacity and ability to publish articles
+								and resources yet.
 							</p>
 						</Alert>
 					</div>
 				</div>
 			)}
-			{/* <div>
-					<p>
-						Hello it seems that this institution is still not verified. That
-						means you don't have the capacity to publish articles and resources
-						yet.
-					</p>
-					<CustomizedDialogs
-						title="Verify Institution"
-						openBtn={<Button>Get Verified</Button>}
-						primaryAction={
-							<Button onClick={handleSubmit(sendVerification)}>Submit</Button>
-						}
-					>
-						<form onSubmit={handleSubmit(sendVerification)}>
-							<p>
-								Please upload a proof that your institution exist and your are
-								in-charge.
-							</p>
-							<input type="file" {...register("document")} />
-						</form>
-					</CustomizedDialogs>
-				</div> */}
 
 			{verification?.status == 'pending' && (
 				<div className={styles.verificationItem}>
