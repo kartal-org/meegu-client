@@ -141,8 +141,9 @@ export default function LandingPage() {
 			<footer className={`${styles.footer}`}>
 				<div className={styles.footerSplit}>
 					<div className={styles.splitItem}>
-						<Link href='/'>
-							{/* <a className={styles.footer__logo}> */}
+						<Link href='/' passHref>
+							<a>
+
 							<Image
 								src={logo}
 								height={50}
@@ -151,6 +152,8 @@ export default function LandingPage() {
 								objectFit='contain'
 								className={styles.footerLogo}
 							/>
+							</a>
+							{/* <a className={styles.footer__logo}> */}
 							{/* </a> */}
 						</Link>
 						<p className={styles.footer__text}>
@@ -158,25 +161,7 @@ export default function LandingPage() {
 						</p>
 					</div>
 
-					{/* <div className={styles.splitItem}>
-						<p className={styles.footer__text}>
-							For easier and more meaningful research journey.
-						</p>
-						 <div className={styles.footer__text}>
-								<h3>Services</h3>
-								<ul>
-									<li>
-										<a href="#">Web design</a>
-									</li>
-									<li>
-										<a href="#">Development</a>
-									</li>
-									<li>
-										<a href="#">Hosting</a>
-									</li>
-								</ul>
-							</div> 
-					</div> */}
+					
 				</div>
 			</footer>
 		</div>

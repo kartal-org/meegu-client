@@ -26,7 +26,7 @@ function Navigation() {
 		return (
 			<>
 				{userType == 'researcher' && (
-					<Link href={`/workspaces?user=${user?.id}`}>
+					<Link href={`/workspaces?user=${user?.id}`} passHref>
 						<Tooltip title='Workspaces' placement='top'>
 							<a>
 								<AiOutlineHighlight
@@ -39,7 +39,7 @@ function Navigation() {
 					</Link>
 				)}
 				{userType == 'adviser' && (
-					<Link href={`/classrooms?user=${user?.id}`}>
+					<Link href={`/classrooms?user=${user?.id}`} passHref>
 						<Tooltip title='Classroom' placement='top'>
 							<a>
 								<CgBriefcase
@@ -52,7 +52,7 @@ function Navigation() {
 					</Link>
 				)}
 				{userType == 'moderator' && (
-					<Link href={`/institutions?user=${user?.id}`}>
+					<Link href={`/institutions?user=${user?.id}`} passHref>
 						<Tooltip title='Institutions' placement='top'>
 							<a>
 								<AiOutlineBank
@@ -95,7 +95,7 @@ function Navigation() {
 	return (
 		<nav className={styles.nav}>
 			<div className={styles.nav__list}>
-				<Link href='/home'>
+				<Link href='/home' passHref>
 					<Tooltip title='Feed' placement='top'>
 						<a>
 							<AiOutlineHome
@@ -106,7 +106,7 @@ function Navigation() {
 						</a>
 					</Tooltip>
 				</Link>
-				<Link href={`/library?user=${user?.id}`}>
+				<Link href={`/library?user=${user?.id}`} passHref>
 					<Tooltip title='Library' placement='top'>
 						<a>
 							<AiOutlineRead
@@ -120,7 +120,7 @@ function Navigation() {
 
 				<CheckUser />
 
-				<Link href='/discover'>
+				<Link href='/discover' passHref>
 					<Tooltip title='Discover' placement='top'>
 						<a>
 							<AiOutlineCompass
@@ -131,7 +131,7 @@ function Navigation() {
 						</a>
 					</Tooltip>
 				</Link>
-				<Link href={`/messages?user=${user?.id}`}>
+				<Link href={`/messages?user=${user?.id}`} passHref>
 					<Tooltip title='Messages' placement='top'>
 						<a>
 							<AiOutlineComment
