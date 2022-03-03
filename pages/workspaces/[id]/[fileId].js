@@ -168,7 +168,7 @@ function OneFile({ file, comments }) {
 			</header>
 
 			<main className={styles.page__content}>
-				<Button onClick={() => console.log(quillValue)}>Console Content</Button>
+				
 				{file.pdf ? <PdfViewer file={file.pdf} /> : <FileEditor />}
 
 				<CommentSection fileID={file.id} />
