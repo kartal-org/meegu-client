@@ -128,10 +128,10 @@ input {
 } */
 
 .ql-toolbar.ql-snow > * {
-	color: var(--primary-color);
+	color: var(--primary-color) !important;
 }
 .MuiDialog-paper {
-	background-color: var(--background-color-dark);
+	background-color: var(--background-color-dark) !important;
 }
 
 .MuiOutlinedInput-notchedOutline {
@@ -149,8 +149,8 @@ input {
 }
 
 .MuiRating-icon {
-	fill: none;
-	color: var(--primary-color);
+	fill: none !important;
+	color: var(--primary-color) !important;
 }
 /* button > svg,
 span > svg,
@@ -160,13 +160,13 @@ span > select {
 	background-color: white !important;
 } */
 .MuiMenu-paper {
-	background-color: #0b0f1f;
+	background-color: #0b0f1f !important;
 }
 
 .MuiAccordion-root {
-	background-color: var(--background-color-dark);
-	color: var(--white);
-	border-color: var(--white);
+	background-color: var(--background-color-dark) !important;
+	color: var(--white) !important;
+	border-color: var(--white) !important;
 }
 /* .MuiPaper-elevation, */
 .MuiAccordion-gutters,
@@ -176,7 +176,7 @@ span > select {
 .MuiAccordionSummary-contentGutters,
 .MuiAccordionSummary-gutters {
 	/* background-color: var(--background-color-dark); */
-	color: var(--white);
+	color: var(--white) !important;
 	border-color: var(--white) !important;
 }
 
@@ -184,7 +184,7 @@ span > select {
 .MuiSelect-iconOpen,
 .MuiSelect-iconFilled,
 .MuiSelect-iconOutlined {
-	color: var(--white);
+	color: var(--white) !important;
 }
 .article-content {
 	height: 80vh;
@@ -200,6 +200,15 @@ span > select {
 	/* list-style-position: inside; */
 }
 .article-content > ol > li {
+	list-style: decimal inside !important;
+	/* list-style-position: inside; */
+}
+
+.preview > ul > li {
+	list-style: disc inside !important;
+	/* list-style-position: inside; */
+}
+.preview > ol > li {
 	list-style: decimal inside !important;
 	/* list-style-position: inside; */
 }
@@ -252,4 +261,17 @@ span > select {
 
 img {
 	max-width: 100%;
+}
+
+.wrapper-class {
+	padding: 1rem;
+	border: 1px solid #ccc;
+}
+.editor-class {
+	background-color: var(--background-color-dark);
+	padding: 1rem;
+	border: 1px solid #ccc;
+}
+.toolbar-class {
+	border: 1px solid #ccc;
 }

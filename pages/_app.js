@@ -7,6 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { DefaultSeo } from 'next-seo';
 import { UserProvider } from '../contexts/userProvider';
 import { SnackBarProvider } from '../contexts/useSnackBar';
+import { QuillProvider } from '../contexts/useQuillProvider';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
@@ -52,7 +53,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 					<SnackBarProvider>
 						{/* <PayPalScriptProvider options={initialOptions}> */}
 						<Layout>
-							<Component {...pageProps} />
+							<QuillProvider>
+								<Component {...pageProps} />
+							</QuillProvider>
 						</Layout>
 						<Backdrop
 							sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}

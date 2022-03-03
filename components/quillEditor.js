@@ -2,31 +2,26 @@ import React, { useState } from 'react';
 import { useQuill } from 'react-quilljs';
 import 'quill/dist/quill.snow.css';
 import styles from './quillEditor.module.scss';
+import { useQuillUpdate } from '../contexts/useQuillProvider';
 
-export default function QuillEditor({ data, setData }) {
-	const placeholder = 'Compose an epic...';
-	const { quill, quillRef, Quill } = useQuill({
-		placeholder,
+export default function QuillEditor({ initialData, getData }) {
+	// const placeholder = 'Compose an epic...';
+	const quillUpdate = useQuillUpdate();
+	const { quill, quillRef } = useQuill({
+		// placeholder,
 	});
+	const [content, setContent] = useState(null);
 
-	// React.useEffect(() => {
-	// 	if (quill) {
-	// 		if (data) {
-	// 			quill.clipboard.dangerouslyPasteHTML(data);
-	// 		} else {
-	// 			console.log('hurray');
-	// 		}
-	// 	}
-	// }, [quill]);
+	React.useEffect(() => {
+		if (quill && initialData) {
+			quill.clipboard.dangerouslyPasteHTML(initialData);
+		}
+	}, [quill, initialData]);
 
 	React.useEffect(() => {
 		if (quill) {
-			if (data) {
-				quill.clipboard.dangerouslyPasteHTML(data);
-			}
 			quill.on('text-change', (delta, oldDelta, source) => {
-				console.log(quill.root.innerHTML);
-				setData(quill.root.innerHTML);
+				getData(quill.root.innerHTML);
 			});
 		}
 	}, [quill]);

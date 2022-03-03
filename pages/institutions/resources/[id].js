@@ -10,7 +10,7 @@ import styles from './resourceEditor.module.scss';
 
 function ResourceEditor({ resource }) {
 	const [resourceInfo, setResourceInfo] = useState(resource);
-	const [quillContent, setQuillContent] = useState(resourceInfo.richText);
+	const [quillContent, setQuillContent] = useState();
 	const [isPreview, setIsPreview] = useState(false);
 	const { register, handleSubmit } = useForm({
 		defaultValues: {
@@ -30,7 +30,7 @@ function ResourceEditor({ resource }) {
 						dangerouslySetInnerHTML={{ __html: quillContent }}
 					/>
 				) : (
-					<QuillEditor data={quillContent} setData={setQuillContent} />
+					<QuillEditor initialData={resourceInfo.richText} getData={setQuillContent} />
 				)}
 			</>
 		);
