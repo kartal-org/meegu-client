@@ -20,10 +20,9 @@ function OneFile({ file, comments }) {
 	const user = useUser();
 	const router = useRouter();
 	const [commentList, setCommentList] = useState(comments);
-	const [quillContent, setQuillContent] = useState();
+	const [quillContent, setQuillContent] = useState(file.richText);
 	const [fileStatus, setFileStatus] = useState(file.status);
 	const snackBarUpdate = useSnackBarUpdate();
-	const { editor, content } = useQuillEditor(file.richText);
 	const {
 		register, // register inputs
 		handleSubmit, // handle form submit
@@ -98,10 +97,6 @@ function OneFile({ file, comments }) {
 		router.replace(`/workspaces/${file.workspace}/`);
 	}
 
-	function checkContent() {
-		console.log(quillContent);
-	}
-
 	async function submitFile() {
 		// e.preventDefault();
 		console.log(quillContent);
@@ -134,7 +129,7 @@ function OneFile({ file, comments }) {
 						dangerouslySetInnerHTML={{ __html: quillContent }}
 					/>
 				) : (
-					<QuillEditor initialData={file.richText} getData={setQuillContent} />
+					<QuillEditor initialData={quillContent} setData={setQuillContent} />
 					// { editor }
 				)}
 			</>
@@ -168,7 +163,6 @@ function OneFile({ file, comments }) {
 			</header>
 
 			<main className={styles.page__content}>
-				<Button onClick={() => console.log(quillValue)}>Console Content</Button>
 				{file.pdf ? <PdfViewer file={file.pdf} /> : <FileEditor />}
 
 				<CommentSection fileID={file.id} />

@@ -2,29 +2,26 @@ import React, { useState } from 'react';
 import { useQuill } from 'react-quilljs';
 import 'quill/dist/quill.snow.css';
 import styles from './quillEditor.module.scss';
-import { useQuillUpdate } from '../contexts/useQuillProvider';
 
-export default function QuillEditor({ initialData, getData }) {
-	// const placeholder = 'Compose an epic...';
-	const quillUpdate = useQuillUpdate();
-	const { quill, quillRef } = useQuill({
-		// placeholder,
+export default function QuillEditor({ initialData, setData }) {
+	const placeholder = 'Compose an epic...';
+
+	const { quill, quillRef, Quill } = useQuill({
+		placeholder,
 	});
-	const [content, setContent] = useState(null);
-
-	React.useEffect(() => {
-		if (quill && initialData) {
-			quill.clipboard.dangerouslyPasteHTML(initialData);
-		}
-	}, [quill, initialData]);
 
 	React.useEffect(() => {
 		if (quill) {
+			if (initialData) {
+				quill.clipboard.dangerouslyPasteHTML(initialData);
+				quill.setSelection(quill.getLength(), 0);
+			}
 			quill.on('text-change', (delta, oldDelta, source) => {
-				getData(quill.root.innerHTML);
+				// Get innerHTML using quill
+				setData(quill.root.innerHTML); // Get innerHTML using quillRef
 			});
 		}
-	}, [quill]);
+	}, [quill, quillRef]);
 
 	return (
 		<div className={styles.editor}>
