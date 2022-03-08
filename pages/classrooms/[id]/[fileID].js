@@ -220,7 +220,7 @@ function FileInside({ file, comments, institutions }) {
 export async function getServerSideProps(context) {
 	const { req, res, query } = context;
 	const access_token = req.cookies.access_token;
-	const fileId = query.fileId;
+	const fileId = query.fileID;
 	const props = {};
 
 	//response for file detail

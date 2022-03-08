@@ -90,31 +90,6 @@ function ImportResource() {
 				</form>
 			</header>
 			<main className={styles.container}>
-				{/* <Autocomplete
-					disablePortal
-					inputValue={selectedResource}
-					onInputChange={(event, newInputValue) => {
-						setSelectedUser(newInputValue);
-					}}
-					// value={selectedUser}
-					options={resourceList}
-					getOptionLabel={(option) => option.name}
-					fullWidth
-					// {...register('selectedUser')}
-					renderInput={(params) => <TextField fullWidth {...params} label='Search Resource' />}
-					renderOption={(props, option) => (
-						<Box
-							onClick={(event, option) => console.log(option)}
-							component='li'
-							// sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
-							{...props}
-						>
-							
-							<h1>{option.name}</h1>
-							<p>{option.description}</p>
-						</Box>
-					)}
-				/> */}
 				{resourceList.length > 0 ? (
 					<>
 						{resourceList?.map((resource) => (
@@ -127,7 +102,15 @@ function ImportResource() {
 										illustration={pdfImg}
 										actions={
 											<>
-												<Button>Open</Button>
+												<Button
+													onClick={() =>
+														router.push(
+															`/resources/${resource.id}?workspace=${router.query.id}`
+														)
+													}
+												>
+													Open
+												</Button>
 											</>
 										}
 									>
@@ -141,7 +124,15 @@ function ImportResource() {
 										illustration={templateImg}
 										actions={
 											<>
-												<Button>Open</Button>
+												<Button
+													onClick={() =>
+														router.push(
+															`/resources/${resource.id}?workspace=${router.query.id}`
+														)
+													}
+												>
+													Open
+												</Button>
 											</>
 										}
 									>
@@ -154,15 +145,6 @@ function ImportResource() {
 				) : (
 					<p>No resources available</p>
 				)}
-
-				{/* <article key={resource.id} className={styles.card}>
-						{resource.pdf ? "PDF ni sya" : "Template ni sya"}
-						<h3>{resource.name}</h3>
-						<p>{resource.institution.name}</p>
-						<p>{resource.description}</p>
-						<button onClick={() => importResource(resource.id)}>Import</button>
-						<button>Open</button>
-					</article> */}
 			</main>
 		</div>
 	);
