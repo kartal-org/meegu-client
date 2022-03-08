@@ -1,18 +1,29 @@
-import { TextField } from '@mui/material';
+import { IconButton, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
 import ChipList from '../../components/reusable/chips';
 import PageLayout from '../../layouts/pageLayout';
 import styles from './discover.module.scss';
 import InputAdornment from '@mui/material/InputAdornment';
+import SearchIcon from '@mui/icons-material/Search';
 
-function index() {
+function DiscoverPage() {
 	const router = useRouter();
 	return (
 		<div className={styles.page}>
 			<div className={styles.page__header}>
 				<h1>Discover</h1>
-				<input type='search' placeholder='Search Something...' />
+				<form className={styles.searchbox}>
+					<input
+						className={styles.searchinput}
+						type='search'
+						placeholder='Search something...'
+					/>
+
+					<IconButton type='submit' sx={{ p: '10px' }} aria-label='search'>
+						<SearchIcon />
+					</IconButton>
+				</form>
 			</div>
 			<div className={styles.page__content}>
 				<ChipList
@@ -33,5 +44,5 @@ function index() {
 	);
 }
 
-index.Layout = PageLayout;
-export default index;
+DiscoverPage.Layout = PageLayout;
+export default DiscoverPage;
