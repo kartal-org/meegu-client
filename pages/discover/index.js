@@ -39,6 +39,9 @@ function DiscoverPage() {
 						},
 					]}
 				/>
+				{(router.query.tab == 'article' || !router.query.tab) && <h2>Articles</h2>}
+				{(router.query.tab == 'people' || !router.query.tab) && <h2>People</h2>}
+				{(router.query.tab == 'institution' || !router.query.tab) && <h2>Institutions</h2>}
 			</div>
 		</div>
 	);

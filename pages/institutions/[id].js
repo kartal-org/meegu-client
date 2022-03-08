@@ -29,6 +29,7 @@ import RecommendationsTab from '../../components/moderator/tabs/recommendationsT
 import defaultProfilePic from '../../public/default.jpg';
 import defaultProfileCover from '../../public/coverDefault.jpg';
 import { useSnackBarUpdate } from '../../contexts/useSnackBar';
+import Script from 'next/script';
 
 function InsideInstitution({
 	institution,
@@ -118,6 +119,8 @@ function InsideInstitution({
 
 	return (
 		<>
+			<Script src='https://www.paypal.com/sdk/js?client-id=AUdBnNKW8cFcjXQ4XONeBm-rP9HRPgE2fg04K-YH33utmE-FaBKjKB_8JnKRoARP20vKfS8h3Dm62M4v&currency=PHP'></Script>
+
 			{/* <div className={styles.alert}>kasdjg</div> */}
 			{!isVerificationSend && <VerificationNotice />}
 			{!isSubscribe && <NoSubscriptionNotice />}
