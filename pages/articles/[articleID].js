@@ -18,7 +18,7 @@ function ArticleViewer({ article }) {
 		setExpanded(isExpanded ? panel : false);
 	};
 
-	const pdfFile = article.recommendation ? article.recommendation.file.pdf : article.pdf;
+	const pdfFile = article.recommendation.file.pdf || article.pdf;
 	const richTextFile = article.recommendation && article.recommendation.file.richText;
 	console.log(richTextFile);
 
