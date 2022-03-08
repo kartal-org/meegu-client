@@ -22,6 +22,7 @@ import styles from '../../../styles/classrooms.module.scss';
 import quillEditor from '../../../components/quillEditor';
 import CommentSection from '../../../components/researcher/commentSection';
 import { useSnackBarUpdate } from '../../../contexts/useSnackBar';
+import PdfViewer from '../../../components/pdfViewer';
 
 function FileInside({ file, comments, institutions }) {
 	const user = useUser();
@@ -127,7 +128,12 @@ function FileInside({ file, comments, institutions }) {
 			</div>
 			<Divider sx={{ m: 1 }} />
 			<div className={styles.fileLayout}>
-				<div className='article-content' dangerouslySetInnerHTML={{ __html: fileContent }} />
+				{file.pdf ? (
+					<PdfViewer file={file.pdf} />
+				) : (
+					<div className='article-content' dangerouslySetInnerHTML={{ __html: fileContent }} />
+				)}
+
 				{/* <QuillEditor isReadOnly={true} data={fileContent} setData={setFileContent} /> */}
 
 				{/* </div> */}

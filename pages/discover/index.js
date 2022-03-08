@@ -1,6 +1,6 @@
 import { IconButton, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import ChipList from '../../components/reusable/chips';
 import PageLayout from '../../layouts/pageLayout';
 import styles from './discover.module.scss';
@@ -10,6 +10,9 @@ import { useForm } from 'react-hook-form';
 
 function DiscoverPage() {
 	const router = useRouter();
+	const [peopleList, setPeopleList] = useState([]);
+	const [institutionList, setInstitutionList] = useState([]);
+	const [articleList, setArticleList] = useState([]);
 
 	const { register, handleSubmit } = useForm();
 
