@@ -106,6 +106,26 @@ function PeoplesTab({ institutionID }) {
 	}
 
 	useEffect(() => {
+		async function getMembers(type, isNotActive) {
+			let queryLink = type
+				? `/institutions/members?institution=${institutionID}&type=${type}`
+				: `/institutions/members?institution=${institutionID}`;
+
+			queryLink = queryLink + (isNotActive ? `&isNotActive=${true}` : '');
+
+			console.log(queryLink);
+
+			const responseGetMembers = await fetch(process.env.BACKEND_API_UR + queryLink, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${Cookies.get('access_token')}`,
+				},
+			});
+			const resultMember = await responseGetMembers.json();
+			console.log('members', resultMember);
+			setMembersList(resultMember);
+		}
 		getMembers();
 		fetchPeople();
 	}, []);

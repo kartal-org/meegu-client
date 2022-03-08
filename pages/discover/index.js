@@ -6,18 +6,27 @@ import PageLayout from '../../layouts/pageLayout';
 import styles from './discover.module.scss';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
+import { useForm } from 'react-hook-form';
 
 function DiscoverPage() {
 	const router = useRouter();
+
+	const { register, handleSubmit } = useForm();
+
+	async function search(data, e) {
+		console.log(data);
+	}
+
 	return (
 		<div className={styles.page}>
 			<div className={styles.page__header}>
 				<h1>Discover</h1>
-				<form className={styles.searchbox}>
+				<form onSubmit={handleSubmit(search)} className={styles.searchbox}>
 					<input
 						className={styles.searchinput}
 						type='search'
 						placeholder='Search something...'
+						{...register('searchText')}
 					/>
 
 					<IconButton type='submit' sx={{ p: '10px' }} aria-label='search'>
