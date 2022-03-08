@@ -49,12 +49,12 @@ function HomePage({ articles }) {
 
 	return (
 		<>
-			<div className={styles.chips}>
+			{/* <div className={styles.chips}>
 				<ChipList
 					chips={useHomeFilters()}
 					defaultVal={router.query.status ? router.query.status : 'all'}
 				/>
-			</div>
+			</div> */}
 			<div className={styles.home}>
 				{articles?.map((article) => (
 					<div key={article.id} onClick={() => router.push(`/articles/${article.id}`)}>

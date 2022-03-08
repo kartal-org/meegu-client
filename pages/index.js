@@ -104,7 +104,7 @@ export default function LandingPage() {
 						</p>
 					</div>
 					<div className={styles.action}>
-						<div>
+						{/* <div>
 							<FacebookLogin
 								appId={process.env.FACEBOOK_CLIENT_ID}
 								autoLoad={false}
@@ -118,7 +118,7 @@ export default function LandingPage() {
 									</button>
 								)}
 							/>
-						</div>
+						</div> */}
 						<div>
 							<GoogleLogin
 								clientId={process.env.GOOGLE_CLIENT_ID}
@@ -143,15 +143,14 @@ export default function LandingPage() {
 					<div className={styles.splitItem}>
 						<Link href='/' passHref>
 							<a>
-
-							<Image
-								src={logo}
-								height={50}
-								width={100}
-								layout='intrinsic'
-								objectFit='contain'
-								className={styles.footerLogo}
-							/>
+								<Image
+									src={logo}
+									height={50}
+									width={100}
+									layout='intrinsic'
+									objectFit='contain'
+									className={styles.footerLogo}
+								/>
 							</a>
 							{/* <a className={styles.footer__logo}> */}
 							{/* </a> */}
@@ -160,8 +159,6 @@ export default function LandingPage() {
 							For easier and more meaningful research journey.
 						</p>
 					</div>
-
-					
 				</div>
 			</footer>
 		</div>
