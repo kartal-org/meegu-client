@@ -37,18 +37,18 @@ function ArticlesTab({
 								title='Add Article'
 								primaryAction={<Button>Done</Button>}
 							>
-								<CustomTabs
+								<UploadFile
+									institutionID={institution.id}
+									articleList={articleList}
+									setArticleList={setArticleList}
+								/>
+								{/* <CustomTabs
 									defaultVal='upload'
 									tabs={[
 										{
 											label: 'Upload File',
 											value: 'upload',
 											content: (
-												<UploadFile
-													institutionID={institution.id}
-													articleList={articleList}
-													setArticleList={setArticleList}
-												/>
 											),
 										},
 										{
@@ -65,7 +65,7 @@ function ArticlesTab({
 											),
 										},
 									]}
-								/>
+								/> */}
 							</CustomizedDialogs>
 						)}
 					</div>

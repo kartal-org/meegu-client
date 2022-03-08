@@ -18,7 +18,7 @@ function ArticleViewer({ article }) {
 		setExpanded(isExpanded ? panel : false);
 	};
 
-	const pdfFile = article.recommendation.file.pdf || article.pdf;
+	const pdfFile = article.pdf ? article.pdf : article.recommendation.file.pdf;
 	const richTextFile = article.recommendation && article.recommendation.file.richText;
 	console.log(richTextFile);
 
@@ -51,7 +51,6 @@ function ArticleViewer({ article }) {
 						</AccordionSummary>
 						<AccordionDetails>
 							<ArticleInfoSection article={article} />
-							<ReviewSection />
 						</AccordionDetails>
 					</Accordion>
 					<Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
