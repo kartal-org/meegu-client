@@ -16,7 +16,7 @@ function ResourceViewer({ resource }) {
 		const request = await fetch(process.env.BACKEND_API_UR + '/resources/import', {
 			method: 'POST',
 			headers: {
-				Authorization: `Bearer ${access_token}`,
+				Authorization: `Bearer ${Cookies.get('access_token')}`,
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
