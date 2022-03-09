@@ -6,6 +6,7 @@ import QuillEditor from '../../components/quillEditor';
 import { useSnackBarUpdate } from '../../contexts/useSnackBar';
 import PageLayout from '../../layouts/pageLayout';
 import styles from './resourceViewer.module.scss';
+import Cookies from 'js-cookie';
 
 function ResourceViewer({ resource }) {
 	const [quillContent, setQuillContent] = useState(resource.richText);
