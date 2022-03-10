@@ -66,7 +66,7 @@ function ArticleViewer({ article }) {
 						</AccordionDetails>
 					</Accordion>
 				</div>
-				<ReviewSection />
+				{/* <ReviewSection /> */}
 			</main>
 		</div>
 	);

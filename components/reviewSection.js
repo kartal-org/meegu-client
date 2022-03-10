@@ -48,7 +48,15 @@ function ReviewMenu({ review, reviewList, setReviewList }) {
 		);
 		const result = await request.json();
 		console.log(result);
-
+		const newList = reviewList.map((val) => {
+			if (val.id == result.id) {
+				return result;
+			} else {
+				return val;
+			}
+		});
+		console.log(newList);
+		setReviewList(newList);
 		snackBarUpdate(true, 'Review Edited!');
 		handleClose();
 		// router.reload();
@@ -64,6 +72,9 @@ function ReviewMenu({ review, reviewList, setReviewList }) {
 				},
 			}
 		);
+		const result = await request.json();
+		console.log(result);
+		setReviewList(reviewList.filter((val) => val.id !== result.id));
 
 		snackBarUpdate(true, 'Review Deleted!');
 		handleClose();
