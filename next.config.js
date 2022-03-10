@@ -1,7 +1,7 @@
 module.exports = {
 	reactStrictMode: true,
 	env: {
-		//BACKEND_API_UR: 'http://localhost:8000',
+		// BACKEND_API_UR: 'http://localhost:8000',
 		BACKEND_API_UR: 'https://meegu-newserver.herokuapp.com',
 		BACKEND_APP_KEY: 'fE47dp9OT7H7ysNExlNqKJqsZekee40FP0vnvShK',
 		BACKEND_APP_SECRET:
